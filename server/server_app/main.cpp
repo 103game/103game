@@ -1,7 +1,14 @@
 #include <string.h>
 #include <stdio.h>
-#include <unistd.h>
-#include "zmq.h"
+#ifndef _WIN32
+	// not Windows
+	#include <unistd.h>
+	#include "zmq.h"
+#else
+	#include <windows.h>
+	#include <zmq.h>
+#endif
+
 
 int main (int argc, char const *argv[])
 {
@@ -18,7 +25,12 @@ int main (int argc, char const *argv[])
         zmq_msg_recv(&request, respond, 0);
         printf("Received: hello\n");
         zmq_msg_close(&request);
-        sleep(1); // sleep one second
+		#ifndef _WIN32
+			// not Windows
+			sleep(1); // sleep one second
+		#else
+			Sleep(1);  // sleep one second
+		#endif
         zmq_msg_t reply;
         zmq_msg_init_size(&reply, strlen("world"));
         memcpy(zmq_msg_data(&reply), "world", 5);

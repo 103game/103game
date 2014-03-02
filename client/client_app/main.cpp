@@ -1,7 +1,7 @@
 #include <boost/algorithm/searching/knuth_morris_pratt.hpp>
 #include <cinder/app/AppBasic.h>
 #include <cinder/gl/gl.h>
-
+#include <zmq.hpp>
 
 
 

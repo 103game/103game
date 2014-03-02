@@ -1,17 +1,16 @@
-#include <string.h>
-#include <stdio.h>
 #ifndef _WIN32
 	// not Windows
 	#include <unistd.h>
 	#include "zmq.h"
-#else
+#else	
+	#include <zmq.hpp>
 	#include <windows.h>
-	#include <zmq.h>
 #endif
 
 
 int main (int argc, char const *argv[])
 {
+
     void* context = zmq_ctx_new();
     void* respond = zmq_socket(context, ZMQ_REP);
 

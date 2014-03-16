@@ -10,9 +10,9 @@ using namespace std;
 
 class TestApp : public AppNative {
   public:
-	gl::Texture texture;
-	gl::Texture texture2;
-	gl::Texture sand;
+	gl::Texture grass;
+	gl::Texture water;
+	gl::Texture ground;
 
 
 	void setup();
@@ -38,9 +38,9 @@ void TestApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) ); 
-	gl::Texture texture = loadImage( "grass.jpg");
-	gl::Texture texture2 = loadImage( "water.jpg");
-	gl::Texture sand = loadImage( "ground.jpg");
+	gl::Texture grass = loadImage( "img/grass.jpg");
+	gl::Texture water = loadImage( "img/water.jpg");
+	gl::Texture ground = loadImage( "img/ground.jpg");
 
 	for (int i = 0; i<= getWindowWidth(); i+=50)
 	{
@@ -49,11 +49,11 @@ void TestApp::draw()
 		{
 			if(i%3==0)
 			{
-				gl::draw( texture2, Vec2f(i,j));
+				gl::draw( water, Vec2f(i,j));
 			}
 			else
 			{
-				gl::draw( texture, Vec2f(i,j));
+				gl::draw( grass, Vec2f(i,j));
 			}
 		}
 	}

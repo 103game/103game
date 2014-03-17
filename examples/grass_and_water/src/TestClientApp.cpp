@@ -38,23 +38,18 @@ void TestApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) ); 
-	gl::Texture grass = loadImage( "img/grass.jpg");
+	gl::Texture grass = loadImage( "img/grass_15.jpg");
 	gl::Texture water = loadImage( "img/water.jpg");
 	gl::Texture ground = loadImage( "img/ground.jpg");
 
-	for (int i = 0; i<= getWindowWidth(); i+=50)
+	for (int i = 0; i<= getWindowWidth(); i+=180)
 	{
 		
-		for (int j=0; j<= getWindowHeight(); j+=50)
+		for (int j=0; j<= getWindowHeight(); j+=180)
 		{
-			if(i%3==0)
-			{
-				gl::draw( water, Vec2f(i,j));
-			}
-			else
-			{
+			
 				gl::draw( grass, Vec2f(i,j));
-			}
+			
 		}
 	}
 }

@@ -84,6 +84,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NetworkController.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="ServerAppController.cpp" />
+    <ClCompile Include="world\World.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="NetworkController.h" />
+    <ClInclude Include="ServerAppController.h" />
+    <ClInclude Include="Server.h" />
+    <ClInclude Include="world\SurfaceBlock.h" />
+    <ClInclude Include="world\World.h" />
+    <ClInclude Include="world\WorldObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

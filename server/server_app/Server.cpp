@@ -9,14 +9,19 @@ void serverMainLoop(Server *server)
 {
 	while(true)
 	{		
-		server->tickCount++;
+		server->ticks++;
 	}
 }
 
 Server::Server()
 {
+	// инициализируем сеть
 	this->networkController = new NetworkController(this);
-	this->tickCount = 0;
+	// инициализируем базу данеых
+	this->dbController = new DBController(this);
+	this->dbController->connect(); // connect
+
+	this->ticks = 0;
 
 
 

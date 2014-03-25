@@ -15,6 +15,9 @@ void DBController::connect()
 		
 		cout << "connected!" << endl;
 
+		// EXAMPLE:
+
+		/*
 		// create object
 		BSONObjBuilder obj;		
 		obj.append( "num" , 1);
@@ -22,6 +25,7 @@ void DBController::connect()
 		
 		// insert to db
 		this->connection->insert("server.people", obj.obj());
+		*/
 
 	} catch(const DBException &e) {
 		cout << "DBConnect exception" << e.what() << endl;

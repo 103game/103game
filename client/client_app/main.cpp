@@ -1,15 +1,13 @@
-#include <boost/algorithm/searching/knuth_morris_pratt.hpp>
 #include <cinder/app/AppBasic.h>
 #include <cinder/gl/gl.h>
-#include <zmq.hpp>
-
+#include "Common.h"
 
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class AnalogClockApp : public AppBasic
+class ClientApp : public AppBasic
 {
 public:
 	// setting up and shutting down
@@ -24,31 +22,31 @@ public:
 	void keyDown( KeyEvent event );
 protected:
 	float getSecondsSinceMidnight();
-protected:
-	// your class members go here
+
 };
 
 // construction and destruction
 
-void AnalogClockApp::prepareSettings( Settings *settings )
+void ClientApp::prepareSettings( Settings *settings )
 {
 	settings->setTitle("Analog Clock");
 	settings->setWindowSize(300, 300);
 }
 
-void AnalogClockApp::setup()
+void ClientApp::setup()
 {
 	// we don't need to load or setup any stuff in this application
+	DBOUT("That's how we output useful information in windowed app (without console)");
 }
 
 // game loop
 
-void AnalogClockApp::update()
+void ClientApp::update()
 {
 	// instead of in the update method, we will do all 'animation' in the draw method
 }
 
-void AnalogClockApp::draw()
+void ClientApp::draw()
 {
 	// clear the window with a black background
 	gl::clear( Color::black() ); 
@@ -107,7 +105,7 @@ void AnalogClockApp::draw()
 
 // key events
 
-void AnalogClockApp::keyDown( KeyEvent event )
+void ClientApp::keyDown( KeyEvent event )
 {
 	switch( event.getCode() )
 	{
@@ -119,7 +117,7 @@ void AnalogClockApp::keyDown( KeyEvent event )
 
 //
 
-float AnalogClockApp::getSecondsSinceMidnight()
+float ClientApp::getSecondsSinceMidnight()
 {
 	float seconds = 0.0f;
 
@@ -135,4 +133,4 @@ float AnalogClockApp::getSecondsSinceMidnight()
 }
 
 // the following macro will create the application
-CINDER_APP_BASIC( AnalogClockApp, RendererGl )
+CINDER_APP_BASIC( ClientApp, RendererGl )

@@ -106,18 +106,18 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\libs\json\include;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\..\libs\mongodb\mongo\Debug;$(SolutionDir)\..\libs\mongodb\boost\lib;$(SolutionDir)\..\libs\zeromq\dll;$(SolutionDir)\..\libs\zeromq\lib\win32;$(SolutionDir)\..\libs\lib32-msvc-11.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\libs\mongodb\mongo\Debug;$(SolutionDir)\..\libs\mongodb\boost\lib;$(SolutionDir)\..\libs\zeromq\dll;$(SolutionDir)\..\libs\zeromq\lib\win32;$(SolutionDir)\..\libs\json\lib;$(SolutionDir)\..\libs\lib32-msvc-11.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <HeapReserveSize>
       </HeapReserveSize>
       <HeapCommitSize>
       </HeapCommitSize>
-      <AdditionalDependencies>libzmq.lib;libzmq_d.lib;ws2_32.lib;mongoclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libzmq.lib;libzmq_d.lib;ws2_32.lib;mongoclient.lib;json_vc110_libmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

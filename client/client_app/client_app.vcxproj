@@ -52,14 +52,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\;$(SolutionDir)\..\libs\cinder\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\libs\json\include;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\;$(SolutionDir)\..\libs\cinder\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\..\libs\zeromq\lib\win32;$(SolutionDir)\..\libs\cinder\lib\msw;$(SolutionDir)\..\libs\lib32-msvc-11.0;$(SolutionDir)\..\libs\cinder\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>cinder_d.lib;libzmq.lib;libzmq_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\libs\json\lib;$(SolutionDir)\..\libs\zeromq\lib\win32;$(SolutionDir)\..\libs\cinder\lib\msw;$(SolutionDir)\..\libs\lib32-msvc-11.0;$(SolutionDir)\..\libs\cinder\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder_d.lib;libzmq.lib;libzmq_d.lib;json_vc110_libmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -82,6 +82,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Common.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

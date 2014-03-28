@@ -112,7 +112,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\..\libs\mongodb\mongo\Debug;$(SolutionDir)\..\libs\mongodb\boost\lib;$(SolutionDir)\..\libs\zeromq\dll;$(SolutionDir)\..\libs\zeromq\lib\win32;$(SolutionDir)\..\libs\json\lib;$(SolutionDir)\..\libs\lib32-msvc-11.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\libs\mongodb\mongo\Debug;$(SolutionDir)\..\libs\mongodb\boost\lib;$(SolutionDir)\..\libs\zeromq\dll;$(SolutionDir)\..\libs\zeromq\lib\x64;$(SolutionDir)\..\libs\json\lib;$(SolutionDir)\..\libs\lib32-msvc-11.0;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <HeapReserveSize>
       </HeapReserveSize>
       <HeapCommitSize>

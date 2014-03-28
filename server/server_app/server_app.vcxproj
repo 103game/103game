@@ -160,13 +160,17 @@
     <ClCompile Include="NetworkController.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerAppController.cpp" />
+    <ClCompile Include="User.cpp" />
     <ClCompile Include="world\World.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Common.h" />
     <ClInclude Include="DBController.h" />
     <ClInclude Include="NetworkController.h" />
     <ClInclude Include="ServerAppController.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="world\SurfaceBlock.h" />
     <ClInclude Include="world\World.h" />
     <ClInclude Include="world\WorldObject.h" />

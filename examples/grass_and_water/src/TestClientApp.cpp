@@ -5,10 +5,14 @@
 #include <Vector>
 #include "cinder/Text.h"
 #include "Camer.h"
+#include "ObjProto.h"
+
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
+
+#define step 100
 
 class TestApp : public AppNative {
   public:
@@ -20,9 +24,10 @@ class TestApp : public AppNative {
 	gl::Texture snow;
 	gl::Texture lava;
 	gl::Texture lifecounter;
+	gl::Texture black;
+	gl::Texture object;
 
-	//int CameraX;
-	//int CameraY;
+	ObjProto proto;
 	int CameraStep;
 	int life;
 
@@ -34,6 +39,7 @@ class TestApp : public AppNative {
 	void draw();
 	void render();
 	void drawlife();
+	void keyDown( KeyEvent event );
 
 	Vec2f  position;
 	Camer MyCam;
@@ -44,6 +50,37 @@ class TestApp : public AppNative {
 	Font			mFont;
 };
 
+void TestApp::keyDown( KeyEvent event )
+{
+	if( event.getChar() == 'f' )
+		setFullScreen( ! isFullScreen() );
+
+	switch (event.getChar())
+	{
+	case('w'): {
+		if (proto.getY()-step + MyCam.getCameraY() > getWindowHeight()/2)
+		{
+			proto.ChangeX(proto.getX()), proto.ChangeY(proto.getY()-step);
+		}
+		break;}	
+	case('a'): {
+		if (proto.getX()-step +MyCam.getCameraX()> getWindowWidth()/2)
+			proto.ChangeX(proto.getX()-step), proto.ChangeY(proto.getY());
+		break;}
+	case('s'): {
+		if (proto.getY()+step < getWindowHeight())
+			proto.ChangeX(proto.getX()), proto.ChangeY(proto.getY()+step);
+		break;}
+	case('d'): {
+		if(proto.getX()+step < getWindowWidth())
+			proto.ChangeX(proto.getX()+step), proto.ChangeY(proto.getY());
+		break;}
+	default:
+		break;
+	}
+}
+
+
 void TestApp::setup()
 {
 #if defined( CINDER_COCOA )
@@ -53,6 +90,9 @@ void TestApp::setup()
 #endif
 	mSize = Vec2f( 100, 100 );
 	render();
+
+proto.ChangeX(1);
+proto.ChangeY(1);
 }
 
 void TestApp::mouseDown( MouseEvent event )
@@ -80,34 +120,33 @@ void TestApp::draw()
 	gl::Texture sand = loadImage( "img/sand_35.jpg");
 	gl::Texture lava = loadImage( "img/lava.jpg");
 	gl::Texture lifecounter = loadImage( "img/life.jpg");
+	gl::Texture black = loadImage( "img/black.jpg");
+	gl::Texture object = loadImage( "img/obj.jpg");
 
-	MyCam.ChangeCameraCoordinates(getWindowWidth() / 2, getWindowHeight() / 2 );
+	
 
-	//CameraX = getWindowWidth() / 2;
-	//CameraY = getWindowHeight() / 2;
+	
 	CameraStep = 100;
 	life=10;
-
+	MyCam.ChangeCameraCoordinates(getWindowWidth() / 2, getWindowHeight() / 2 );
 	for (int i = getWindowWidth() / 2; i<= MyCam.getCameraX()+ getWindowWidth(); i+=CameraStep)
 	{
 		
 		for (int j=getWindowHeight() / 2; j<= MyCam.getCameraY()+getWindowHeight(); j+=CameraStep)
 		{
-			
-			if (i%3==0)
-				gl::draw( grass, Vec2f(i-MyCam.getCameraX(),j-MyCam.getCameraY()));
-			else
-				gl::draw( sand, Vec2f(i-MyCam.getCameraX(),j-MyCam.getCameraY()));
+				gl::draw( black, Vec2f(i-MyCam.getCameraX(),j-MyCam.getCameraY()));
 			
 		}
 	}
+	gl::draw( object, Vec2f(proto.getX() ,proto.getY()));
 	if( mTextTexture )
 		gl::draw( mTextTexture );
 	for (int i = 0; i<= life; i++)
 	{
 		gl::draw(lifecounter, Vec2f(getWindowWidth()-20,getWindowHeight()-20-i*15));
 	}
-	gl::draw( man, Vec2f(MyCam.getCameraX() ,MyCam.getCameraY()));
+	
+	
 }
 void TestApp::render()
 {

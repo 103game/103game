@@ -5,7 +5,9 @@
 #include "Common.h"
 #include <queue>
 
-#define NTWK_STATE_SWITCH_TIME 3 // set state time (seconds)
+#include "PublisherMessage.h"
+
+#define NTWK_STATE_SWITCH_TIME 1 // set state time (seconds)
 
 using namespace std;
 
@@ -27,8 +29,13 @@ class NetworkController
 		NTWK_LOOP_STATE networkLoopState;
 		void switchState();
 
-		queue<string> receivedMessages;
-		queue<string> messagesToSend;
+		// Every received message from client needs immediate
+		// reply from server (thats how server knows where to send message)
+		queue<string> receivedMessages; // messages received from clients
+		queue<string> immediateReplies; // replies that clients are waiting for (req-reply)
+				
+
+		queue<PublisherMessage> messagesToPublish; // replies than need additional computation time (publish)
 
 		
 };

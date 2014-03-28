@@ -3,6 +3,8 @@
 #include <boost/thread/thread.hpp>
 
 #include <zmq.hpp>
+#include <zhelpers.hpp>
+
 #include <boost/thread/mutex.hpp>
 
 
@@ -53,10 +55,11 @@ void networkMainLoop(NetworkController *ntw)
 			cout << "Receiving" << endl;
 			zmq::message_t message;
 			
+
+			// receive message
 			if(responder.recv(&message, ZMQ_NOBLOCK)) {
 				// some error occured
-				cout << "Error receiving message: " << zmq_strerror(zmq_errno()) << endl;
-				break; // exit loop
+				cout << "Error receiving message: " << zmq_strerror(zmq_errno()) << endl;				
 			}
 			
 			if(message.size()) {
@@ -67,19 +70,42 @@ void networkMainLoop(NetworkController *ntw)
 					// convert incoming data to string					
 					messageString = string((char *) message.data());
 				}catch(std::exception &e ){
-					cout << "Error when converting message data to string: " << e.what() << endl;
-					break;
+					cout << "Error when converting message data to string: " << e.what() << endl;					
 				}				
 
 				// put received message to queue
 				ntw->receivedMessages.push(messageString);
-			}
-
-			
-			
+			}			
 				
 		}else{
 			cout << "Sending" << endl;
+
+			// first deal with one of immediate replies
+			if(ntw->immediateReplies.size()){				
+				string messageString = ntw->immediateReplies.front();
+				
+				zmq::message_t message;
+				memcpy(message.data(), messageString.c_str(), messageString.size()+1); // PE
+				
+				// send message
+				if(responder.send(message)) {
+					cout << "Error sending message: " << zmq_strerror(zmq_errno()) << endl;
+				}
+
+				// remove sent message from queue
+				ntw->immediateReplies.pop();
+			}
+
+			// now send one of async messages
+			if(ntw->messagesToPublish.size()){
+				PublisherMessage pubMessage = ntw->messagesToPublish.front();
+										
+				s_sendmore(publisher, pubMessage.subscriberId); // set subscriber id
+				s_send(publisher, pubMessage.messageString); // send message
+
+				// remove send message from queue
+				ntw->messagesToPublish.pop();
+			}
 		}
 	
 		
@@ -91,6 +117,7 @@ void networkMainLoop(NetworkController *ntw)
 			last_state_started = clock(); 
 		}
 
+		// update ticks counter
 		ntw->ticks++;
 	}
 }
@@ -100,6 +127,8 @@ NetworkController::NetworkController(Server *_server)
 {
 	this->server = _server;
 	this->ticks = 0;
+
+	// this->messagesToPublish.push(PublisherMessage("hello", "to_sub_101"));
 
 	
 	boost::thread networkThread(networkMainLoop, this);	

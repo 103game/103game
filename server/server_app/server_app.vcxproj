@@ -167,6 +167,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="DBController.h" />
     <ClInclude Include="NetworkController.h" />
+    <ClInclude Include="PublisherMessage.h" />
     <ClInclude Include="ServerAppController.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="User.h" />

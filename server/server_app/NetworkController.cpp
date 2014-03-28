@@ -2,8 +2,8 @@
 #include <string>
 #include <boost/thread/thread.hpp>
 
-#include <zmq.hpp>
-#include <zhelpers.hpp>
+
+
 
 #include <boost/thread/mutex.hpp>
 
@@ -27,6 +27,22 @@ void NetworkController::switchState() {
 }
 
 
+string NetworkController::immediateReply(string message) {
+
+	// PROTOTYPE
+	// TODO: JSON format
+
+	if(message == "tic") { // check connection message
+		return "toc";
+	} else if(message == "login") {
+		this->receivedMessages.push(message); // message needs more computation
+		return "ok"; // tell client that request is in process
+	} else {
+		return "unknown request type";
+	}
+}
+
+
 
 void networkMainLoop(NetworkController *ntw)
 {
@@ -37,7 +53,7 @@ void networkMainLoop(NetworkController *ntw)
 	publisher.bind("tcp://*:5555");
 	// res socket
 	zmq::socket_t responder(context, ZMQ_REP);
-	int timeout = 2000;
+	int timeout = 2000; // set timeout for 2 secs
 	responder.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
 	responder.bind("tcp://*:5556");
 	
@@ -73,30 +89,16 @@ void networkMainLoop(NetworkController *ntw)
 					cout << "Error when converting message data to string: " << e.what() << endl;					
 				}				
 
-				// put received message to queue
-				ntw->receivedMessages.push(messageString);
+
+				// immediately answer to client
+				s_send(responder, ntw->immediateReply(messageString));
+
 			}			
 				
-		}else{
+		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {
 			cout << "Sending" << endl;
 
-			// first deal with one of immediate replies
-			if(ntw->immediateReplies.size()){				
-				string messageString = ntw->immediateReplies.front();
-				
-				zmq::message_t message;
-				memcpy(message.data(), messageString.c_str(), messageString.size()+1); // PE
-				
-				// send message
-				if(responder.send(message)) {
-					cout << "Error sending message: " << zmq_strerror(zmq_errno()) << endl;
-				}
-
-				// remove sent message from queue
-				ntw->immediateReplies.pop();
-			}
-
-			// now send one of async messages
+			// send one of async messages
 			if(ntw->messagesToPublish.size()){
 				PublisherMessage pubMessage = ntw->messagesToPublish.front();
 										

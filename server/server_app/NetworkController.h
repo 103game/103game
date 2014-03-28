@@ -5,6 +5,9 @@
 #include "Common.h"
 #include <queue>
 
+#include <zmq.hpp>
+#include <zhelpers.hpp>
+
 #include "PublisherMessage.h"
 
 #define NTWK_STATE_SWITCH_TIME 1 // set state time (seconds)
@@ -29,13 +32,15 @@ class NetworkController
 		NTWK_LOOP_STATE networkLoopState;
 		void switchState();
 
+		
+		queue<string> receivedMessages; // complicated messages 
+
 		// Every received message from client needs immediate
 		// reply from server (thats how server knows where to send message)
-		queue<string> receivedMessages; // messages received from clients
-		queue<string> immediateReplies; // replies that clients are waiting for (req-reply)
-				
+		string immediateReply(string message);				
 
-		queue<PublisherMessage> messagesToPublish; // replies than need additional computation time (publish)
+		// cooked replies that need additional computation time (publish)
+		queue<PublisherMessage> messagesToPublish; 
 
 		
 };

@@ -4,7 +4,7 @@
 #include "cinder/gl/gl.h"
 #include <Vector>
 #include "cinder/Text.h"
-
+#include "Camer.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -21,8 +21,8 @@ class TestApp : public AppNative {
 	gl::Texture lava;
 	gl::Texture lifecounter;
 
-	int CameraX;
-	int CameraY;
+	//int CameraX;
+	//int CameraY;
 	int CameraStep;
 	int life;
 
@@ -36,7 +36,7 @@ class TestApp : public AppNative {
 	void drawlife();
 
 	Vec2f  position;
-
+	Camer MyCam;
 	gl::Texture		mTextTexture;
 	Vec2f			mSize;
 	Vec2f			mPosition;
@@ -81,19 +81,23 @@ void TestApp::draw()
 	gl::Texture lava = loadImage( "img/lava.jpg");
 	gl::Texture lifecounter = loadImage( "img/life.jpg");
 
-	
-	CameraX = getWindowWidth() / 2;
-	CameraY = getWindowHeight() / 2;
+	MyCam.ChangeCameraCoordinates(getWindowWidth() / 2, getWindowHeight() / 2 );
+
+	//CameraX = getWindowWidth() / 2;
+	//CameraY = getWindowHeight() / 2;
 	CameraStep = 100;
 	life=10;
 
-	for (int i = getWindowWidth() / 2; i<= CameraX+ getWindowWidth(); i+=CameraStep)
+	for (int i = getWindowWidth() / 2; i<= MyCam.getCameraX()+ getWindowWidth(); i+=CameraStep)
 	{
 		
-		for (int j=getWindowHeight() / 2; j<= CameraY+getWindowHeight(); j+=CameraStep)
+		for (int j=getWindowHeight() / 2; j<= MyCam.getCameraY()+getWindowHeight(); j+=CameraStep)
 		{
 			
-			gl::draw( grass, Vec2f(i-CameraX,j-CameraY));
+			if (i%3==0)
+				gl::draw( grass, Vec2f(i-MyCam.getCameraX(),j-MyCam.getCameraY()));
+			else
+				gl::draw( sand, Vec2f(i-MyCam.getCameraX(),j-MyCam.getCameraY()));
 			
 		}
 	}
@@ -103,7 +107,7 @@ void TestApp::draw()
 	{
 		gl::draw(lifecounter, Vec2f(getWindowWidth()-20,getWindowHeight()-20-i*15));
 	}
-	//gl::draw( man, Vec2f(getWindowWidth() / 2.0 ,getWindowHeight() / 2.0));
+	gl::draw( man, Vec2f(MyCam.getCameraX() ,MyCam.getCameraY()));
 }
 void TestApp::render()
 {

@@ -29,6 +29,7 @@ class NetworkController
 		NetworkController(Server *_server);
 		__int64 ticks;
 
+
 		NTWK_LOOP_STATE networkLoopState;
 		void switchState();
 

@@ -3,7 +3,8 @@
 #include <boost/thread/thread.hpp>
 
 
-
+#include <zmq.hpp>
+#include <zhelpers.hpp>
 
 #include <boost/thread/mutex.hpp>
 

@@ -5,8 +5,7 @@
 #include "Common.h"
 #include <queue>
 
-#include <zmq.hpp>
-#include <zhelpers.hpp>
+
 
 #include "PublisherMessage.h"
 

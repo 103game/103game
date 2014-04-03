@@ -1,6 +1,6 @@
 
 #ifndef WORLD_CLASS_DEF
-#define WORDL_CLASS_DEF
+#define WORLD_CLASS_DEF
 
 #include <vector>
 

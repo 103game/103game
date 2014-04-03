@@ -1,7 +1,7 @@
 #ifndef USER_CLASS_DEF
 #define USER_CLASS_DEF
 
-#include "Common.h"
+#include <string>
 
 using namespace std;
 

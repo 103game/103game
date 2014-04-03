@@ -10,11 +10,11 @@ DBController::DBController(Server *_server)
 void DBController::connect()
 {
 	try {
-		this->connection = new DBClientConnection();
+		/*this->connection = new DBClientConnection();
 		this->connection->connect("localhost");
 		
 		cout << "connected!" << endl;
-
+		*/
 		// EXAMPLE:
 
 		/*

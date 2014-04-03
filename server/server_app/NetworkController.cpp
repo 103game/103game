@@ -3,20 +3,22 @@
 #include <boost/thread/thread.hpp>
 
 
+
+#include "NetworkController.h"
+
+#include <exception>
+
 #include <zmq.hpp>
 #include <zhelpers.hpp>
 
-#include <boost/thread/mutex.hpp>
 
 
-#include "NetworkController.h"
-#include <exception>
+
+extern boost::mutex threadLocker;
 
 
 using namespace boost;
 
-
-mutex threadLocker;
 
 
 void NetworkController::switchState() {
@@ -28,18 +30,14 @@ void NetworkController::switchState() {
 }
 
 
-string NetworkController::immediateReply(string message) {
+AddressedReply NetworkController::immediateReply(AddressedRequest req) {
 
 	// PROTOTYPE
 	// TODO: JSON format
-
-	if(message == "tic") { // check connection message
-		return "toc";
-	} else if(message == "login") {
-		this->receivedMessages.push(message); // message needs more computation
-		return "ok"; // tell client that request is in process
-	} else {
-		return "unknown request type";
+	
+	if(req.messageString == "tic") {
+		this->receivedMessages.push(req);
+		return AddressedReply("toc", req.senderId);
 	}
 }
 
@@ -48,14 +46,12 @@ string NetworkController::immediateReply(string message) {
 void networkMainLoop(NetworkController *ntw)
 {
 	// Setup sockets
-	zmq::context_t context(1);
-	// pub socket	
-	zmq::socket_t publisher(context, ZMQ_PUB);
-	publisher.bind("tcp://*:5555");
-	// res socket
-	zmq::socket_t responder(context, ZMQ_REP);
-	int timeout = 2000; // set timeout for 2 secs
+	zmq::context_t context(1);	
+	// router socket
+	zmq::socket_t responder(context, ZMQ_ROUTER);
+	int timeout = 1000; // set timeout for 2 secs
 	responder.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
+	responder.setsockopt( ZMQ_IDENTITY, "tcp://127.0.0.1:5556", strlen("tcp://127.0.0.1:5556") );
 	responder.bind("tcp://*:5556");
 	
 	// setup timer
@@ -67,48 +63,54 @@ void networkMainLoop(NetworkController *ntw)
 
 	while(true)
 	{	
-		
+		// Clients always send requests
+		// requests of two types: 1) that they are ready to receive message 2) query to server
+		// Server answers to 1st-type request if it's in  
+
 		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {
-			cout << "Receiving" << endl;
-			zmq::message_t message;
+			cout << "Receiving" << endl;			
 			
+			try{
+				
+				// receive client's address
+				string address = s_recv (responder);
+				if(address.size()){
+					// if we have clients
+					cout << "Received from " + address << endl;
+					string message = s_recv (responder);				
+					
 
-			// receive message
-			if(responder.recv(&message, ZMQ_NOBLOCK)) {
-				// some error occured
-				cout << "Error receiving message: " << zmq_strerror(zmq_errno()) << endl;				
+					AddressedRequest req(message, address);
+
+					// create immediate reply
+					AddressedReply rep = ntw->immediateReply(req);
+
+					// and send it to client
+					s_sendmore (responder, rep.receiverId);					
+					s_send (responder, rep.messageString);
+				}							
+			} catch(std::exception &e){
+				cout << e.what() << endl;
 			}
-			
-			if(message.size()) {
-				// if we received something
-				// TODO: check message size not too big
-				string messageString;
-				try{
-					// convert incoming data to string					
-					messageString = string((char *) message.data());
-				}catch(std::exception &e ){
-					cout << "Error when converting message data to string: " << e.what() << endl;					
-				}				
 
-
-				// immediately answer to client
-				s_send(responder, ntw->immediateReply(messageString));
-
-			}			
 				
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {
 			cout << "Sending" << endl;
+			
 
-			// send one of async messages
-			if(ntw->messagesToPublish.size()){
-				PublisherMessage pubMessage = ntw->messagesToPublish.front();
-										
-				s_sendmore(publisher, pubMessage.subscriberId); // set subscriber id
-				s_send(publisher, pubMessage.messageString); // send message
+			//threadLocker.lock();
 
-				// remove send message from queue
-				ntw->messagesToPublish.pop();
+			if(ntw->cookedMessages.size()) {
+				AddressedReply rep = ntw->cookedMessages.front();
+
+				s_sendmore (responder, rep.receiverId);				
+				s_send (responder, rep.messageString);
+
+				ntw->cookedMessages.pop();
 			}
+
+			//threadLocker.unlock();
+			
 		}
 	
 		

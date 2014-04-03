@@ -2,6 +2,10 @@
 
 #include "ServerAppController.h"
 
+#include <boost/thread/mutex.hpp>
+
+boost::mutex threadLocker;
+
 int main(void)
 {
 	ServerAppController serverApp;

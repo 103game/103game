@@ -9,6 +9,7 @@
 #include "NetworkController.h"
 #include <exception>
 
+#include "Utils.h"
 
 using namespace boost;
 
@@ -39,20 +40,25 @@ void networkMainLoop(NetworkController *ntw)
 	zmq::context_t context(1);
 
 	// request socket
-	zmq::socket_t requester(context, ZMQ_REQ);
-	int timeout = 2000; // set timeout for 2 secs
+	zmq::socket_t requester(context, ZMQ_DEALER);
+	int timeout = -1; // set timeout for 2 secs
 	requester.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
+
+
+	s_set_id (requester);
+
+	string rndStr = Utils::randomString(5);
+    requester.setsockopt(ZMQ_IDENTITY, rndStr.c_str(), rndStr.length());
+
+	DBOUT(string("My id is: "+rndStr).c_str())
+
+
 	requester.connect("tcp://localhost:5556");
 
 	if(!requester.connected()){
 		DBOUT("Not connecteed");
 		return;
 	}
-
-	
-		
-	// subscribtion socket
-	zmq::socket_t subscriber(context, ZMQ_SUB);
 
 	
 	// setup timer
@@ -65,32 +71,14 @@ void networkMainLoop(NetworkController *ntw)
 	while(true)
 	{	
 		
-		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {
-			DBOUT("Receiving");
-
-			// Then check subscription messages
-			if(ntw->subscribed) {
+		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {			
+			string msg = s_recvf(requester, ZMQ_NOBLOCK);
+			if(msg.size()){
+				DBOUT(string("Reply from server: "+msg).c_str());
+			}			
 				
-			}
-				
-		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {
-			DBOUT("Sending");
-
-			// send one of async messages
-			if(ntw->messagesToSend.size()){
-				string messageString = ntw->messagesToSend.front();
-				
-				s_send(requester, messageString); // send message
-
-				// wait for fast server reply
-				string reply = s_recvf(requester, ZMQ_NOBLOCK);
-				if(reply != "ok") {
-					cout << "Error on fast reply, server says: " << reply << endl;
-				}
-
-				// remove send message from queue
-				ntw->messagesToSend.pop();
-			}
+		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {					
+			s_send (requester, "tic");
 		}
 	
 		

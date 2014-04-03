@@ -90,6 +90,7 @@
     <ClInclude Include="ClientApp.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="NetworkController.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

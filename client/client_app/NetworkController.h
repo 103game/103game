@@ -40,7 +40,7 @@ class NetworkController
 
 		queue<string> messagesToSend; 
 
-		queue<string> receivedMessages; // subscription
+		queue<string> receivedMessages; 
 
 
 		

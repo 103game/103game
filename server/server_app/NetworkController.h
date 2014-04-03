@@ -7,7 +7,9 @@
 
 
 
-#include "PublisherMessage.h"
+#include "AddressedReply.h"
+#include "AddressedRequest.h"
+
 
 #define NTWK_STATE_SWITCH_TIME 1 // set state time (seconds)
 
@@ -33,14 +35,14 @@ class NetworkController
 		void switchState();
 
 		
-		queue<string> receivedMessages; // complicated messages 
+		queue<AddressedRequest> receivedMessages; // complicated messages 
 
 		// Every received message from client needs immediate
-		// reply from server (thats how server knows where to send message)
-		string immediateReply(string message);				
+		// reply from server 
+		AddressedReply NetworkController::immediateReply(AddressedRequest req);				
 
-		// cooked replies that need additional computation time (publish)
-		queue<PublisherMessage> messagesToPublish; 
+		// cooked replies that need additional computation time
+		queue<AddressedReply> cookedMessages; 
 
 		
 };

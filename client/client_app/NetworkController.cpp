@@ -14,7 +14,7 @@
 using namespace boost;
 
 
-mutex threadLocker;
+extern mutex threadLocker;
 
 
 void NetworkController::switchState() {
@@ -26,13 +26,6 @@ void NetworkController::switchState() {
 }
 
 
-void subscribeTo(zmq::socket_t socket, string session_id) {
-	socket.connect("tcp://localhost:5556");
-	socket.setsockopt( ZMQ_SUBSCRIBE, session_id.c_str(), session_id.size());
-}
-
-
-
 
 void networkMainLoop(NetworkController *ntw)
 {
@@ -41,21 +34,21 @@ void networkMainLoop(NetworkController *ntw)
 
 	// request socket
 	zmq::socket_t requester(context, ZMQ_DEALER);
-	int timeout = -1; // set timeout for 2 secs
+
+	// set timeout for infinite
+	int timeout = -1; 
 	requester.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
-
-
-	s_set_id (requester);
-
+	
+	// set client identidication code (id)
 	string rndStr = Utils::randomString(5);
     requester.setsockopt(ZMQ_IDENTITY, rndStr.c_str(), rndStr.length());
+	DBOUT(string("My id is: "+rndStr).c_str());
 
-	DBOUT(string("My id is: "+rndStr).c_str())
-
-
+	// connect to server
 	requester.connect("tcp://localhost:5556");
 
 	if(!requester.connected()){
+		// if cant reach localhost (not server program)
 		DBOUT("Not connecteed");
 		return;
 	}
@@ -66,18 +59,22 @@ void networkMainLoop(NetworkController *ntw)
 
 	// setup state
 	ntw->networkLoopState = NTWK_LOOP_STATE_SEND;
+	// save current time
 	last_state_started = clock();
 
 	while(true)
 	{	
 		
-		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {			
+		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {	
+			// receive message from server if it exists
 			string msg = s_recvf(requester, ZMQ_NOBLOCK);
+
 			if(msg.size()){
 				DBOUT(string("Reply from server: "+msg).c_str());
 			}			
 				
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {					
+			// send message to server
 			s_send (requester, "tic");
 		}
 	

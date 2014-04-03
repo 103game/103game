@@ -13,30 +13,27 @@ void serverMainLoop(Server *server)
 {
 	while(true)
 	{		
-		// cook responses
-		//threadLocker.lock();
+		// Cook responses		
 		NetworkController *ntw = server->networkController;
 
 		if(ntw->receivedMessages.size()) {
 			AddressedRequest req = ntw->receivedMessages.front();
 			AddressedReply rep("You are mfucker no. "+req.senderId, req.senderId);
 
+			// add it to queue
 			ntw->cookedMessages.push(rep);
-			ntw->receivedMessages.pop();
-		}
-		
 
-		//threadLocker.unlock();
+			ntw->receivedMessages.pop();
+		}		
 
 		server->ticks++;
 	}
 }
 
 Server::Server()
-{
-	// инициализируем сеть
+{	
 	this->networkController = new NetworkController(this);
-	// инициализируем базу данеых
+
 	this->dbController = new DBController(this);
 	this->dbController->connect(); // connect
 

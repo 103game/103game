@@ -49,9 +49,12 @@ void networkMainLoop(NetworkController *ntw)
 	zmq::context_t context(1);	
 	// router socket
 	zmq::socket_t responder(context, ZMQ_ROUTER);
-	int timeout = 1000; // set timeout for 2 secs
+
+	// set timeout for 1 sec
+	int timeout = 1000; 
 	responder.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
-	responder.setsockopt( ZMQ_IDENTITY, "tcp://127.0.0.1:5556", strlen("tcp://127.0.0.1:5556") );
+
+	// start listening
 	responder.bind("tcp://*:5556");
 	
 	// setup timer
@@ -59,6 +62,7 @@ void networkMainLoop(NetworkController *ntw)
 
 	// setup state
 	ntw->networkLoopState = NTWK_LOOP_STATE_RECEIVE;
+	// save current time
 	last_state_started = clock();
 
 	while(true)
@@ -68,7 +72,7 @@ void networkMainLoop(NetworkController *ntw)
 		// Server answers to 1st-type request if it's in  
 
 		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {
-			cout << "Receiving" << endl;			
+			cout << "Receiving" << endl;		
 			
 			try{
 				
@@ -77,12 +81,14 @@ void networkMainLoop(NetworkController *ntw)
 				if(address.size()){
 					// if we have clients
 					cout << "Received from " + address << endl;
-					string message = s_recv (responder);				
-					
 
+					// receive message
+					string message = s_recv (responder);				
+
+					// create request object with adress and message received
 					AddressedRequest req(message, address);
 
-					// create immediate reply
+					// create immediate reply with created request
 					AddressedReply rep = ntw->immediateReply(req);
 
 					// and send it to client
@@ -90,6 +96,7 @@ void networkMainLoop(NetworkController *ntw)
 					s_send (responder, rep.messageString);
 				}							
 			} catch(std::exception &e){
+				// if something went wrong
 				cout << e.what() << endl;
 			}
 
@@ -97,20 +104,20 @@ void networkMainLoop(NetworkController *ntw)
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {
 			cout << "Sending" << endl;
 			
-
-			//threadLocker.lock();
-
 			if(ntw->cookedMessages.size()) {
+				// if we have something to send to clients
+
+				// get next reply from reply queue
 				AddressedReply rep = ntw->cookedMessages.front();
 
+				// and send it
 				s_sendmore (responder, rep.receiverId);				
 				s_send (responder, rep.messageString);
 
+				// remove sent reply from queue
 				ntw->cookedMessages.pop();
 			}
 
-			//threadLocker.unlock();
-			
 		}
 	
 		
@@ -132,8 +139,6 @@ NetworkController::NetworkController(Server *_server)
 {
 	this->server = _server;
 	this->ticks = 0;
-
-	// this->messagesToPublish.push(PublisherMessage("hello", "to_sub_101"));
 
 	
 	boost::thread networkThread(networkMainLoop, this);	

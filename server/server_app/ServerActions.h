@@ -12,7 +12,7 @@ class ServerActions {
 		
 		ServerActions(Server *_srv):server(_srv){};
 
-		void signUp(JSONMessage) {
+		void signUp(JSONMessage msg) {
 
 		}
 

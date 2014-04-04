@@ -10,11 +10,9 @@
 class Server
 {
 	public:		
-<<<<<<< HEAD
-		long long ticks; // количество итераций главного цикла
-=======
-		__int64 ticks; // server loop iterations counter
->>>>>>> 5b8fa32fe4c9f433cb0dc0980132d8107b1825de
+
+		long long ticks; // server loop iterations counter
+
 		NetworkController *networkController;
 		DBController *dbController;
 		ServerActions *serverActions;

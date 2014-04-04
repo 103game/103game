@@ -39,11 +39,9 @@ class NetworkController
 
 		// Every received message from client needs immediate
 		// reply from server 
-<<<<<<< HEAD
-		AddressedReply immediateReply(AddressedRequest req);				
-=======
-		JSONMessage NetworkController::immediateReply(JSONMessage req);				
->>>>>>> 5b8fa32fe4c9f433cb0dc0980132d8107b1825de
+
+		JSONMessage immediateReply(JSONMessage req);				
+
 
 		// cooked replies that need additional computation time
 		queue<JSONMessage> cookedMessages; 

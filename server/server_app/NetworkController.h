@@ -28,7 +28,7 @@ class NetworkController
 	public:
 		Server *server;
 		NetworkController(Server *_server);
-		__int64 ticks;
+		long long ticks;
 
 
 		NTWK_LOOP_STATE networkLoopState;
@@ -39,7 +39,7 @@ class NetworkController
 
 		// Every received message from client needs immediate
 		// reply from server 
-		AddressedReply NetworkController::immediateReply(AddressedRequest req);				
+		AddressedReply immediateReply(AddressedRequest req);				
 
 		// cooked replies that need additional computation time
 		queue<AddressedReply> cookedMessages; 

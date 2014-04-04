@@ -9,7 +9,7 @@
 class Server
 {
 	public:		
-		__int64 ticks; // количество итераций главного цикла
+		long long ticks; // количество итераций главного цикла
 		NetworkController *networkController;
 		DBController *dbController;
 

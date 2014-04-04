@@ -11,6 +11,8 @@
 
 #include "Utils.h"
 
+#include "JSONMessage.h"
+
 using namespace boost;
 
 
@@ -67,15 +69,17 @@ void networkMainLoop(NetworkController *ntw)
 		
 		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {	
 			// receive message from server if it exists
-			string msg = s_recvf(requester, ZMQ_NOBLOCK);
-
-			if(msg.size()){
-				DBOUT(string("Reply from server: "+msg).c_str());
+			string jsonStr = s_recvf(requester, ZMQ_NOBLOCK);			
+			
+			if(jsonStr.size()){
+				JSONMessage msg(jsonStr);
+				DBOUT(string("SERvER send action: "+msg.getAction()).c_str());
 			}			
 				
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {					
 			// send message to server
-			s_send (requester, "tic");
+			JSONMessage msg("{\"action\": \"signup\", \"params\": \"p\"}");
+			s_send (requester, msg.getString());
 		}
 	
 		

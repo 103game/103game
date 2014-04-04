@@ -84,10 +84,7 @@ void networkMainLoop(NetworkController *ntw)
 	last_state_started = clock();
 
 	while(true)
-	{	
-		// Clients always send requests
-		// requests of two types: 1) that they are ready to receive message 2) query to server
-		// Server answers to 1st-type request if it's in  
+	{		
 
 		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {
 			//cout << "Receiving" << endl;		

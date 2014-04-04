@@ -164,12 +164,11 @@
     <ClCompile Include="world\World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AddressedRequest.h" />
+    <ClInclude Include="ServerActions.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="DBController.h" />
     <ClInclude Include="JSONMessage.h" />
     <ClInclude Include="NetworkController.h" />
-    <ClInclude Include="AddressedReply.h" />
     <ClInclude Include="ServerAppController.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="User.h" />

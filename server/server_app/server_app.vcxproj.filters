@@ -64,13 +64,10 @@
     <ClInclude Include="Utils.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="AddressedReply.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="AddressedRequest.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="JSONMessage.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerActions.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

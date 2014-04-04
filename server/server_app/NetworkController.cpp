@@ -113,11 +113,11 @@ void networkMainLoop(NetworkController *ntw)
 				// if we have something to send to clients
 
 				// get next reply from reply queue
-				AddressedMessage rep = ntw->cookedMessages.front();
+				JSONMessage rep = ntw->cookedMessages.front();
 
 				// and send it
-				s_sendmore (responder, rep.clientId);				
-				s_send (responder, rep.messageString);
+				s_sendmore (responder, rep.getClientId());				
+				s_send (responder, rep.getString());
 
 				// remove sent reply from queue
 				ntw->cookedMessages.pop();

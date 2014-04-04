@@ -17,8 +17,8 @@ void serverMainLoop(Server *server)
 		NetworkController *ntw = server->networkController;
 
 		if(ntw->receivedMessages.size()) {
-			AddressedRequest req = ntw->receivedMessages.front();
-			AddressedReply rep("You are mfucker no. "+req.senderId, req.senderId);
+			JSONMessage req = ntw->receivedMessages.front();
+			JSONMessage rep("You are mfucker no. "+req.getClientId(), req.getClientId());
 
 			// add it to queue
 			ntw->cookedMessages.push(rep);

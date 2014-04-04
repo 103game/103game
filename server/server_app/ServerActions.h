@@ -3,15 +3,14 @@
 
 #include "JSONMessage.h"
 
-
-class Server;
+#include "Server.h"
 
 class ServerActions {
 	public:
 
-		Server server;
+		Server *server;
 		
-		ServerActions(Server _srv):server(_srv){};
+		ServerActions(Server *_srv):server(_srv){};
 
 		void signUp(JSONMessage) {
 

@@ -37,6 +37,8 @@ Server::Server()
 	this->dbController = new DBController(this);
 	this->dbController->connect(); // connect
 
+	this->serverActions = new ServerActions(this);
+
 	this->ticks = 0;
 
 

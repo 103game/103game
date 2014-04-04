@@ -11,6 +11,8 @@
 #include <zmq.hpp>
 #include <zhelpers.hpp>
 
+#include "JSONMessage.h"
+
 
 
 
@@ -30,14 +32,18 @@ void NetworkController::switchState() {
 }
 
 
-AddressedReply NetworkController::immediateReply(AddressedRequest req) {
 
-	// PROTOTYPE
-	// TODO: JSON format
+JSONMessage NetworkController::immediateReply(JSONMessage req) {
 	
-	if(req.messageString == "tic") {
-		this->receivedMessages.push(req);
-		return AddressedReply("toc", req.senderId);
+	
+	if(req.getAction() == "signup"){
+		cout << "Signup message" << endl;
+		return JSONMessage("{\"action\": \"ok\", \"params\": \"p\"}", req.getClientId());
+	} else if(req.getAction() == "signin") {
+		cout << "Signin message" << endl;
+		return JSONMessage("{\"action\": \"ok\", \"params\": \"p\"}", req.getClientId());
+	} else {
+		cout << "Unknown action " + req.getAction() << endl;
 	}
 }
 
@@ -72,7 +78,7 @@ void networkMainLoop(NetworkController *ntw)
 		// Server answers to 1st-type request if it's in  
 
 		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {
-			cout << "Receiving" << endl;		
+			//cout << "Receiving" << endl;		
 			
 			try{
 				
@@ -80,20 +86,19 @@ void networkMainLoop(NetworkController *ntw)
 				string address = s_recv (responder);
 				if(address.size()){
 					// if we have clients
-					cout << "Received from " + address << endl;
-
 					// receive message
-					string message = s_recv (responder);				
+					string message = s_recv (responder);	
 
-					// create request object with adress and message received
-					AddressedRequest req(message, address);
+					if(message.size()) {
+						cout << "Received "+message+" from " + address << endl;
+						
+						// create immediate reply with created request
+						JSONMessage rep = ntw->immediateReply(JSONMessage(message, address));
 
-					// create immediate reply with created request
-					AddressedReply rep = ntw->immediateReply(req);
-
-					// and send it to client
-					s_sendmore (responder, rep.receiverId);					
-					s_send (responder, rep.messageString);
+						// and send it to client
+						s_sendmore (responder, rep.getClientId());					
+						s_send (responder, rep.getString());
+					}
 				}							
 			} catch(std::exception &e){
 				// if something went wrong
@@ -102,16 +107,16 @@ void networkMainLoop(NetworkController *ntw)
 
 				
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {
-			cout << "Sending" << endl;
+			//cout << "Sending" << endl;
 			
 			if(ntw->cookedMessages.size()) {
 				// if we have something to send to clients
 
 				// get next reply from reply queue
-				AddressedReply rep = ntw->cookedMessages.front();
+				AddressedMessage rep = ntw->cookedMessages.front();
 
 				// and send it
-				s_sendmore (responder, rep.receiverId);				
+				s_sendmore (responder, rep.clientId);				
 				s_send (responder, rep.messageString);
 
 				// remove sent reply from queue

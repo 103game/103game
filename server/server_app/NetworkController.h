@@ -6,9 +6,9 @@
 #include <queue>
 
 
+#include "JSONMessage.h"
 
-#include "AddressedReply.h"
-#include "AddressedRequest.h"
+
 
 
 #define NTWK_STATE_SWITCH_TIME 1 // set state time (seconds)
@@ -35,14 +35,14 @@ class NetworkController
 		void switchState();
 
 		
-		queue<AddressedRequest> receivedMessages; // complicated messages 
+		queue<JSONMessage> receivedMessages; // complicated messages 
 
 		// Every received message from client needs immediate
 		// reply from server 
-		AddressedReply NetworkController::immediateReply(AddressedRequest req);				
+		JSONMessage NetworkController::immediateReply(JSONMessage req);				
 
 		// cooked replies that need additional computation time
-		queue<AddressedReply> cookedMessages; 
+		queue<JSONMessage> cookedMessages; 
 
 		
 };

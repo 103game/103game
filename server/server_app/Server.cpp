@@ -13,18 +13,19 @@ void serverMainLoop(Server *server)
 {
 	while(true)
 	{		
-		// Cook responses		
+		// Cook responses	
+		
 		NetworkController *ntw = server->networkController;
 
 		if(ntw->receivedMessages.size()) {
-			JSONMessage req = ntw->receivedMessages.front();
-			JSONMessage rep("You are mfucker no. "+req.getClientId(), req.getClientId());
 
-			// add it to queue
-			ntw->cookedMessages.push(rep);
+			JSONMessage req = ntw->receivedMessages.front();			
+			cout << "get from queue action " << req.getAction() << endl;
+			server->serverActions->messageForwarder(req);
 
-			ntw->receivedMessages.pop();
+			ntw->receivedMessages.pop();		
 		}		
+		
 
 		server->ticks++;
 	}
@@ -37,7 +38,7 @@ Server::Server()
 	this->dbController = new DBController(this);
 	this->dbController->connect(); // connect
 
-	this->serverActions = new ServerActions(this);
+	this->serverActions = new ServerActions(this->networkController);
 
 	this->ticks = 0;
 

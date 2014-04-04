@@ -117,7 +117,7 @@
       </HeapReserveSize>
       <HeapCommitSize>
       </HeapCommitSize>
-      <AdditionalDependencies>libzmq.lib;libzmq_d.lib;ws2_32.lib;mongoclient.lib;json_vc110_libmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libzmq.lib;libzmq_d.lib;mongoclient.lib;json_vc110_libmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

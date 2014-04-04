@@ -11,7 +11,7 @@
 
 #include "Utils.h"
 
-#include "JSONMessage.h"
+
 
 using namespace boost;
 
@@ -27,6 +27,15 @@ void NetworkController::switchState() {
 	}
 }
 
+
+void NetworkController::messageReceiver(JSONMessage msg) {
+	if(msg.getAction() == "signUpCallback"){
+		DBOUT("SignUpCallback Received");
+		this->receivedMessages.push(msg);
+	}else{
+		//DBOUT(string("Unknown action "+msg.getAction()).c_str());
+	}
+}
 
 
 void networkMainLoop(NetworkController *ntw)
@@ -72,8 +81,8 @@ void networkMainLoop(NetworkController *ntw)
 			string jsonStr = s_recvf(requester, ZMQ_NOBLOCK);			
 			
 			if(jsonStr.size()){
-				JSONMessage msg(jsonStr);
-				DBOUT(string("SERvER send action: "+msg.getAction()).c_str());
+				JSONMessage msg(jsonStr);				
+				ntw->messageReceiver(msg);
 			}			
 				
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {					

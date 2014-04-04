@@ -16,10 +16,12 @@
 
 
 
+
 extern boost::mutex threadLocker;
 
 
 using namespace boost;
+using namespace std;
 
 
 
@@ -29,21 +31,31 @@ void NetworkController::switchState() {
 	} else {
 		networkLoopState = NTWK_LOOP_STATE_RECEIVE;
 	}
+
+	cout << "STATE changed to " << (networkLoopState == NTWK_LOOP_STATE_RECEIVE?"RECEIVE":"SEND") << endl;
 }
 
 
 
 JSONMessage NetworkController::immediateReply(JSONMessage req) {
 	
+	cout << "Action " + req.getAction() << endl;
 	
 	if(req.getAction() == "signup"){
-		cout << "Signup message" << endl;
+
+		cout << "Signup request" << endl;
+
+		//threadLocker.lock();
+		this->receivedMessages.push(req);
+		//threadLocker.unlock();
+
 		return JSONMessage("{\"action\": \"ok\", \"params\": \"p\"}", req.getClientId());
 	} else if(req.getAction() == "signin") {
 		cout << "Signin message" << endl;
 		return JSONMessage("{\"action\": \"ok\", \"params\": \"p\"}", req.getClientId());
 	} else {
-		cout << "Unknown action " + req.getAction() << endl;
+		cout << "Unknown action in immediate reply " + req.getAction() << endl;
+		return JSONMessage("{\"action\": \"ok\", \"params\": \"p\"}", req.getClientId());
 	}
 }
 
@@ -79,8 +91,8 @@ void networkMainLoop(NetworkController *ntw)
 
 		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {
 			//cout << "Receiving" << endl;		
+			threadLocker.lock();
 			
-			try{
 				
 				// receive client's address
 				string address = s_recv (responder);
@@ -93,25 +105,31 @@ void networkMainLoop(NetworkController *ntw)
 						cout << "Received "+message+" from " + address << endl;
 						
 						// create immediate reply with created request
+						
+						
 						JSONMessage rep = ntw->immediateReply(JSONMessage(message, address));
+						
 
+						cout << rep.getAction() << rep.getString() << endl;
 						// and send it to client
-						s_sendmore (responder, rep.getClientId());					
+						s_sendmore (responder, rep.getClientId());
 						s_send (responder, rep.getString());
+						
+						
 					}
 				}							
-			} catch(std::exception &e){
-				// if something went wrong
-				cout << e.what() << endl;
-			}
-
+			
+			threadLocker.unlock();
 				
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {
 			//cout << "Sending" << endl;
 			
 			if(ntw->cookedMessages.size()) {
 				// if we have something to send to clients
-
+				
+				
+				cout << "cooked messages("<< ntw->cookedMessages.size()<<")"<<endl;
+				
 				// get next reply from reply queue
 				JSONMessage rep = ntw->cookedMessages.front();
 
@@ -122,6 +140,7 @@ void networkMainLoop(NetworkController *ntw)
 				// remove sent reply from queue
 				ntw->cookedMessages.pop();
 			}
+			
 
 		}
 	

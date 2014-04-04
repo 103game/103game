@@ -29,7 +29,7 @@ class JSONMessage {
 
 		public:
 		
-			JSONMessage(string _jsonString, string _clientId):jsonString(_jsonString), clientId(_clientId){
+		JSONMessage(string _jsonString, string _clientId):jsonString(_jsonString), clientId(_clientId){
 			Json::Reader reader;
 
 			if (!reader.parse(jsonString, root)){					
@@ -48,6 +48,8 @@ class JSONMessage {
 
 			params = root.get("params", false);
 		}
+		
+
 
 		string getClientId(){
 			return clientId;

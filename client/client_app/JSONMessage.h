@@ -4,6 +4,7 @@
 #include <json/json.h>
 #include <exception>
 
+
 using namespace std;
 
 
@@ -19,6 +20,7 @@ using namespace std;
 class JSONMessage {
 
 		string jsonString;
+
 		Json::Value root;
 
 		string action;
@@ -26,25 +28,26 @@ class JSONMessage {
 
 		public:
 		
-		JSONMessage(string json_str):jsonString(json_str) {
+			JSONMessage(string _jsonString):jsonString(_jsonString){
 			Json::Reader reader;
 
 			if (!reader.parse(jsonString, root)){					
 				throw std::exception(reader.getFormattedErrorMessages().c_str());
 			}
-
-			if(!root.get("action", false).asBool()) {
-				throw exception("Wrong JSON format: no \"action\" parameter");
+		
+			if(!root["action"].asString().size()) {
+				throw std::exception("Wrong JSON format: no1 \"action\" parameter ");
 			}
 
 			action = root.get("action", false).asString();
 
-			if(!root.get("params", false).asBool()) {
-				throw exception("Wrong JSON format: no \"params\" parameter");
+			if(!root["params"]) {
+				throw std::exception("Wrong JSON format: no \"params\" parameter");
 			}
 
 			params = root.get("params", false);
 		}
+
 
 		string getString() {
 			return jsonString;

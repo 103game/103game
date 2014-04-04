@@ -9,6 +9,8 @@
 #include <zmq.hpp>
 #include <zhelpers.hpp>
 
+#include "JSONMessage.h"
+
 
 #define NTWK_STATE_SWITCH_TIME 1 // set state time (seconds)
 
@@ -38,9 +40,12 @@ class NetworkController
 		string session_id;
 
 
-		queue<string> messagesToSend; 
+		void messageReceiver(JSONMessage msg);
+			
 
-		queue<string> receivedMessages; 
+		queue<JSONMessage> receivedMessages; 
+
+		queue<JSONMessage> messagesToSend; 
 
 
 		

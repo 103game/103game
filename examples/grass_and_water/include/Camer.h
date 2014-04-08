@@ -1,28 +1,25 @@
 #ifndef CAMER_CLASS_DEF
 #define CAMER_CLASS_DEF
 
+#define step 100
 
-class Camer
-{
+class Camer {
 public:
 	int getCameraX();
 	int getCameraY();
-	void ChangeCameraCoordinates(int NewX, int NewY);
+	void setCameraCoordinates(int NewX, int NewY);
 protected:
 	int CameraX;
 	int CameraY;
 };
 
-int Camer::getCameraX()
-{
+int Camer::getCameraX() {
 	return CameraX;
 }
-int Camer::getCameraY()
-{
+int Camer::getCameraY() {
 	return CameraY;
 }
-void Camer::ChangeCameraCoordinates(int NewX, int NewY)
-{
+void Camer::setCameraCoordinates(int NewX, int NewY) {
 	CameraX=NewX;
 	CameraY=NewY;
 }

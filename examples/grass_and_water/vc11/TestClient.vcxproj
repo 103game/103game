@@ -111,8 +111,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Camer.h" />
+    <ClInclude Include="..\include\Field.h" />
     <ClInclude Include="..\include\ObjProto.h" />
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\include\SandSurface.h" />
+    <ClInclude Include="..\include\StaticObj.h" />
+    <ClInclude Include="..\include\Trees.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

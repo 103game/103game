@@ -8,36 +8,40 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-class ObjProto
-{
+class ObjProto {
 public:
-	void ChangeX(int NewX);
-	void ChangeY(int NewY);
+	int getLife();
+	void setLife(int NewLife);
+	void setX(int NewX);
+	void setY(int NewY);
 	int getX();
 	int getY();
 protected:
 	int ObjX;
 	int ObjY;
+	int life;
 };
 
-void ObjProto::ChangeX(int NewX)
-{
+void ObjProto::setX(int NewX) {
 	ObjX = NewX;
 }
-void ObjProto::ChangeY(int NewY)
-{
+void ObjProto::setY(int NewY) {
 	ObjY = NewY;
 }
 
-int ObjProto::getX()
-{
+int ObjProto::getX() {
 	return ObjX;
 }
 
-int ObjProto::getY()
-{
+int ObjProto::getY() {
 	return ObjY;
 }
+int ObjProto::getLife() {
+	return life;
+}
 
+void ObjProto::setLife(int NewLife) {
+	life = NewLife;
+}
 
 #endif

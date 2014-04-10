@@ -1,7 +1,7 @@
 #ifndef NETWORKCONTROLLER_CLASS_DEF
 #define NETWORKCONTROLLER_CLASS_DEF
 
-#if defined(WIN32)
+#ifdef WIN32
 #include <json/json.h>
 #else
 #include <jsoncpp/json/json.h>

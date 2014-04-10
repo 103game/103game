@@ -41,10 +41,13 @@
     <ClInclude Include="..\include\Field.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Trees.h">
+    <ClInclude Include="..\include\TextInputBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\SandSurface.h">
+    <ClInclude Include="..\include\Transform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Cursor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

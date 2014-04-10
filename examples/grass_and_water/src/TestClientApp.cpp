@@ -3,10 +3,15 @@
 #include "cinder/app/AppNative.h"
 #include "cinder/gl/gl.h"
 #include <Vector>
+#include <cinder/Utilities.h>
+#include <cinder/Font.h>
 #include "cinder/Text.h"
 #include "Camer.h"
 #include "ObjProto.h"
 #include "StaticObj.h"
+#include "TextInputBox.h"
+#include "Cursor.h"
+#include "Transform.h"
 
 
 #include <string>
@@ -49,7 +54,8 @@ class TestApp : public AppNative {
 
 	Vec2f  position;
 	Camer MyCam;
-	
+	TextInputBox *textInputBox;
+
 	gl::Texture		mTextTexture;
 	Vec2f			mSize;
 	Vec2f			mPosition;
@@ -60,6 +66,8 @@ class TestApp : public AppNative {
 
 void TestApp::keyDown( KeyEvent event )
 {
+	textInputBox->KeyDown(event);
+
 	if( event.getChar() == 'f' ) {
 		setFullScreen( ! isFullScreen() );
 	}
@@ -112,6 +120,7 @@ void TestApp::setup()
 {
 pass = "12345";
 //userpass = myText.getText();
+ textInputBox = new TextInputBox(Vec2f(100, 20), "Hello World 1 2 3 4 5 6 7 8 9 0!");
 
 
 #if defined( CINDER_COCOA )
@@ -120,7 +129,7 @@ pass = "12345";
 	mFont = Font( "Times New Roman", 32 );
 #endif
 	mSize = Vec2f( 100, 100 );
-	render();
+	//render();
 
 proto.setX(1);
 proto.setY(1);
@@ -138,6 +147,7 @@ void TestApp::mouseDown( MouseEvent event )
 
 void TestApp::update() 
 {
+	textInputBox->Update();
 }
 
 void TestApp::draw() 
@@ -145,7 +155,6 @@ void TestApp::draw()
 	gl::setMatricesWindow( getWindowSize() );
 	gl::enableAlphaBlending();
 	gl::clear( Color( 0, 0, 0 ) );
-	
 	
 	gl::Texture grass = loadImage( "img/grass_115.jpg");
 	gl::Texture snow = loadImage( "img/img1349818584.jpg");
@@ -178,16 +187,22 @@ void TestApp::draw()
 	//tree.drawTree(100, 100);
 	//Trees tree2;
 	gl::draw( man, Vec2f(proto.getX() ,proto.getY()));
-	if( mTextTexture )
-		gl::draw( mTextTexture );
+	/*if( mTextTexture )
+		gl::draw( mTextTexture );*/
 	for (int i = 0; i<= life; i++)
 	{
 		gl::draw(lifecounter, Vec2f(getWindowWidth()-20,getWindowHeight()-20-i*15));
 	}
 	
 	
+	
+	//glClearColor( 0.1f, 0.1f, 0.1f, 1.0f );
+       // glClear( GL_COLOR_BUFFER_BIT );
+        gl::setMatricesWindow( getWindowSize() );
+        gl::enableAlphaBlending( true );
+        textInputBox->Render();
 }
-void TestApp::render()
+/*void TestApp::render()
 {
 	string txt = "Text";
 	TextBox tbox = TextBox().alignment( TextBox::RIGHT ).font( mFont ).size( Vec2i( mSize.x, 100 ) );
@@ -198,6 +213,6 @@ void TestApp::render()
 	//tbox.appendText(userpass);
 	//tbox.setText(userpass);
 	userpass = tbox.getText();
-}
+}*/
 
 CINDER_APP_NATIVE( TestApp, RendererGl )

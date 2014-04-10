@@ -1,7 +1,12 @@
 #ifndef JSONMESSAGE_CLASS_DEF
 #define JSONMESSAGE_CLASS_DEF
 
+#if defined(WIN32)
 #include <json/json.h>
+#else
+#include <jsoncpp/json/json.h>
+#endif
+
 #include <exception>
 
 
@@ -33,17 +38,17 @@ class JSONMessage {
 			Json::Reader reader;
 
 			if (!reader.parse(jsonString, root)){					
-				throw std::exception(reader.getFormattedErrorMessages().c_str());
+				//throw std::exception(reader.getFormattedErrorMessages().c_str());
 			}
 		
 			if(!root["action"].asString().size()) {
-				throw std::exception("Wrong JSON format: no1 \"action\" parameter ");
+				//throw std::exception("Wrong JSON format: no action parameter");
 			}
 
 			action = root.get("action", false).asString();
 
 			if(!root["params"]) {
-				throw std::exception("Wrong JSON format: no \"params\" parameter");
+				//throw std::exception("Wrong JSON format: no params parameter");
 			}
 
 			params = root.get("params", false);

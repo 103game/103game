@@ -18,7 +18,7 @@ class ServerActions {
 
 		void messageForwarder(JSONMessage msg){
 			if(msg.getAction() == "signup"){
-				//this->signUp(msg);
+				this->signUp(msg);
 			}
 		}
 

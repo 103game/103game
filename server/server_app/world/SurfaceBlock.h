@@ -1,3 +1,6 @@
+/*
+Class for surface blocks such as grass or water
+*/
 
 #ifndef SURFACEBLOCK_CLASS_DEF
 #define SURFACEBLOCK_CLASS_DEF

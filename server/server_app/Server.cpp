@@ -24,7 +24,7 @@ void serverMainLoop(Server *server)
 			server->serverActions->messageForwarder(req);
 
 			ntw->receivedMessages.pop();		
-		}		
+		}
 		
 
 		server->ticks++;

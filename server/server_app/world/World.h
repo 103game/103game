@@ -1,3 +1,6 @@
+/*
+This is the whole world.
+*/
 
 #ifndef WORLD_CLASS_DEF
 #define WORLD_CLASS_DEF
@@ -14,9 +17,9 @@ typedef enum{
 class World
 {
 	public: 
-		DAYTIME daytime; // время дня
-		std::vector<std::vector<SurfaceBlock *>> surfaceBlocks; // собственно карта
-		std::vector<WorldObject *> worldObjects; // объекты на карте
+		DAYTIME daytime;
+		std::vector<std::vector<SurfaceBlock *>> surfaceBlocks;
+		std::vector<WorldObject *> worldObjects;
 
 };
 

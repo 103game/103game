@@ -2,8 +2,9 @@
 #define CLIENTACTIONS_CLASS_DEF
 
 #include "JSONMessage.h"
+#include "Common.h"
 
-#include "Client.h"
+class Client;
 
 class ClientActions {
 	public:

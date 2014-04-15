@@ -25,7 +25,7 @@ class ServerActions {
 		void signUp(JSONMessage msg) {
 			cout << "SignUp function" << endl;
 			threadLocker.lock();
-			JSONMessage output("{\"action\": \"signUpCallback\", params: \"ok\"}", msg.getClientId());
+			JSONMessage output("{\"action\": \"signUpCallback\", \"params\": \"ok\"}", msg.getClientId());
 			
 
 			ntw->cookedMessages.push(output);

@@ -50,8 +50,8 @@ void ClientApp::setup()
 // game loop
 
 void ClientApp::update()
-{
-	// instead of in the update method, we will do all 'animation' in the draw method
+{	
+	this->client->mainLoop();
 }
 
 void ClientApp::draw()

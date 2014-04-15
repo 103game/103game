@@ -161,7 +161,6 @@
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerAppController.cpp" />
     <ClCompile Include="User.cpp" />
-    <ClCompile Include="world\World.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ServerActions.h" />

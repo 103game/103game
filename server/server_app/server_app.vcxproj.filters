@@ -23,9 +23,6 @@
     <ClCompile Include="NetworkController.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="world\World.cpp">
-      <Filter>Файлы исходного кода</Filter>
-    </ClCompile>
     <ClCompile Include="DBController.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>

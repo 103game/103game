@@ -129,7 +129,7 @@ void networkMainLoop(NetworkController *ntw)
 				
 				// get next reply from reply queue
 				JSONMessage rep = ntw->cookedMessages.front();
-
+				cout << "Sending message: " << rep.getString() << endl;
 				// and send it
 				s_sendmore (responder, rep.getClientId());				
 				s_send (responder, rep.getString());

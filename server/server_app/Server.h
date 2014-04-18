@@ -66,8 +66,16 @@ class Server
 
 		this->ticks = 0;
 
+		
+		cout << User::emailTaken("spamgoga@gmail.com") << endl;
 		User usr("spamgoga@gmail.com", "qwerty", "george");
-		usr.toJSON();
+		//usr.toJSON();		
+		usr.saveToDb();
+
+		User usr1 = User::getById(usr.id);
+		cout << usr1.email << endl;
+		usr1.name = "changedName";
+		usr1.saveToDb();
 
 		boost::thread mainLoop(serverMainLoop, this); // start server main loop	
 		mainLoop.join();

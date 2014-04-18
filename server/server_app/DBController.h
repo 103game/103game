@@ -35,8 +35,9 @@ class DBController{
 				
 			
 
-		/*	mongo::OID insert_id = this->insert("server.hello", "{\"name\": \"Bob\", \"age\": 20}");
+			/*mongo::OID insert_id = this->insert("server.hello", "{\"name\": \"Bob\", \"age\": 20}");
 			mongo::BSONObj obj = this->getObjectByQuery("server.hello", QUERY("age" << 20));
+			//obj.jsonString(); //doesnt work
 			cout << this->objectExists("server.hello", insert_id) << endl;*/
 
 		} catch(const mongo::DBException &e) {			
@@ -86,10 +87,17 @@ class DBController{
 
 	
 	void update(string collection, string json_where, string json_how, bool create_if_no = false, bool multi = true) {
-		this->c->update(collection, mongo::fromjson(json_where), mongo::fromjson(json_how), create_if_no, multi);
+		this->update(collection, mongo::fromjson(json_where), mongo::fromjson(json_how), create_if_no, multi);
+	}
+
+	void update(string collection, mongo::BSONObj where, mongo::BSONObj how, bool create_if_no = false, bool multi = true) {
+		this->c->update(collection, where, how, create_if_no, multi);
 	}
 
 	mongo::OID insert(string collection, mongo::BSONObj obj) {
+		mongo::BSONObjBuilder builder;
+		obj = builder.appendElements(obj).genOID().obj();
+
 		this->c->insert(collection, obj);
 		mongo::BSONElement oi;
 		obj.getObjectID(oi);
@@ -100,8 +108,6 @@ class DBController{
 
 	mongo::OID insert(string collection, string json) {
 		mongo::BSONObj obj = mongo::fromjson(json);
-		mongo::BSONObjBuilder builder;
-		obj = builder.appendElements(obj).genOID().obj();
 
 		return this->insert(collection, obj);
 	}

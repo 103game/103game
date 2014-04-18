@@ -31,17 +31,58 @@ class User {
 			this->name = _name;
 		}
 
+		User(string _id, string _email, string _password_md5, string _name, string _session_id):
+			id(_id), email(_email), password_md5(_password_md5), name(_name), session_id(_session_id)
+		{}
+
 		string toJSON() {
-			mongo::BSONObjBuilder builder;
-			mongo::BSONObj obj =  builder.append("email", this->email).append("name", this->name).genOID().obj();
-			return obj.jsonString();
+			mongo::BSONObj obj = this->toBSON();
+
+			string str = obj.jsonString();
+			
+			return str;
 		}
+
+		mongo::BSONObj toBSON() {
+			mongo::BSONObjBuilder builder;
+			mongo::BSONObj obj =  builder.append("email", this->email)
+									.append("password_md5", this->password_md5)
+									.append("name", this->name)	
+									.append("session_id", this->session_id)
+									.obj();			
+			return obj;
+		}
+
+
+
+
+
+
+		static bool emailTaken(string email){
+			return !sharedDb->getObjectByQuery("server.users", QUERY("email" << email)).isEmpty();
+		}
+
+
+
+		static User getById(string id) {
+			mongo::BSONObj obj = sharedDb->getObjectById("server.users", mongo::OID(id));
+			return User(
+					obj.getStringField("_id"),
+					obj.getStringField("email"),
+					obj.getStringField("password_md5"),
+					obj.getStringField("name"),
+					obj.getStringField("session_id")
+				);
+
+		}
+
 
 		void saveToDb(){
 			if(id == "") {
-
+				mongo::OID id = sharedDb->insert("server.users", this->toBSON());
+				this->id = id.toString();
 			}else {
-
+				sharedDb->update("server.users", BSON("_id" << id), this->toBSON());
 			}			
 		}
 

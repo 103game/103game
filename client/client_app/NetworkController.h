@@ -2,7 +2,6 @@
 #define NETWORKCONTROLLER_CLASS_DEF
 
 #include <json/json.h>
-#include "Common.h"
 #include <queue>
 
 

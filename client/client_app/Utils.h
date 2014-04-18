@@ -1,5 +1,11 @@
+#ifndef UTILS_CLASS_DEF
+#define UTILS_CLASS_DEF
+
 #include <string>
 #include <algorithm>
+#include <sstream>
+
+ #define DBOUT( s ){ std::wostringstream os_; os_ << s << "\n"; OutputDebugStringW( os_.str().c_str() ); } 
 
 
 class Utils{
@@ -24,3 +30,5 @@ public:
 	}
 
 };
+
+#endif

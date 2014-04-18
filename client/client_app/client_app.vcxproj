@@ -87,7 +87,6 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientActions.h" />
     <ClInclude Include="ClientApp.h" />
-    <ClInclude Include="Common.h" />
     <ClInclude Include="JSONMessage.h" />
     <ClInclude Include="NetworkController.h" />
     <ClInclude Include="Utils.h" />

@@ -20,7 +20,7 @@ using namespace std;
 		- params: params
 
 */
-
+class JSONMessage;
 
 class JSONMessage {
 
@@ -52,6 +52,22 @@ class JSONMessage {
 			}
 
 			params = root.get("params", false);
+
+		}
+
+		static JSONMessage fromObject(Json::Value val, string clientId){
+			Json::StyledWriter writer;
+			string jsonString = writer.write(val);
+			JSONMessage msg(jsonString, clientId);
+			return msg;
+		}
+
+		static JSONMessage ok (string clientId) {
+			return JSONMessage("{\"action\": \"ok\", \"params\": \"null\"}", clientId);
+		}
+
+		static JSONMessage error (string err, string clientId) {
+			return JSONMessage("{\"action\": \"error\", \"params\": {\"error\": \""+err+"\"}}", clientId);
 		}
 		
 

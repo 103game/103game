@@ -36,11 +36,12 @@ class User {
 		{}
 
 		string toJSON() {
-			mongo::BSONObj obj = this->toBSON();
+			mongo::BSONObj obj = this->toBSON().copy();
+			{
+			 auto a = obj.toString(true);
+			 obj.dump();
+			}
 
-			string str = obj.jsonString();
-			
-			return str;
 		}
 
 		mongo::BSONObj toBSON() {

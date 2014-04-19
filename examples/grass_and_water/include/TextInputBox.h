@@ -21,6 +21,7 @@ protected:
     void UpdateCoursorPosition() {
         auto symbols = text.measureGlyphs();
         auto font = text.getFont();
+		
 
         auto isLast = symbols.size() == coursorPosition;
 
@@ -58,6 +59,7 @@ public:
         text.setText(message);
         text.setColor( Color( 1, 1, 1 ) );
         text.setBackgroundColor(ColorA(1, 0, 0.1f ));
+		//text.setAlignment(CENTER);
 
         ChangeCoursorPosition(message.size());
     }

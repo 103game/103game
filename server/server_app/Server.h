@@ -69,7 +69,7 @@ class Server
 		
 		cout << User::emailTaken("spamgoga@gmail.com") << endl;
 		User usr("spamgoga@gmail.com", "qwerty", "george");
-		//usr.toJSON();		
+		usr.toJSON();		
 		usr.saveToDb();
 
 		User usr1 = User::getById(usr.id);

@@ -34,10 +34,15 @@ class User:public DBObject {
 		}
 
 		User(string _id, string _email, string _password_md5, string _name, string _session_id):
+
 			email(_email), password_md5(_password_md5), name(_name), session_id(_session_id)
 		{
 			this->id = _id;
 			this->db_collection = USERS_DB_COLLECTION;
+			id(_id), email(_email), password_md5(_password_md5), name(_name), session_id(_session_id)
+		{}
+
+
 		}
 		
 		string toJSON () {

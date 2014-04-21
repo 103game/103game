@@ -14,7 +14,8 @@
 
 #include "User.h"
 
-extern boost::mutex threadLocker;
+extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
+extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 DBController *sharedDb;
 
@@ -30,19 +31,22 @@ class Server
 
 	static void serverMainLoop(Server *server)
 	{
+		NetworkController *ntw = server->networkController;
+
 		while(true)
-		{		
-			// Cook responses	
-		
-			NetworkController *ntw = server->networkController;
+		{	
 
-			if(ntw->receivedMessages.size()) {
+			{
+				boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
 
-				JSONMessage req = ntw->receivedMessages.front();			
-				cout << "get from queue action " << req.getAction() << endl;
-				server->serverActions->messageForwarder(req);
+				if(ntw->receivedMessages.size()) {
 
-				ntw->receivedMessages.pop();		
+					JSONMessage req = ntw->receivedMessages.front();			
+					cout << "get from queue action " << req.getAction() << endl;
+					server->serverActions->messageForwarder(req);
+
+					ntw->receivedMessages.pop();		
+				}
 			}
 		
 
@@ -56,7 +60,7 @@ class Server
 		sharedDb = this->dbController = new DBController(this);
 		if(!this->dbController->connect()){
 			cout << "Can't connect to db" << endl;
-			//return;
+			return;
 		}
 
 
@@ -66,16 +70,16 @@ class Server
 
 		this->ticks = 0;
 
-		
+		/*
 		cout << User::emailTaken("spamgoga@gmail.com") << endl;
 		User usr("spamgoga@gmail.com", "qwerty", "george");
-		//usr.toJSON();		
+		cout << usr.toJSON() << endl;		
 		usr.saveToDb();
 
 		User usr1 = User::getById(usr.id);
 		cout << usr1.email << endl;
 		usr1.name = "changedName";
-		usr1.saveToDb();
+		usr1.saveToDb();*/
 
 		boost::thread mainLoop(serverMainLoop, this); // start server main loop	
 		mainLoop.join();

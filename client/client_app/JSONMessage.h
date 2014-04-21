@@ -52,6 +52,11 @@ class JSONMessage {
 			
 		}
 
+		bool hasErrors(){
+			return !params.get("errors", false).isNull();
+		}
+
+
 
 		string getString() {
 			return jsonString;

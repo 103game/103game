@@ -8,7 +8,13 @@
 #include "Utils.h"
 #include <vector>
 
-extern boost::mutex threadLocker;
+#include <boost/shared_ptr.hpp>
+
+
+#include "User.h"
+
+extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
+extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 using namespace std;
 
@@ -37,8 +43,15 @@ class ServerActions {
 
 
 			// validate input strings
-			if(!Utils::isValidEmailAddress(email))
+			if(!Utils::isValidEmailAddress(email)){
 				errors.push_back("Invalid email");
+			}else{
+				// check email
+				if(User::emailTaken(email)){
+					errors.push_back("Email "+email+" is already in use");
+				}
+			}
+
 			if(password.length() < 5)
 				errors.push_back("Password is too weak");
 			if(name.length() < 5)
@@ -47,20 +60,23 @@ class ServerActions {
 			
 
 
-			if(errors.size()){
-				Json::Value resp, params, errors_json;
-				resp["action"] = "signUpCallback";
-				
-				params["error"] = true;
-				for(int i = 0; i < errors.size(); i++)
-					errors_json.append(errors[i]);
-					
-				resp["params"] = params;
-				
-				ntw->messagesToSend.push(JSONMessage::fromObject(resp, msg.getClientId()));
-
+			if(errors.size()){	
+				boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
+				ntw->messagesToSend.push(JSONMessage::errors("signUpCallback", errors, msg.getClientId()));
 			}else{
+				auto usr = boost::shared_ptr<User>(new User(email, password, name));
+				usr->saveToDb();
+				cout << "New user created with id: " << usr->id << endl; 
 
+				/*map<string, string> params;
+				params["user"] = newUser.toJSON();
+
+				{
+					boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
+					ntw->messagesToSend.push(
+							JSONMessage::actionmsg("signUpCallback", params, msg.getClientId())
+							);
+				}*/
 			}
 		}
 

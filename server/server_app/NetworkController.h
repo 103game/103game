@@ -20,7 +20,8 @@
 using namespace std;
 using namespace boost;
 
-extern boost::mutex threadLocker;
+extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
+extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 class Server; // Server.h уже включает в себя этот h, поэтому делаем так, чтобы не было рекурсии
 
@@ -54,10 +55,12 @@ class NetworkController
 
 
 
-	JSONMessage immediateReply(JSONMessage req) {
+	JSONMessage messageReceiver(JSONMessage req) {
 	
 		cout << "Action " + req.getAction() << endl;
-	
+
+		boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
+
 		if(req.getAction() == "signup"){		
 			this->receivedMessages.push(req);	
 			return JSONMessage::ok(req.getClientId());
@@ -65,7 +68,7 @@ class NetworkController
 			return JSONMessage::ok(req.getClientId());
 		} else {
 			cout << "Unknown action in immediate reply " + req.getAction() << endl;
-			return JSONMessage::error("Unknown action sent to server \""+req.getAction()+"\"", req.getClientId());
+			return JSONMessage::error("defaultCallback", "Unknown action sent to server \""+req.getAction()+"\"", req.getClientId());
 		}
 	}
 
@@ -98,34 +101,34 @@ class NetworkController
 
 			if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {
 				//cout << "Receiving" << endl;		
-				threadLocker.lock();
+				
 
-					// receive client's address
-					string address = s_recv (responder);
-					if(address.size()){
-						// if we have clients
-						// receive message
-						string message = s_recv (responder);	
+				// receive client's address
+				string address = s_recv (responder);
+				if(address.size()){
+					// if we have clients
+					// receive message
+					string message = s_recv (responder);	
 
-						if(message.size()) {
-							cout << "Received "+message+" from " + address << endl;
+					if(message.size()) {
+						cout << "Received "+message+" from " + address << endl;
 						
-							// create immediate reply with created request					
+						// create immediate reply with created request					
 						
-							JSONMessage rep = ntw->immediateReply(JSONMessage(message, address));					
+						JSONMessage rep = ntw->messageReceiver(JSONMessage(message, address));					
 
-							cout << rep.getAction() << rep.getString() << endl;
-							// and send it to client
-							s_sendmore (responder, rep.getClientId());
-							s_send (responder, rep.getString());
-						}
-					}							
+						cout << rep.getAction() << rep.getString() << endl;
+						// and send it to client
+						s_sendmore (responder, rep.getClientId());
+						s_send (responder, rep.getString());
+					}
+				}							
 			
-				threadLocker.unlock();
+			
 				
 			}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {
 				//cout << "Sending" << endl;
-			
+				boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 				if(ntw->messagesToSend.size()) {
 					// if we have something to send clients
 

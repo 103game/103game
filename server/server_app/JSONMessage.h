@@ -37,9 +37,11 @@ class JSONMessage {
 		JSONMessage(string _jsonString, string _clientId):jsonString(_jsonString), clientId(_clientId){
 			Json::Reader reader;
 
+			
 			if (!reader.parse(jsonString, root)){					
 				//throw std::exception(reader.getFormattedErrorMessages().c_str());
 			}
+			
 		
 			if(!root["action"].asString().size()) {
 				//throw std::exception("Wrong JSON format: no action parameter");
@@ -66,8 +68,38 @@ class JSONMessage {
 			return JSONMessage("{\"action\": \"ok\", \"params\": \"null\"}", clientId);
 		}
 
-		static JSONMessage error (string err, string clientId) {
-			return JSONMessage("{\"action\": \"error\", \"params\": {\"error\": \""+err+"\"}}", clientId);
+		static JSONMessage actionmsg(string action, map<string, string> params, string clientId) {
+			stringstream ss;
+
+			ss << "{\"action\": \""+action+"\", \"params\": {";
+			for(map <string,string>::iterator param = params.begin(); param != params.end(); param++) {				
+				ss << "\"" << param->first << "\":" << param->second;
+			}
+			ss << "}}";
+			cout << ss.str() << endl;
+			return JSONMessage(ss.str(), clientId);
+		}
+
+		static JSONMessage error (string action, string err, string clientId) {
+			vector<string> errors;
+			errors.push_back(err);			
+			return JSONMessage::errors(action, errors, clientId);
+		}
+
+		static JSONMessage errors(string action, vector<string> errors, string clientId){
+			stringstream err_arr;
+			err_arr << "[";
+			for(int i = 0; i < errors.size(); i++){
+				err_arr << "\"" << errors[i] << "\"";
+				if(i != errors.size()-1)
+					err_arr << ",";
+			}
+			err_arr << "]";
+
+			map<string,string> params;
+			params["errors"] = err_arr.str();
+
+			return JSONMessage::actionmsg(action, params, clientId);
 		}
 		
 

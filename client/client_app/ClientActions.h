@@ -22,7 +22,9 @@ class ClientActions {
 		}
 
 		void signUpCallaback(JSONMessage msg) {
-			DBOUT("SignUpCallback fired!");
+			if(msg.hasErrors()){
+				DBOUT("Some errors on signup");
+			}
 		}
 
 

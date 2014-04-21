@@ -126,9 +126,13 @@ class NetworkController
 			
 			}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {			
 				// send message to server		
-				JSONMessage msg("{\"action\": \"signup\", \"params\": \"p\"}");
+				static int c = 0;
+				if(c<1){
+				JSONMessage msg("{\"action\": \"signup\", \"params\": {\"email\":\"spamgoga@gmail.com\", \"password\":\"12356\", \"name\":\"george\"}}");
 				s_sendf(requester, msg.getString(), ZMQ_NOBLOCK);
-			
+				}
+				c++;
+
 			}
 
 			// check if switch needed

@@ -107,7 +107,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(SolutionDir)\..\libs\json\include;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,7 +158,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DBObject.h" />
     <ClInclude Include="MD5.h" />
+    <ClInclude Include="Serializable.h" />
     <ClInclude Include="ServerActions.h" />
     <ClInclude Include="DBController.h" />
     <ClInclude Include="JSONMessage.h" />

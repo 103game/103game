@@ -6,7 +6,8 @@
 
 #include <boost/thread/mutex.hpp>
 
-boost::mutex threadLocker;
+boost::mutex receivedMessagesMutex, messagesToSendMutex;
+boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 int main(void)
 {

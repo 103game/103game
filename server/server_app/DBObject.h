@@ -20,11 +20,17 @@ protected:
 public:
 	string id;
 
+	bool isInDb() { 
+		return id != "";
+	}
+
 	void saveToDb(){
 		if(id == "") {
-			mongo::OID id = sharedDb->insert(this->db_collection, this->toBSON().getOwned());
+			cout << "SaveToDb - NEW record" << endl;
+			mongo::OID id = sharedDb->insert(this->db_collection, this->toBSON());
 			this->id = id.toString();
 		}else {
+			cout << "SaveToDb - UPDATE record" << endl;
 			sharedDb->update(this->db_collection, BSON("_id" << id), this->toBSON());
 		}			
 	}

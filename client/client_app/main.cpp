@@ -1,8 +1,9 @@
+
+#pragma warning(disable: 4018)
+
 #include "ClientApp.h"
 
-#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
 
 boost::mutex receivedMessagesMutex, messagesToSendMutex;
-boost::condition_variable receivedMessagesCond, messagesToSendCond;
-
 

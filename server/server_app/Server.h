@@ -41,10 +41,8 @@ class Server
 
 				if(ntw->receivedMessages.size()) {
 
-					JSONMessage req = ntw->receivedMessages.front();			
-					cout << "get from queue action " << req.getAction() << endl;
+					JSONMessage req = ntw->receivedMessages.front();								
 					server->serverActions->messageForwarder(req);
-
 					ntw->receivedMessages.pop();		
 				}
 			}
@@ -80,7 +78,7 @@ class Server
 		cout << usr1.email << endl;
 		usr1.name = "changedName";
 		usr1.saveToDb();*/
-
+			
 		boost::thread mainLoop(serverMainLoop, this); // start server main loop	
 		mainLoop.join();
 	}

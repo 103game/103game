@@ -50,7 +50,7 @@ class NetworkController
 			networkLoopState = NTWK_LOOP_STATE_RECEIVE;
 		}
 
-		cout << "STATE changed to " << (networkLoopState == NTWK_LOOP_STATE_RECEIVE?"RECEIVE":"SEND") << endl;
+		//cout << "STATE changed to " << (networkLoopState == NTWK_LOOP_STATE_RECEIVE?"RECEIVE":"SEND") << endl;
 	}
 
 
@@ -60,16 +60,10 @@ class NetworkController
 		cout << "Action " + req.getAction() << endl;
 
 		boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
-
-		if(req.getAction() == "signup"){		
-			this->receivedMessages.push(req);	
-			return JSONMessage::ok(req.getClientId());
-		} else if(req.getAction() == "signin") {			
-			return JSONMessage::ok(req.getClientId());
-		} else {
-			cout << "Unknown action in immediate reply " + req.getAction() << endl;
-			return JSONMessage::error("defaultCallback", "Unknown action sent to server \""+req.getAction()+"\"", req.getClientId());
-		}
+		
+		this->receivedMessages.push(req);
+		return JSONMessage::ok(req.getClientId());
+		
 	}
 
 
@@ -95,6 +89,8 @@ class NetworkController
 		ntw->networkLoopState = NTWK_LOOP_STATE_RECEIVE;
 		// save current time
 		last_state_started = clock();
+
+		cout << "Server started" << endl;
 
 		while(true)
 		{		

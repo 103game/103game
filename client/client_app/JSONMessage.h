@@ -53,7 +53,33 @@ class JSONMessage {
 		}
 
 		bool hasErrors(){
-			return !params.get("errors", false).isNull();
+			return !params.get("errors", Json::nullValue).isNull();
+		}
+
+		vector<string> getErrors(){
+			vector<string> errVec;
+			if(this->hasErrors()){
+				Json::Value errors = params["errors"];
+				Utils::log(errors.asString().c_str());
+				for(int i = 0; i < errors.size(); i++){
+					errVec.push_back(errors[i].asString());
+				}
+			}
+			return errVec;			
+		}
+
+		string getErrorsString(){			
+			stringstream ss;
+			vector<string> errors;	
+			ss << "Action " << action << " Errors:" << endl;
+			if(params["errors"].size()){				
+				for(int i = 0; i < params["errors"].size(); i++){					
+					ss << " - " << params["errors"][i].asString() << endl;
+				}
+			}else{
+				ss << "  No errors" << endl;
+			}
+			return ss.str();			
 		}
 
 

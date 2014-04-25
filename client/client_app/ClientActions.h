@@ -1,10 +1,9 @@
 #ifndef CLIENTACTIONS_CLASS_DEF
 #define CLIENTACTIONS_CLASS_DEF
 
-#include "JSONMessage.h"
-#include "Utils.h"
-
 class Client;
+class JSONMessage;
+
 
 class ClientActions {
 	public:
@@ -13,20 +12,11 @@ class ClientActions {
 		
 		ClientActions(Client  *_client):client(_client){};
 
-		void messageForwarder(JSONMessage msg){
-			if(msg.getAction() == "signUpCallback") {
-				this->signUpCallaback(msg);
-			}else {
-				DBOUT(string("Unknown message to forward "+msg.getAction()).c_str());
-			}
-		}
+		void messageForwarder(JSONMessage msg);
 
-		void signUpCallaback(JSONMessage msg) {
-			if(msg.hasErrors()){
-				DBOUT("Some errors on signup");
-			}
-		}
 
+		void signInCallback(JSONMessage msg);
+		void signUpCallaback(JSONMessage msg);
 
 };
 

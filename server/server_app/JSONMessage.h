@@ -9,9 +9,11 @@
 
 #include <exception>
 
+#include <mongo/bson/bson.h>
+
 
 using namespace std;
-
+using namespace mongo;
 
 /*
 
@@ -65,19 +67,20 @@ class JSONMessage {
 		}
 
 		static JSONMessage ok (string clientId) {
-			return JSONMessage("{\"action\": \"ok\", \"params\": \"null\"}", clientId);
+
+			return JSONMessage(BSON("action" << "ok" << "params" << "").jsonString(), clientId);
 		}
 
-		static JSONMessage actionmsg(string action, map<string, string> params, string clientId) {
-			stringstream ss;
-
-			ss << "{\"action\": \""+action+"\", \"params\": {";
+		static JSONMessage actionmsg(string action, map<string, string> params, string clientId) {			
+			mongo::BSONObjBuilder paramsBuilder;
 			for(map <string,string>::iterator param = params.begin(); param != params.end(); param++) {				
-				ss << "\"" << param->first << "\":" << param->second;
+				paramsBuilder.append(param->first, param->second);
 			}
-			ss << "}}";
-			cout << ss.str() << endl;
-			return JSONMessage(ss.str(), clientId);
+
+			mongo::BSONObj obj = mongo::BSONObjBuilder().append("action", action)
+								.append("params", paramsBuilder.obj()).obj();
+			
+			return JSONMessage(obj.jsonString(), clientId);
 		}
 
 		static JSONMessage error (string action, string err, string clientId) {
@@ -87,17 +90,14 @@ class JSONMessage {
 		}
 
 		static JSONMessage errors(string action, vector<string> errors, string clientId){
-			stringstream err_arr;
-			err_arr << "[";
-			for(int i = 0; i < errors.size(); i++){
-				err_arr << "\"" << errors[i] << "\"";
-				if(i != errors.size()-1)
-					err_arr << ",";
-			}
-			err_arr << "]";
+			mongo::BSONArrayBuilder arrBuilder;
 
+			for(int i = 0; i < errors.size(); i++){
+				arrBuilder.append(errors[i]);
+			}
+			
 			map<string,string> params;
-			params["errors"] = err_arr.str();
+			params["errors"] = arrBuilder.obj().jsonString();
 
 			return JSONMessage::actionmsg(action, params, clientId);
 		}

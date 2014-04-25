@@ -9,10 +9,10 @@ using namespace std;
 class Serializable {
 	
 public:
-	virtual string toJSON() = 0;
+	virtual mongo::BSONObj toBSON() = 0;
 
-	mongo::BSONObj toBSON() {			
-		return mongo::fromjson(this->toJSON());
+	string toJSON() {
+		return this->toBSON().jsonString();
 	}
 };
 

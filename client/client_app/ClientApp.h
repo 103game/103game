@@ -42,7 +42,7 @@ void ClientApp::prepareSettings( Settings *settings )
 
 void ClientApp::setup()
 {	
-	DBOUT("That's how we output useful information in windowed app (without console)");
+	Utils::log("That's how we output useful information in windowed app (without console)");
 		
 	this->client = new Client(this);
 }

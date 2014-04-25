@@ -79,6 +79,16 @@ class DBController{
 		
 		while(cursor->more()){
 			mongo::BSONObj obj = cursor->next();
+
+			mongo::BSONObjBuilder builder;
+			
+			mongo::BSONElement oi;
+			obj.getObjectID(oi);
+			mongo::OID oid = oi.__oid();
+
+			obj = builder.appendElements(obj).append("id", oid.toString()).obj();
+			
+			
 			result.push_back(obj.getOwned());
 		}
 

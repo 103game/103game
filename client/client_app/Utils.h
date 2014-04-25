@@ -1,12 +1,16 @@
 #ifndef UTILS_CLASS_DEF
 #define UTILS_CLASS_DEF
 
+
 #include <string>
 #include <algorithm>
 #include <sstream>
+#include <time.h>
 
- #define DBOUT( s ){ std::wostringstream os_; os_ << s << "\n"; OutputDebugStringW( os_.str().c_str() ); } 
+#include <winsock2.h>
+#include <Windows.h>
 
+using namespace std;
 
 class Utils{
 
@@ -27,6 +31,12 @@ public:
 		std::string str(length,0);
 		std::generate_n( str.begin(), length, randchar );
 		return str;
+	}
+
+	static void log(string s){		
+		std::wostringstream os_;
+		os_ << s.c_str() << endl;
+		OutputDebugStringW(os_.str().c_str());
 	}
 
 };

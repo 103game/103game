@@ -19,6 +19,7 @@ class ClientActions {
 		void messageForwarder(JSONMessage msg);
 
 		void signIn(string email, string password);
+		void signUp(string email, string name, string password, string password_repeat);
 
 		void signInCallback(JSONMessage msg);
 		void signUpCallaback(JSONMessage msg);

@@ -68,7 +68,7 @@ void ServerActions::signUp(JSONMessage msg) {
 			name = params["name"].asString();
 
 
-	// validate input strings TODO: check string length
+	// validate input strings TODO:more careful validation
 	if(!Utils::isValidEmailAddress(email)){
 		errors.push_back("Invalid email");
 	}else{

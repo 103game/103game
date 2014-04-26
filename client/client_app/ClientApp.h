@@ -18,7 +18,8 @@ using namespace std;
 
 
 typedef enum {
-	UI_STATE_LOGIN,
+	UI_STATE_SIGNUP,
+	UI_STATE_SIGNIN,
 	UI_STATE_GAME
 } UI_STATE;
 
@@ -32,10 +33,19 @@ public:
 	// main logic
 	Client *client;
 
-	ciUICanvas *loginGui;
-	ciUITextInput *loginEmailTextField;
-	ciUITextInput *loginPasswordTextField;
-	ciUILabel *loginErrorsLabel;
+	ciUICanvas *signInGui;
+	ciUITextInput *signInEmailTextField;
+	ciUITextInput *signInPasswordTextField;
+	ciUILabel *signInErrorsLabel;
+	void signInGuiEvent(ciUIEvent *event);
+
+	ciUICanvas *signUpGui;
+	ciUITextInput *signUpEmailTextField;
+	ciUITextInput *signUpNameTextField;
+	ciUITextInput *signUpPasswordTextField;
+	ciUITextInput *signUpPasswordRepeatTextField;
+	ciUILabel *signUpErrorsLabel;
+	void signUpGuiEvent(ciUIEvent *event);
 
 	
 
@@ -49,7 +59,7 @@ public:
 
 	// application events	
 	void keyDown( KeyEvent event );
-	void loginGuiEvent(ciUIEvent *event);
+	
 	void setUIState(UI_STATE newState);
 
 };

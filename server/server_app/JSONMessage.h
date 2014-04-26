@@ -9,6 +9,7 @@
 
 #include <exception>
 
+#define STATIC_LIBMONGOCLIENT
 #include <mongo/bson/bson.h>
 
 
@@ -71,14 +72,11 @@ class JSONMessage {
 			return JSONMessage(BSON("action" << "ok" << "params" << "").jsonString(), clientId);
 		}
 
-		static JSONMessage actionmsg(string action, map<string, string> params, string clientId) {			
-			mongo::BSONObjBuilder paramsBuilder;
-			for(map <string,string>::iterator param = params.begin(); param != params.end(); param++) {				
-				paramsBuilder.append(param->first, param->second);
-			}
+		static JSONMessage actionmsg(string action, mongo::BSONObj params, string clientId) {	
+			
 
 			mongo::BSONObj obj = mongo::BSONObjBuilder().append("action", action)
-								.append("params", paramsBuilder.obj()).obj();
+								.append("params", params).obj();
 			
 			return JSONMessage(obj.jsonString(), clientId);
 		}
@@ -96,8 +94,7 @@ class JSONMessage {
 				arrBuilder.append(errors[i]);
 			}
 			
-			map<string,string> params;
-			params["errors"] = arrBuilder.obj().jsonString();
+			BSONObj params = BSON("errors" << arrBuilder.arr());
 
 			return JSONMessage::actionmsg(action, params, clientId);
 		}

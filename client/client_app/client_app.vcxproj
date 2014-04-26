@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientActions.cpp" />
+    <ClCompile Include="ClientApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
   </ItemGroup>

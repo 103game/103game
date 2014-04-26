@@ -3,21 +3,10 @@
 #define SERVER_CLASS_DEF
 
 
-#include "DBController.h"
-#include "NetworkController.h"
+class NetworkController;
+class DBController;
+class ServerActions;
 
-
-#include "ServerActions.h"
-
-#include <boost/thread/thread.hpp>
-#include <boost/thread/mutex.hpp>
-
-#include "User.h"
-
-extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
-extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
-
-DBController *sharedDb;
 
 class Server
 {
@@ -29,59 +18,9 @@ class Server
 	DBController *dbController;
 	ServerActions *serverActions;
 
-	static void serverMainLoop(Server *server)
-	{
-		NetworkController *ntw = server->networkController;
-
-		while(true)
-		{	
-
-			{
-				boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
-
-				if(ntw->receivedMessages.size()) {
-
-					JSONMessage req = ntw->receivedMessages.front();								
-					server->serverActions->messageForwarder(req);
-					ntw->receivedMessages.pop();		
-				}
-			}
-		
-
-			server->ticks++;
-		}
-	}
-
-	Server()
-	{	
-
-		sharedDb = this->dbController = new DBController(this);
-		if(!this->dbController->connect()){
-			cout << "Can't connect to db" << endl;
-			return;
-		}
-
-
-		this->networkController = new NetworkController(this);
-
-		this->serverActions = new ServerActions(this->networkController);
-
-		this->ticks = 0;
-
-		/*
-		cout << User::emailTaken("spamgoga@gmail.com") << endl;
-		User usr("spamgoga@gmail.com", "qwerty", "george");
-
-		usr.saveToDb();
-
-		User usr1 = User::getById(usr.id);
-		cout << usr1.email << endl;
-		usr1.name = "changedName";
-		usr1.saveToDb();*/
-			
-		boost::thread mainLoop(serverMainLoop, this); // start server main loop	
-		mainLoop.join();
-	}
+	static void serverMainLoop(Server *server);
+	Server();
+	
 };
 
 #endif

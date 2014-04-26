@@ -83,7 +83,6 @@ class JSONMessage {
 		}
 
 
-
 		string getString() {
 			return jsonString;
 		}

@@ -80,18 +80,19 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 			string jsonStr = s_recvf(requester, ZMQ_NOBLOCK);				
 			if(jsonStr.length()){		
 				JSONMessage msg(jsonStr);				
+				Utils::log("Received "+msg.getString());
 				ntw->messageReceiver(msg);
 			}		
 			
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {			
-			// send message to server		
-			static long long c = 0;
-			if(c<1){
-			JSONMessage msg("{\"action\": \"signin\", \"params\": {\"email\":\"spamgoga@gmail.com\", \"password\":\"12356\"}}");
-			s_sendf(requester, msg.getString(), ZMQ_NOBLOCK);
+			// send message to server				
+			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
+			if(ntw->messagesToSend.size()) {
+				JSONMessage msg = ntw->messagesToSend.front();
+				Utils::log("Sending "+msg.getString());
+				s_sendf(requester, msg.getString(), ZMQ_NOBLOCK);
+				ntw->messagesToSend.pop();				
 			}
-			c++;
-
 		}
 
 		// check if switch needed

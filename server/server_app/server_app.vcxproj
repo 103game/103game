@@ -118,6 +118,7 @@
       <HeapCommitSize>
       </HeapCommitSize>
       <AdditionalDependencies>libzmq.lib;libzmq_d.lib;json_vc110_libmtd.lib;ws2_32.lib;DbgHelp.lib;libmongoclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalOptions>/LTCG /FORCE:MULTIPLE</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -155,7 +156,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DBController.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NetworkController.cpp" />
+    <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DBObject.h" />
@@ -165,13 +169,15 @@
     <ClInclude Include="DBController.h" />
     <ClInclude Include="JSONMessage.h" />
     <ClInclude Include="NetworkController.h" />
-    <ClInclude Include="ServerAppController.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="User.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="world\SurfaceBlock.h" />
     <ClInclude Include="world\World.h" />
     <ClInclude Include="world\WorldObject.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ServerActions.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

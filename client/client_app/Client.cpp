@@ -17,6 +17,8 @@ Client::Client(ClientApp *_app) {
 	this->networkController = new NetworkController(this);
 	this->clientActions = new ClientActions(this);
 	this->ticks = 0;
+
+	this->is_authorized = false;
 	this->session_id = "";
 }
 
@@ -34,6 +36,8 @@ void Client::mainLoop() {
 	}else{
 		//DBOUT("NO INCOMING MESSAGES");
 	}
+
+	
 			
 
 	this->ticks++;

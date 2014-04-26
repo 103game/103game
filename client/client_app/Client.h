@@ -15,6 +15,8 @@ class Client {
 		ClientApp *app;
 		ClientActions *clientActions;
 		long long ticks;
+
+		bool is_authorized;
 		string session_id;
 
 		Client(ClientApp *_app);

@@ -2,18 +2,34 @@
 #define SERIALIZABLE_CLASS_DEF
 
 #include <string>
-#include <mongo/client/dbclient.h>
+
+#include <mongo/bson/bson.h>
 
 using namespace std;
+using namespace mongo;
 
 class Serializable {
 	
-public:
-	virtual mongo::BSONObj toBSON() = 0;
+private:
+	string className;
 
-	string toJSON() {
-		return this->toBSON().jsonString();
+public:
+
+	Serializable () {
+		setClassName("Serializable");
 	}
+
+	BSONObj toBSON(){
+		BSONObjBuilder builder;
+		builder
+			.append("class", getClassName());
+
+		return builder.obj();
+	}
+	
+
+	string getClassName(){return className;}
+	void setClassName(string _className){className = _className;}
 };
 
 

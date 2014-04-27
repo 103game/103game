@@ -160,8 +160,11 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
     <ClCompile Include="Server.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Creatures.h" />
     <ClInclude Include="DBObject.h" />
     <ClInclude Include="MD5.h" />
     <ClInclude Include="Serializable.h" />
@@ -170,11 +173,12 @@
     <ClInclude Include="JSONMessage.h" />
     <ClInclude Include="NetworkController.h" />
     <ClInclude Include="Server.h" />
+    <ClInclude Include="SurfaceBlock.h" />
     <ClInclude Include="User.h" />
+    <ClInclude Include="UserMapper.h" />
     <ClInclude Include="Utils.h" />
-    <ClInclude Include="world\SurfaceBlock.h" />
-    <ClInclude Include="world\World.h" />
-    <ClInclude Include="world\WorldObject.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="WorldObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ServerActions.cpp" />

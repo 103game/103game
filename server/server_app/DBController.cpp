@@ -2,8 +2,9 @@
 #include "Server.h"
 
 
-#include "Utils.h"
+#include "DBObject.h"
 
+#include "Utils.h"
 
 bool DBController::connect()
 {
@@ -19,6 +20,16 @@ bool DBController::connect()
 
 	return true;
 }
+
+void DBController::saveObject(DBObject &obj){
+	if(!obj.isInDb()) {		
+		mongo::OID id = this->insert(obj.getDbCollection(), obj.toBSON());
+		obj.setId(id.toString());
+	}else {		
+		this->update(obj.getDbCollection(), BSON("_id" << obj.getId()), obj.toBSON());
+	}	
+}
+
 
 bool DBController::objectExists(string collection, mongo::OID id){
 	return !this->getObjectById(collection, id).isEmpty();

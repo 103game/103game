@@ -75,7 +75,7 @@ class JSONMessage {
 		static JSONMessage actionmsg(string action, mongo::BSONObj params, string clientId) {	
 			
 
-			mongo::BSONObj obj = mongo::BSONObjBuilder().append("action", action)
+			BSONObj obj = mongo::BSONObjBuilder().append("action", action)
 								.append("params", params).obj();
 			
 			return JSONMessage(obj.jsonString(), clientId);

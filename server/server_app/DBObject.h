@@ -2,38 +2,44 @@
 #define DBOBJECT_CLASS_DEF
 
 #include "Serializable.h"
-#include "DBController.h"
 
 #include <string>
 
+#include "Utils.h"
+
 using namespace std;
-
-extern DBController *sharedDb;
-
-
+using namespace mongo;
 
 class DBObject:public Serializable {
 
-protected:
+private:
 	string db_collection;
-
-public:
 	string id;
 
-	bool isInDb() { 
-		return id != "";
+public:
+
+	DBObject() {
+		setClassName("DBObject");
+		id = "not_in_db_"+Utils::randomString(5); // before saving to db
+		db_collection = "";
 	}
 
-	void saveToDb(){
-		if(id == "") {
-			cout << "SaveToDb - NEW record" << endl;
-			mongo::OID id = sharedDb->insert(this->db_collection, this->toBSON());
-			this->id = id.toString();
-		}else {
-			cout << "SaveToDb - UPDATE record" << endl;
-			sharedDb->update(this->db_collection, BSON("_id" << id), this->toBSON());
-		}			
+	BSONObj toBSON(){
+		BSONObjBuilder builder;
+		builder
+			.appendElements(Serializable::toBSON());
+		return builder.obj();
 	}
+
+	bool isInDb() { 
+		return id.substr(0, 9) != "not_in_db";
+	}	
+
+	string getDbCollection(){return db_collection;}
+	void setDbCollection(string _db_collection){db_collection = _db_collection;}
+
+	string getId(){ return id; }
+	void setId(string _id){ id = _id; }
 };
 
 #endif

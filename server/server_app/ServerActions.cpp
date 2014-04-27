@@ -5,12 +5,18 @@
 
 #include "Utils.h"
 #include <vector>
-#include "User.h"
+#include "UserMapper.h"
+
+#include "DBController.h"
+
+
 
 #include <boost/thread/thread.hpp>
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 
-using namespace mongo;
+extern DBController *sharedDb;
+
+using namespace bson;
 
 void ServerActions::messageForwarder(JSONMessage msg){
 	if(msg.getAction() == "signup"){
@@ -29,7 +35,7 @@ void ServerActions::signIn(JSONMessage msg) {
 
 	// TODO validate input strings
 
-	User user = User::getUserByEmailAndPassword(email, password);			
+	User user = UserMapper::getUserByEmailAndPassword(email, password);			
 	if(!user.isInDb()){
 		errors.push_back("Wrong email or password");
 	}
@@ -42,8 +48,8 @@ void ServerActions::signIn(JSONMessage msg) {
 		string session_id = Utils::randomString(16);
 		user.session_id = session_id;
 
-		user.saveToDb();
-		cout << "User authorized "+user.toJSON()<< endl;
+		sharedDb->saveObject(user);
+		cout << "User authorized "+user.toBSON().jsonString()<< endl;
 
 		BSONObj params = BSON("session_id" << session_id);
 		
@@ -73,7 +79,7 @@ void ServerActions::signUp(JSONMessage msg) {
 		errors.push_back("Invalid email");
 	}else{
 		// check email
-		if(User::emailTaken(email)){
+		if(UserMapper::emailTaken(email)){
 			errors.push_back("Email "+email+" is already in use");
 		}
 	}
@@ -91,8 +97,8 @@ void ServerActions::signUp(JSONMessage msg) {
 		ntw->messagesToSend.push(JSONMessage::errors("signUpCallback", errors, msg.getClientId()));
 	}else{
 		User newUser(email, password, name);
-		newUser.saveToDb();
-		cout << "New user created: "<< newUser.toJSON() << endl; 
+		sharedDb->saveObject(newUser);
+		cout << "New user created: "<< newUser.toBSON().jsonString() << endl; 
 
 		BSONObj params = BSON("user" << newUser.toBSON());
 

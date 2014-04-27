@@ -5,11 +5,15 @@
 #define STATIC_LIBMONGOCLIENT
 #include <mongo/client/dbclient.h>
 
+
+
 #include <string>
 
 using namespace std;
+using namespace mongo;
 
 class Server;
+class DBObject;
 
 class DBController {
 	public:
@@ -22,6 +26,8 @@ class DBController {
 	bool connect();
 
 	bool objectExists(string collection, mongo::OID id);
+
+	void saveObject(DBObject &obj);
 
 	mongo::BSONObj getObjectById(string collection, mongo::OID id);
 	mongo::BSONObj getObjectByQuery(string collection, mongo::Query query, string sort = "");

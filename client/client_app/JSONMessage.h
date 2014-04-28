@@ -1,10 +1,10 @@
 #ifndef JSONMESSAGE_CLASS_DEF
 #define JSONMESSAGE_CLASS_DEF
 
-#include <json/json.h>
 #include <exception>
-
 #include "Utils.h"
+
+#include "BSON.h"
 
 using namespace std;
 
@@ -20,49 +20,36 @@ using namespace std;
 
 class JSONMessage {
 
+private:
 		string jsonString;
-
-		Json::Value root;
-
 		string action;
-		Json::Value params;
+		BSONObj params;
 
-		public:
+public:
 		
 		JSONMessage(string _jsonString):jsonString(_jsonString){
-			static Json::Reader reader;		
-
-			if (!reader.parse(jsonString, root)){					
-				throw std::exception(reader.getFormattedErrorMessages().c_str());
-			}			
-		
-			if(!root["action"].asString().size()) {
-				throw std::exception("Wrong JSON format: no1 \"action\" parameter ");
+			try{
+				BSONObj bson = fromjson(jsonString);
+				action = bson.getStringField("action");
+				params = bson.getField("params").Obj().getOwned();
+				
+				
+			}catch(exception &e){
+				Utils::ERR("failed to parse json"+string(e.what()));
 			}
-			
-
-			action = root.get("action", false).asString();
-			
-
-			if(!root["params"]) {
-				throw std::exception("Wrong JSON format: no \"params\" parameter");
-			}
-
-			params = root.get("params", false);
 			
 		}
 
 		bool hasErrors(){
-			return !params.get("errors", Json::nullValue).isNull();
+			return params.hasField("errors");
 		}
 
 		vector<string> getErrors(){
 			vector<string> errVec;
-			if(this->hasErrors()){
-				Json::Value errors = params["errors"];
-				Utils::LOG(errors.asString().c_str());
+			if(this->hasErrors()) {
+				vector<BSONElement> errors = params["errors"].Array();				
 				for(int i = 0; i < errors.size(); i++){
-					errVec.push_back(errors[i].asString());
+					errVec.push_back(errors[i].String());
 				}
 			}
 			return errVec;			
@@ -70,11 +57,11 @@ class JSONMessage {
 
 		string getErrorsString(){			
 			stringstream ss;
-			vector<string> errors;	
+			vector<string> errors = getErrors();	
 			ss << "Action " << action << " Errors:" << endl;
-			if(params["errors"].size()){				
-				for(int i = 0; i < params["errors"].size(); i++){					
-					ss << " - " << params["errors"][i].asString() << endl;
+			if(errors.size()){				
+				for(int i = 0; i < errors.size(); i++){					
+					ss << " - " << errors[i] << endl;
 				}
 			}else{
 				ss << "  No errors" << endl;
@@ -91,7 +78,7 @@ class JSONMessage {
 			return action;
 		}
 
-		Json::Value getParams() {
+		BSONObj getParams() {
 			return params;
 		}
 

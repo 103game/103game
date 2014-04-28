@@ -49,18 +49,16 @@ void ClientActions::signUp(string email, string name, string password, string pa
 		return;
 	}
 
-	Json::FastWriter writer;
+	BSONObj bson = BSON(
+			"action" << "signup"
+			<< "params" << BSON(
+				"email" << email
+				<< "name" << name
+				<< "password" << password
+			)
+		);
 
-	Json::Value params;
-	params["email"] = email;
-	params["name"] = email;
-	params["password"] = password;
-
-	Json::Value root;
-	root["action"] = "signup";
-	root["params"] = params;
-
-	JSONMessage msg(writer.write(root));
+	JSONMessage msg(bson.jsonString());
 
 	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 	this->client->networkController->messagesToSend.push(msg);
@@ -71,17 +69,15 @@ void ClientActions::signIn(string email, string password) {
 
 	this->client->app->signInErrorsLabel->setLabel("");
 
-	Json::FastWriter writer;
+	BSONObj bson = BSON(
+		"action" << "signin"
+		<< "params" << BSON(			
+			"email" << email		
+			<< "password" << password
+		)
+		);
 
-	Json::Value params;
-	params["email"] = email;
-	params["password"] = password;
-
-	Json::Value root;
-	root["action"] = "signin";
-	root["params"] = params;
-
-	JSONMessage msg(writer.write(root));
+	JSONMessage msg(bson.jsonString());
 
 	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 	this->client->networkController->messagesToSend.push(msg);
@@ -97,7 +93,7 @@ void ClientActions::signInCallback(JSONMessage msg) {
 
 	Utils::LOG(msg.getString());
 
-	string session_id = msg.getParams()["session_id"].asString();
+	string session_id = msg.getParams().getStringField("session_id");
 			
 	this->client->session_id = session_id;
 	this->client->is_authorized = true;
@@ -107,12 +103,13 @@ void ClientActions::signInCallback(JSONMessage msg) {
 }
 
 void ClientActions::signUpCallaback(JSONMessage msg) {
+	Utils::LOG("signup callback has errors: "+to_string(msg.hasErrors()));
 	if(msg.hasErrors()){
 		this->client->app->signUpErrorsLabel->setLabel(msg.getErrorsString());
 		return;
-	}
-
-	this->client->app->setUIState(UI_STATE_SIGNIN);
+	}else{
+		this->client->app->setUIState(UI_STATE_SIGNIN);
+	}	
 
 	Utils::LOG(msg.getString());
 }

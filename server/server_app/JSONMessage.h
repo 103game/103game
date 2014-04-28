@@ -69,7 +69,7 @@ class JSONMessage {
 
 		static JSONMessage ok (string clientId) {
 
-			return JSONMessage(BSON("action" << "ok" << "params" << "").jsonString(), clientId);
+			return JSONMessage(BSON("action" << "ok" << "params" << BSONObj()).jsonString(), clientId);
 		}
 
 		static JSONMessage actionmsg(string action, mongo::BSONObj params, string clientId) {	

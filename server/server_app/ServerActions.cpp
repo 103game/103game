@@ -47,8 +47,8 @@ void ServerActions::signIn(JSONMessage msg) {
 
 	// TODO validate input strings
 
-	shared_ptr<User> user = UserMapper::getUserByEmailAndPassword(email, password);			
-	if(!user->isInDb()){
+	shared_ptr<User> user = UserMapper::getUserByEmailAndPassword(email, password);				
+	if(user == NULL){
 		errors.push_back("Wrong email or password");
 	}
 

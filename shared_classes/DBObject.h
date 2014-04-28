@@ -40,6 +40,7 @@ public:
 	void fromBSON(BSONObj obj) {
 		Serializable::fromBSON(obj);
 		setId(obj.getStringField("id"));
+		setInDb(obj.getBoolField("inDb"));
 	}
 
 	bool isInDb() { 

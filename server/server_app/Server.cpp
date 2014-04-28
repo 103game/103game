@@ -60,35 +60,43 @@ Server::Server()
 	world->surfaceBlocks.push_back(sb);
 	world->surfaceBlocks.push_back(sb3);
 
+	shared_ptr<User> m = shared_ptr<User>(new User("spamgoga@gmail.ru", "123456", "goga"));
+	sharedDb->saveObject(*m);
+
+
 	shared_ptr<User> me = UserMapper::getUserByEmailAndPassword("spamgoga@gmail.ru", "123456");
-	cout << me->toBSON().jsonString() << endl;
 
-	shared_ptr<User> me_returns = shared_ptr<User>(new User());
-	me_returns->fromBSON(me->toBSON());
-	cout << me_returns->toBSON().jsonString() << endl;
+	if(me != NULL){
+		cout << me->toBSON().jsonString() << endl;
+
+		shared_ptr<User> me_returns = shared_ptr<User>(new User());
+		me_returns->fromBSON(me->toBSON());
+		cout << me_returns->toBSON().jsonString() << endl;
 
 
 
 
-	shared_ptr<Zombie> zomb = shared_ptr<Zombie>(new Zombie());		
-	zomb->setLife(45);
-	zomb->setBot(false);
+		shared_ptr<Zombie> zomb = shared_ptr<Zombie>(new Zombie());		
+		zomb->setLife(45);
+		zomb->setBot(false);
+
+		zomb->setUserId(me->getId());
+
+		cout << zomb->toBSON().jsonString() << endl;
+
+		shared_ptr<Zombie> zomb_returns = shared_ptr<Zombie>(new Zombie());
+		zomb_returns->fromBSON(zomb->toBSON());
+		cout << zomb_returns->toBSON().jsonString() << endl;
+
+		shared_ptr<Survivor> srv = shared_ptr<Survivor>(new Survivor());
+		srv->setLife(44);
+
+		world->move(srv, world->getSurfaceBlockByCoords(COORDS(10, 4)));
+		world->move(zomb, world->getSurfaceBlockByCoords(COORDS(10, 5)));
+
+		cout << world->toBSON().jsonString(mongo::Strict, 1) << endl;
+	}
 	
-	zomb->setUserId(me->getId());
-
-	cout << zomb->toBSON().jsonString() << endl;
-
-	shared_ptr<Zombie> zomb_returns = shared_ptr<Zombie>(new Zombie());
-	zomb_returns->fromBSON(zomb->toBSON());
-	cout << zomb_returns->toBSON().jsonString() << endl;
-
-	shared_ptr<Survivor> srv = shared_ptr<Survivor>(new Survivor());
-	srv->setLife(44);
-
-	world->move(srv, world->getSurfaceBlockByCoords(COORDS(10, 4)));
-	world->move(zomb, world->getSurfaceBlockByCoords(COORDS(10, 5)));
-
-	cout << world->toBSON().jsonString(mongo::Strict, 1) << endl;
 
 
 	

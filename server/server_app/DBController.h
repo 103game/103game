@@ -36,8 +36,8 @@ class DBController {
 	
 	void update(string collection, string json_where, string json_how, bool create_if_no = false, bool multi = true);
 	void update(string collection, mongo::BSONObj where, mongo::BSONObj how, bool create_if_no = false, bool multi = true);
-	mongo::OID insert(string collection, mongo::BSONObj obj);
-	mongo::OID insert(string collection, string json);
+	void insert(string collection, mongo::BSONObj obj);
+	void insert(string collection, string json);
 
 };
 

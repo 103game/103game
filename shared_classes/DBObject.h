@@ -7,8 +7,11 @@
 
 #include "Utils.h"
 
+#include <bson/bson.h>
+using namespace bson;
+
 using namespace std;
-using namespace mongo;
+
 
 class DBObject:public Serializable {
 

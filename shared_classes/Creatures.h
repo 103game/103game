@@ -4,9 +4,12 @@
 #include "WorldObject.h"
 #include "User.h"
 
-#include <mongo/bson/bson.h>
+#include <bson/bson.h>
+using namespace bson;
 
 #define NO_USER "no_user"
+
+
 
 
 class Creature: public WorldObject {

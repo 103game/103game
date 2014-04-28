@@ -7,7 +7,8 @@
 #include <sstream>
 #include "Utils.h"
 
-#include <mongo/bson/bson.h>
+#include <bson/bson.h>
+using namespace bson;
 
 #define USERS_DB_COLLECTION "server.users"
 

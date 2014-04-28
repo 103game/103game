@@ -7,6 +7,8 @@
 
 #include "Serializable.h"
 
+#include <bson/bson.h>
+using namespace bson;
 
 
 using namespace std;

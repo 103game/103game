@@ -4,6 +4,9 @@
 #include <vector>
 #include "WorldObject.h"
 
+#include <bson/bson.h>
+using namespace bson;
+
 using namespace std;
 
 typedef enum {

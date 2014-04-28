@@ -3,10 +3,11 @@
 
 #include <string>
 
-#include <mongo/bson/bson.h>
+#include <bson/bson.h>
+using namespace bson;
 
 using namespace std;
-using namespace mongo;
+
 
 class Serializable {
 	

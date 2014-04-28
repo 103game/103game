@@ -18,17 +18,29 @@
 
 #include "MD5.h"
 
- 
+#include <vector>
 
 using namespace std;
+
+extern vector<string> logged;
 
 class Utils{
 
 public:
 
+	static vector<string> getLastLogged(int number){
+		vector<string> ret;
 
+		for(int j = (logged.size()-number >=0)?(logged.size()-number):0; j < logged.size(); j++){
+			ret.push_back(logged[j]);
+		}
+
+		return ret;
+	}
 
 	static void LOG(string s){
+		logged.push_back(s);
+
 #ifdef CLIENT_APP
 		std::wostringstream os_;
 		os_ << s.c_str() << endl;
@@ -41,8 +53,6 @@ public:
 	static void ERR(string s){
 		LOG("Error: "+s);
 	}
-
-
 
 	static std::string randomString( size_t length )
 	{

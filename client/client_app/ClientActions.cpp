@@ -26,26 +26,26 @@ void ClientActions::messageForwarder(JSONMessage msg){
 
 void ClientActions::signUp(string email, string name, string password, string password_repeat) {
 
-	this->client->app->signUpErrorsLabel->setLabel("");
+	this->client->app->signUpView->setErrorLabel("");
 
 	// pre-validate on client TODO:more careful validation
 	if(!Utils::isValidEmailAddress(email)){
-		this->client->app->signUpErrorsLabel->setLabel("Please enter valid e-mail");
+		this->client->app->signUpView->setErrorLabel("Please enter valid e-mail");
 		return;
 	}
 
 	if(Utils::trim(name).length() < 4){
-		this->client->app->signUpErrorsLabel->setLabel("Too small name");
+		this->client->app->signUpView->setErrorLabel("Too small name");
 		return;
 	}	
 
 	if(password != password_repeat){
-		this->client->app->signUpErrorsLabel->setLabel("Passwords does not match");
+		this->client->app->signUpView->setErrorLabel("Passwords does not match");
 		return;
 	}
 
 	if(Utils::trim(password).length() < 5){
-		this->client->app->signUpErrorsLabel->setLabel("Password must be min 5 chars length");
+		this->client->app->signUpView->setErrorLabel("Password must be min 5 chars length");
 		return;
 	}
 
@@ -67,7 +67,7 @@ void ClientActions::signUp(string email, string name, string password, string pa
 
 void ClientActions::signIn(string email, string password) {
 
-	this->client->app->signInErrorsLabel->setLabel("");
+	this->client->app->signInView->setErrorLabel("");
 
 	BSONObj bson = BSON(
 		"action" << "signin"
@@ -87,7 +87,7 @@ void ClientActions::signIn(string email, string password) {
 void ClientActions::signInCallback(JSONMessage msg) {
 	if(msg.hasErrors()){
 		Utils::LOG(msg.getErrorsString().c_str());
-		this->client->app->signInErrorsLabel->setLabel(msg.getErrorsString());
+		this->client->app->signInView->setErrorLabel(msg.getErrorsString());
 		return;
 	}
 
@@ -105,7 +105,7 @@ void ClientActions::signInCallback(JSONMessage msg) {
 void ClientActions::signUpCallaback(JSONMessage msg) {
 	Utils::LOG("signup callback has errors: "+to_string(msg.hasErrors()));
 	if(msg.hasErrors()){
-		this->client->app->signUpErrorsLabel->setLabel(msg.getErrorsString());
+		this->client->app->signUpView->setErrorLabel(msg.getErrorsString());
 		return;
 	}else{
 		this->client->app->setUIState(UI_STATE_SIGNIN);

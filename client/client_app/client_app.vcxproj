@@ -81,6 +81,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared_classes\Utils.cpp" />
     <ClCompile Include="..\..\shared_classes\World.cpp" />
     <ClCompile Include="..\..\shared_classes\WorldObject.cpp" />
     <ClCompile Include="Client.cpp" />
@@ -88,6 +89,11 @@
     <ClCompile Include="ClientApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
+    <ClInclude Include="DebugConsoleUIView.h" />
+    <ClInclude Include="SignUpUIView.h" />
+    <ClInclude Include="UIView.h">
+      <FileType>CppCode</FileType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared_classes\BSON.h" />
@@ -106,6 +112,7 @@
     <ClInclude Include="CompilerOptions.h" />
     <ClInclude Include="JSONMessage.h" />
     <ClInclude Include="NetworkController.h" />
+    <ClInclude Include="SignInUIView.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

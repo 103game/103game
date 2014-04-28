@@ -1,7 +1,6 @@
 #ifndef CLIENTAPP_CLASS_DEF
 #define CLIENTAPP_CLASS_DEF
 
-#pragma warning(disable: 4305)
 
 
 
@@ -9,6 +8,10 @@
 #include <cinder/gl/gl.h>
 
 #include "ciUI/ciUI.h"
+
+#include "SignInUIView.h"
+#include "SignUpUIView.h"
+#include "DebugConsoleUIView.h"
 
 class Client;
 
@@ -33,19 +36,10 @@ public:
 	// main logic
 	Client *client;
 
-	ciUICanvas *signInGui;
-	ciUITextInput *signInEmailTextField;
-	ciUITextInput *signInPasswordTextField;
-	ciUILabel *signInErrorsLabel;
-	void signInGuiEvent(ciUIEvent *event);
+	SignInUIView *signInView;
+	SignUpUIView *signUpView;
+	DebugConsoleUIView *debugConsoleView;
 
-	ciUICanvas *signUpGui;
-	ciUITextInput *signUpEmailTextField;
-	ciUITextInput *signUpNameTextField;
-	ciUITextInput *signUpPasswordTextField;
-	ciUITextInput *signUpPasswordRepeatTextField;
-	ciUILabel *signUpErrorsLabel;
-	void signUpGuiEvent(ciUIEvent *event);
 
 	
 

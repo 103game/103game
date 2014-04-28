@@ -39,6 +39,9 @@
     <ClCompile Include="..\..\shared_classes\WorldObject.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\shared_classes\Utils.cpp">
+      <Filter>shared_classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetworkController.h">
@@ -88,6 +91,18 @@
     </ClInclude>
     <ClInclude Include="..\..\shared_classes\WorldObject.h">
       <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="UIView.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SignUpUIView.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="SignInUIView.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugConsoleUIView.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

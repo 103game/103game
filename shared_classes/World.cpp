@@ -16,6 +16,8 @@ void World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {
 	obj->surfaceBlock = to;
 }
 
+
+
 shared_ptr<SurfaceBlock> World::getSurfaceBlockByCoords(COORDS coords) {
 	for(int i = 0; i < surfaceBlocks.size(); i++){
 		SurfaceBlock *block = &surfaceBlocks[i];

@@ -15,19 +15,23 @@ class DBObject:public Serializable {
 private:
 	string db_collection;
 	string id;
+	bool inDb;
 
 public:
 
 	DBObject() {
 		setClassName("DBObject");
-		id = "not_in_db_"+Utils::randomString(5); // before saving to db
+		id = Utils::randomString(20); 
 		db_collection = "";
+		setInDb(false);
 	}
 
 	BSONObj toBSON(){
 		BSONObjBuilder builder;
 		builder
-			.appendElements(Serializable::toBSON());
+			.appendElements(Serializable::toBSON())
+			.append("id", id)
+			.append("inDb", inDb);
 		return builder.obj();
 	}
 
@@ -37,8 +41,12 @@ public:
 	}
 
 	bool isInDb() { 
-		return id.substr(0, 9) != "not_in_db";
+		return inDb;
 	}	
+
+	void setInDb(bool _inDb) {
+		inDb = _inDb;
+	}
 
 	string getDbCollection(){return db_collection;}
 	void setDbCollection(string _db_collection){db_collection = _db_collection;}

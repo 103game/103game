@@ -6,6 +6,9 @@
 
 #include "DBObject.h"
 
+#include "User.h"
+#include "Creatures.h"
+
 #include "Utils.h"
 
 using namespace mongo;
@@ -26,11 +29,24 @@ bool DBController::connect()
 }
 
 void DBController::saveObject(DBObject &obj){
-	if(!obj.isInDb()) {		
-		mongo::OID id = this->insert(obj.getDbCollection(), obj.toBSON());
-		obj.setId(id.toString());
+	bool newRecord = !obj.isInDb();	
+	obj.setInDb(true);
+
+	BSONObj bson;
+	if(obj.getClassName() == "User"){
+		bson = ((User*)&obj)->toBSON();
+	}else if(obj.getClassName() == "Survivor"){
+		bson = ((Survivor*)&obj)->toBSON();
+	}else if(obj.getClassName() == "Zombie"){
+		bson = ((Zombie*)&obj)->toBSON();
+	}else{
+		Utils::error("Save object: unknown DBObject - "+obj.getClassName());
+	}
+
+	if(newRecord) {				
+		this->insert(obj.getDbCollection(), bson);		
 	}else {		
-		this->update(obj.getDbCollection(), BSON("_id" << obj.getId()), obj.toBSON());
+		this->update(obj.getDbCollection(), BSON("id" << obj.getId()), bson);
 	}	
 }
 
@@ -40,7 +56,7 @@ bool DBController::objectExists(string collection, mongo::OID id){
 }
 
 mongo::BSONObj DBController::getObjectById(string collection, mongo::OID id) {
-	return this->getObjectByQuery(collection, QUERY("_id" << id));
+	return this->getObjectByQuery(collection, QUERY("id" << id));
 }
 
 mongo::BSONObj DBController::getObjectByQuery(string collection, mongo::Query query, string sort) {
@@ -65,17 +81,7 @@ vector<mongo::BSONObj> DBController::getObjectsByQuery(string collection, mongo:
 	}
 		
 	while(cursor->more()){
-		mongo::BSONObj obj = cursor->next();
-
-		mongo::BSONObjBuilder builder;
-			
-		mongo::BSONElement oi;
-		obj.getObjectID(oi);
-		mongo::OID oid = oi.__oid();
-
-		obj = builder.appendElements(obj).append("id", oid.toString()).obj();
-			
-			
+		mongo::BSONObj obj = cursor->next();			
 		result.push_back(obj.getOwned());
 	}
 
@@ -91,22 +97,15 @@ void DBController::update(string collection, mongo::BSONObj where, mongo::BSONOb
 	this->c->update(collection, where, how, create_if_no, multi);
 }
 
-mongo::OID DBController::insert(string collection, mongo::BSONObj obj) {
+void DBController::insert(string collection, mongo::BSONObj obj) {
 	mongo::BSONObjBuilder builder;
-	obj = builder.appendElements(obj).genOID().obj();
-
-	this->c->insert(collection, obj);
-	mongo::BSONElement oi;
-	obj.getObjectID(oi);
-	mongo::OID oid = oi.__oid();		
-		
-	return oid;
+	obj = builder.appendElements(obj).obj();
+	this->c->insert(collection, obj);	
 }
 
-mongo::OID DBController::insert(string collection, string json) {
+void DBController::insert(string collection, string json) {
 	mongo::BSONObj obj = mongo::fromjson(json);
-
-	return this->insert(collection, obj);
+	this->insert(collection, obj);
 }
 
 

@@ -22,6 +22,7 @@ private:
 	string name;
 	string session_id;
 
+
 public:	
 
 
@@ -33,11 +34,13 @@ public:
 		this->email = _email;	
 		this->password_md5 = Utils::md5(_password);
 		this->name = _name;
+		this->session_id = "";
 	}
 
 	BSONObj toBSON () {			
 		BSONObjBuilder builder;
-		builder.append("email", this->email)
+		builder.appendElements(DBObject::toBSON())
+			.append("email", this->email)
 			.append("password_md5", this->password_md5)
 			.append("name", this->name)
 			.append("session_id", this->session_id);

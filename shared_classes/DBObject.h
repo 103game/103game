@@ -31,6 +31,11 @@ public:
 		return builder.obj();
 	}
 
+	void fromBSON(BSONObj obj) {
+		Serializable::fromBSON(obj);
+		setId(obj.getStringField("id"));
+	}
+
 	bool isInDb() { 
 		return id.substr(0, 9) != "not_in_db";
 	}	

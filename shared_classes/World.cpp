@@ -1,7 +1,8 @@
+#include "CompilerOptions.h"
 #include "World.h"
 #include "Creatures.h"
 
-void World::move(WorldObject *obj, SurfaceBlock *to) {	
+void World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {	
 	if(obj->surfaceBlock != NULL){
 		obj->surfaceBlock->clear();
 	}
@@ -15,11 +16,11 @@ void World::move(WorldObject *obj, SurfaceBlock *to) {
 	obj->surfaceBlock = to;
 }
 
-SurfaceBlock* World::getSurfaceBlockByCoords(COORDS coords) {
+shared_ptr<SurfaceBlock> World::getSurfaceBlockByCoords(COORDS coords) {
 	for(int i = 0; i < surfaceBlocks.size(); i++){
 		SurfaceBlock *block = &surfaceBlocks[i];
 		if(block->getCoords() == coords){
-			return block;
+			return shared_ptr<SurfaceBlock>(block);
 		}
 	}
 	return NULL;

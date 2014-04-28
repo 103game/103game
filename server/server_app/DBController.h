@@ -18,7 +18,7 @@ class DBObject;
 class DBController {
 	public:
 
-	mongo::DBClientConnection *c;
+	shared_ptr<DBClientConnection> c;
 	Server *server;	
 
 	DBController(Server *_server):server(_server){}

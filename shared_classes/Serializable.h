@@ -19,12 +19,16 @@ public:
 		setClassName("Serializable");
 	}
 
-	BSONObj toBSON(){
+	BSONObj toBSON() {
 		BSONObjBuilder builder;
 		builder
 			.append("class", getClassName());
 
 		return builder.obj();
+	}
+
+	void fromBSON(BSONObj obj) {
+		setClassName(obj.getStringField("class"));
 	}
 	
 

@@ -41,6 +41,12 @@ public:
 			.append("y", y);
 		return builder.obj();
 	}
+
+	void fromBSON(BSONObj obj) {
+		Serializable::fromBSON(obj);
+		x = obj.getIntField("x");
+		y = obj.getIntField("y");		
+	}
 };
 
 class SurfaceBlock: Serializable{
@@ -49,9 +55,9 @@ private:
 	SURFACE surfaceType;
 	COORDS coords;			
 
-public: 
+	shared_ptr<WorldObject> object;
 
-	WorldObject *object;
+public:
 
 	SurfaceBlock(COORDS _coords) {
 		setClassName("SurfaceBlock");		
@@ -65,10 +71,34 @@ public:
 		BSONObjBuilder builder;
 		builder.appendElements(Serializable::toBSON())
 			.append("coords", coords.toBSON())
-			.append("surfaceType", surfaceType)
-			.append("object", WorldObject::objectToBSON(object));
+			.append("surfaceType", surfaceType);
+
+		if(object!=NULL){
+			builder.append("object", WorldObject::objectToBSON(object));
+		}
+			
 		return builder.obj();
 	}
+
+	void fromBSON(BSONObj obj) {
+		Serializable::fromBSON(obj);
+
+		COORDS coords;
+		coords.fromBSON(obj);
+		setCoords(coords);
+
+		setSurfaceType((SURFACE)obj.getIntField("surfaceType"));
+				
+		if(obj.hasField("object")){
+			shared_ptr<WorldObject> wo = make_shared<WorldObject>();
+			wo->fromBSON(obj);
+			setObject(wo);
+		}else{
+			setObject(NULL);
+		}
+		
+	}
+
 
 	bool isEmpty(){
 		return object==NULL;
@@ -79,11 +109,14 @@ public:
 		setObject(NULL);
 	}
 
-	WorldObject *getObject(){return object;}
-	void setObject(WorldObject *_obj){object = _obj;}
+	shared_ptr<WorldObject> getObject(){return object;}
+	void setObject(shared_ptr<WorldObject> _obj){object = _obj;}
 
 	COORDS getCoords(){return coords;}
 	void setCoords(COORDS _coords){coords = _coords;}
+
+	SURFACE getSurfaceType(){return surfaceType;}
+	void setSurfaceType(SURFACE _surfaceType){surfaceType = _surfaceType;}
 	
 
 

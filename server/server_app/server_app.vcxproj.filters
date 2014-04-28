@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="shared_classes">
+      <UniqueIdentifier>{3a006b9c-8585-45d4-9bd9-5e4a538df3ec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -26,11 +29,11 @@
     <ClCompile Include="DBController.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="WorldObject.cpp">
-      <Filter>Файлы исходного кода</Filter>
+    <ClCompile Include="..\..\shared_classes\World.cpp">
+      <Filter>shared_classes</Filter>
     </ClCompile>
-    <ClCompile Include="World.cpp">
-      <Filter>Файлы исходного кода</Filter>
+    <ClCompile Include="..\..\shared_classes\WorldObject.cpp">
+      <Filter>shared_classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -43,41 +46,44 @@
     <ClInclude Include="DBController.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="User.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="JSONMessage.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="ServerActions.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="MD5.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Serializable.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="DBObject.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="Creatures.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="SurfaceBlock.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldObject.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="UserMapper.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\CompilerOptions.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\Creatures.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\DBObject.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\Serializable.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\SurfaceBlock.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\User.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\World.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\WorldObject.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\Utils.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\MD5.h">
+      <Filter>shared_classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

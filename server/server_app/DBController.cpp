@@ -1,3 +1,5 @@
+#include "CompilerOptions.h"
+
 #include "DBController.h"
 #include "Server.h"
 
@@ -6,11 +8,13 @@
 
 #include "Utils.h"
 
+using namespace mongo;
+
 bool DBController::connect()
 {
 	try {
 			
-		this->c = new mongo::DBClientConnection();
+		this->c = make_shared<DBClientConnection>();
 		this->c->connect("localhost");
 
 	} catch(const mongo::DBException &e) {			

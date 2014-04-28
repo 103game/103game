@@ -1,8 +1,12 @@
+#include "CompilerOptions.h"
+
 #include "NetworkController.h"
 
 #include "Server.h"
 
 #include <boost/thread/thread.hpp>
+
+
 
 #include <zmq.hpp>
 #include <zhelpers.hpp>

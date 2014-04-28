@@ -21,8 +21,8 @@ class World : Serializable
 			setClassName("World");
 		}
 
-		void move(WorldObject *obj, SurfaceBlock *to);
-		SurfaceBlock* World::getSurfaceBlockByCoords(COORDS coords);
+		void move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);
+		shared_ptr<SurfaceBlock> World::getSurfaceBlockByCoords(COORDS coords);
 
 		
 		
@@ -39,6 +39,20 @@ class World : Serializable
 				.append("blocks", arrBuilder.arr());
 
 			return builder.obj();
+		}
+
+		void fromBSON(BSONObj obj) {
+			Serializable::fromBSON(obj);		
+			
+			vector<BSONElement> arr = obj["blocks"].Array();
+
+			for (vector<BSONElement>::iterator it = arr.begin(); it != arr.end(); ++it){
+				BSONObj block = it->Obj();
+				
+
+			}
+			
+
 		}
 };
 

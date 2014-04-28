@@ -1,3 +1,5 @@
+#include "CompilerOptions.h"
+
 #include "ServerActions.h"
 
 #include "NetworkController.h"
@@ -18,6 +20,16 @@ extern DBController *sharedDb;
 
 using namespace bson;
 
+void ServerActions::answerRequests() {	
+	boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
+
+	if(ntw->receivedMessages.size()) {
+		JSONMessage req = ntw->receivedMessages.front();								
+		this->messageForwarder(req);
+		ntw->receivedMessages.pop();		
+	}	
+}
+
 void ServerActions::messageForwarder(JSONMessage msg){
 	if(msg.getAction() == "signup"){
 		this->signUp(msg);
@@ -35,8 +47,8 @@ void ServerActions::signIn(JSONMessage msg) {
 
 	// TODO validate input strings
 
-	User user = UserMapper::getUserByEmailAndPassword(email, password);			
-	if(!user.isInDb()){
+	shared_ptr<User> user = UserMapper::getUserByEmailAndPassword(email, password);			
+	if(!user->isInDb()){
 		errors.push_back("Wrong email or password");
 	}
 
@@ -46,10 +58,10 @@ void ServerActions::signIn(JSONMessage msg) {
 	}else{
 		// generate session id
 		string session_id = Utils::randomString(16);
-		user.session_id = session_id;
+		user->setSessionId(session_id);
 
-		sharedDb->saveObject(user);
-		cout << "User authorized "+user.toBSON().jsonString()<< endl;
+		sharedDb->saveObject(*user);
+		cout << "User authorized "+user->toBSON().jsonString()<< endl;
 
 		BSONObj params = BSON("session_id" << session_id);
 		

@@ -14,42 +14,35 @@ public:
 		return !sharedDb->getObjectByQuery(USERS_DB_COLLECTION, QUERY("email" << email)).isEmpty();
 	}
 
-	static User getUserByEmailAndPassword(string email, string password) {
+	static shared_ptr<User> getUserByEmailAndPassword(string email, string password) {
 		BSONObj obj = sharedDb->getObjectByQuery(USERS_DB_COLLECTION, QUERY(
 			"email" << email << "password_md5" << Utils::md5(password)
 			));
 
 
 		if(obj.isEmpty()) {
-			return User();
+			return NULL;
 		}
 
-		return User(
-			obj.getStringField("id"),
-			obj.getStringField("email"),
-			obj.getStringField("password_md5"),
-			obj.getStringField("name"),
-			obj.getStringField("session_id")
-			);
+		shared_ptr<User> usr = shared_ptr<User>(new User());
+		usr->fromBSON(obj);
+
+		return usr;
 	}
 
 
 
-	static User getById(string id) {
+	static shared_ptr<User> getById(string id) {
 		BSONObj obj = sharedDb->getObjectById(USERS_DB_COLLECTION, OID(id));
 
 		if(obj.isEmpty()){
-			return User();
-		}
+			return NULL;
+		}		
 
-		return User(
-			obj.getStringField("id"),
-			obj.getStringField("email"),
-			obj.getStringField("password_md5"),
-			obj.getStringField("name"),
-			obj.getStringField("session_id")
-			);
+		shared_ptr<User> usr = shared_ptr<User>(new User());
+		usr->fromBSON(obj);
 
+		return usr;
 	}
 };
 

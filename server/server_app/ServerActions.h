@@ -14,6 +14,7 @@ class ServerActions {
 		
 		ServerActions(NetworkController *_ntw):ntw(_ntw){}
 
+		void ServerActions::answerRequests();
 		void messageForwarder(JSONMessage msg);
 
 		void signIn(JSONMessage msg);

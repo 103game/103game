@@ -6,7 +6,7 @@
 
 #include <mongo/bson/bson.h>
 
-using namespace mongo;
+#define NO_USER "no_user"
 
 
 class Creature: public WorldObject {
@@ -15,7 +15,7 @@ private:
 	int life;
 
 	bool bot;
-	User *user;
+	string userId;
 
 public:
 
@@ -23,7 +23,7 @@ public:
 		setClassName("Creature");
 		bot = true;
 		life = 100;
-		user = NULL;
+		userId = NO_USER;
 	}
 
 	BSONObj toBSON(){
@@ -32,11 +32,26 @@ public:
 					.append("life", life)
 					.append("bot", bot);
 
-		if(!bot){
-			builder.append("user", user!=NULL?user->getId():"null");
+		if(!bot && userId != NO_USER){
+			builder.append("user", getUserId());
 		}
 
 		return builder.obj();
+	}
+
+	void fromBSON(BSONObj obj) {
+		WorldObject::fromBSON(obj);
+
+		setLife(obj.getIntField("life"));
+		setBot(obj.getBoolField("bot"));		
+
+		if(!isBot()){			
+			if(obj.hasField("user")){
+				setUserId(obj.getStringField("user"));
+			}else{
+				setUserId(NO_USER);
+			}
+		}
 	}
 
 	int getLife(){return life;}
@@ -45,8 +60,8 @@ public:
 	bool isBot(){return bot;}
 	void setBot(bool _bot){bot = _bot;}
 
-	User* getUser(){return user;}
-	void setUser(User *_user){user = _user;}
+	string getUserId(){return userId;}
+	void setUserId(string _userId){userId = _userId;}
 };
 
 class Survivor: public Creature {
@@ -64,6 +79,10 @@ public:
 			.appendElements(Creature::toBSON());
 
 		return builder.obj();
+	}
+
+	void fromBSON(BSONObj obj) {
+		Creature::fromBSON(obj);		
 	}
 };
 
@@ -85,6 +104,11 @@ public:
 			.append("zombieType", getZombieType());
 
 		return builder.obj();
+	}
+
+	void fromBSON(BSONObj obj) {
+		Creature::fromBSON(obj);
+		setZombieType(obj.getStringField("zombieType"));			
 	}
 
 	string getZombieType(){return zombieType;}

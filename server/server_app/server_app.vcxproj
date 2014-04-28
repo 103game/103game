@@ -106,7 +106,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\shared_classes;$(SolutionDir)\..\libs\json\include;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\server\server_app;$(SolutionDir)\..\shared_classes;$(SolutionDir)\..\libs\json\include;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -164,7 +164,7 @@
     <ClCompile Include="Server.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\shared_classes\CompilerOptions.h" />
+    <ClInclude Include="..\..\shared_classes\BSON.h" />
     <ClInclude Include="..\..\shared_classes\Creatures.h" />
     <ClInclude Include="..\..\shared_classes\DBObject.h" />
     <ClInclude Include="..\..\shared_classes\MD5.h" />
@@ -174,6 +174,7 @@
     <ClInclude Include="..\..\shared_classes\Utils.h" />
     <ClInclude Include="..\..\shared_classes\World.h" />
     <ClInclude Include="..\..\shared_classes\WorldObject.h" />
+    <ClInclude Include="CompilerOptions.h" />
     <ClInclude Include="ServerActions.h" />
     <ClInclude Include="DBController.h" />
     <ClInclude Include="JSONMessage.h" />

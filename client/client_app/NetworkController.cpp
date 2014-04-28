@@ -1,4 +1,4 @@
-
+#include "CompilerOptions.h"
 #include "NetworkController.h"
 
 #include "Client.h"

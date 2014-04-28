@@ -4,8 +4,7 @@
 #include <vector>
 #include "WorldObject.h"
 
-#include <bson/bson.h>
-using namespace bson;
+#include "BSON.h"
 
 using namespace std;
 

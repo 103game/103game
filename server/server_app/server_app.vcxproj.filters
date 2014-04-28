@@ -55,9 +55,6 @@
     <ClInclude Include="UserMapper.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared_classes\CompilerOptions.h">
-      <Filter>shared_classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared_classes\Creatures.h">
       <Filter>shared_classes</Filter>
     </ClInclude>
@@ -83,6 +80,12 @@
       <Filter>shared_classes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared_classes\MD5.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="CompilerOptions.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\BSON.h">
       <Filter>shared_classes</Filter>
     </ClInclude>
   </ItemGroup>

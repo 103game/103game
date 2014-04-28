@@ -1,4 +1,4 @@
-
+#include "CompilerOptions.h"
 #include "ClientActions.h"
 
 #include "JSONMessage.h"

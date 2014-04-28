@@ -1,4 +1,4 @@
-
+#include "CompilerOptions.h"
 #include "Client.h"
 
 #include <boost/thread/thread.hpp>

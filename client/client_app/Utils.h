@@ -1,16 +1,19 @@
 #ifndef UTILS_CLASS_DEF
 #define UTILS_CLASS_DEF
 
-#include "CompilerOptions.h"
 
 #include <string>
-#include <sstream>
 #include <algorithm>
+#include <sstream>
 #include <time.h>
 
-#include "MD5.h"
+#include <winsock2.h>
+#include <Windows.h>
 
- 
+#include <algorithm> 
+#include <functional> 
+#include <cctype>
+#include <locale>
 
 using namespace std;
 
@@ -18,33 +21,15 @@ class Utils{
 
 public:
 
-
-
-	static void LOG(string s){
-#if CLIENT_APP
-		std::wostringstream os_;
-		os_ << s.c_str() << endl;
-		OutputDebugStringW(os_.str().c_str());
-#else
-		cout << s << endl;
-#endif
-	}
-
-	static void ERR(string s){
-		LOG("Error: "+s);
-	}
-
-
-
 	static std::string randomString( size_t length )
 	{
 		srand( (unsigned)time( NULL ) );
 		auto randchar = []() -> char
 		{
 			const char charset[] =
-			"0123456789"
-			"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-			"abcdefghijklmnopqrstuvwxyz";
+				"0123456789"
+				"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+				"abcdefghijklmnopqrstuvwxyz";
 			const size_t max_index = (sizeof(charset) - 1);
 			return charset[ rand() % max_index ];
 		};
@@ -53,10 +38,12 @@ public:
 		return str;
 	}
 
-	static std::string md5(std::string str) {
-		static MD5 md5;
-		return md5.digestString((char *)str.c_str());
+	static void log(string s){		
+		std::wostringstream os_;
+		os_ << s.c_str() << endl;
+		OutputDebugStringW(os_.str().c_str());
 	}
+
 
 	// trim from start
 	static inline std::string &ltrim(std::string &s) {
@@ -109,6 +96,9 @@ public:
 	}
 
 };
+
+
+
 
 
 #endif

@@ -7,8 +7,7 @@
 #include <sstream>
 #include "Utils.h"
 
-#include <bson/bson.h>
-using namespace bson;
+#include "BSON.h"
 
 #define USERS_DB_COLLECTION "server.users"
 

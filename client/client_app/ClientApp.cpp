@@ -1,4 +1,4 @@
-
+#include "CompilerOptions.h"
 #include "ClientApp.h"
 
 #include "Utils.h"

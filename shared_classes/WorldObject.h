@@ -3,7 +3,7 @@
 
 #include "DBObject.h"
 
-
+#include "BSON.h"
 
 
 class SurfaceBlock;

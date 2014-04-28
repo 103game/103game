@@ -1,5 +1,4 @@
-
-#pragma warning(disable: 4018)
+#include "CompilerOptions.h"
 
 #include "ClientApp.h"
 

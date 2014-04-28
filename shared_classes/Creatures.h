@@ -4,8 +4,7 @@
 #include "WorldObject.h"
 #include "User.h"
 
-#include <bson/bson.h>
-using namespace bson;
+#include "BSON.h"
 
 #define NO_USER "no_user"
 

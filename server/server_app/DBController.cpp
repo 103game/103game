@@ -21,7 +21,7 @@ bool DBController::connect()
 		this->c->connect("localhost");
 
 	} catch(const mongo::DBException &e) {			
-		DBOUT(string("Error: "+string(e.what())).c_str());
+		Utils::ERR(e.what());
 		return false;
 	}
 
@@ -40,7 +40,7 @@ void DBController::saveObject(DBObject &obj){
 	}else if(obj.getClassName() == "Zombie"){
 		bson = ((Zombie*)&obj)->toBSON();
 	}else{
-		Utils::error("Save object: unknown DBObject - "+obj.getClassName());
+		Utils::ERR("Save object: unknown DBObject - "+obj.getClassName());
 	}
 
 	if(newRecord) {				

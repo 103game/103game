@@ -52,14 +52,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOW;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\libs\json\include;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\;$(SolutionDir)\..\libs\cinder\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\client\client_app;$(SolutionDir)\..\shared_classes;$(SolutionDir)\..\libs\bson\include;$(SolutionDir)\..\libs\json\include;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\;$(SolutionDir)\..\libs\cinder\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\..\libs\json\lib;$(SolutionDir)\..\libs\zeromq\lib\win32;$(SolutionDir)\..\libs\cinder\lib\msw;$(SolutionDir)\..\libs\lib32-msvc-11.0;$(SolutionDir)\..\libs\cinder\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>cinder_d.lib;libzmq.lib;libzmq_d.lib;json_vc110_libmtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\..\libs\bson\lib;$(SolutionDir)\..\libs\json\lib;$(SolutionDir)\..\libs\zeromq\lib\win32;$(SolutionDir)\..\libs\cinder\lib\msw;$(SolutionDir)\..\libs\lib32-msvc-11.0;$(SolutionDir)\..\libs\cinder\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cinder_d.lib;libzmq.lib;libzmq_d.lib;json_vc110_libmtd.lib;bson.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -81,6 +81,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\shared_classes\World.cpp" />
+    <ClCompile Include="..\..\shared_classes\WorldObject.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientActions.cpp" />
     <ClCompile Include="ClientApp.cpp" />
@@ -88,13 +90,22 @@
     <ClCompile Include="NetworkController.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\shared_classes\BSON.h" />
+    <ClInclude Include="..\..\shared_classes\Creatures.h" />
+    <ClInclude Include="..\..\shared_classes\DBObject.h" />
+    <ClInclude Include="..\..\shared_classes\MD5.h" />
+    <ClInclude Include="..\..\shared_classes\Serializable.h" />
+    <ClInclude Include="..\..\shared_classes\SurfaceBlock.h" />
+    <ClInclude Include="..\..\shared_classes\User.h" />
+    <ClInclude Include="..\..\shared_classes\Utils.h" />
+    <ClInclude Include="..\..\shared_classes\World.h" />
+    <ClInclude Include="..\..\shared_classes\WorldObject.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="ClientActions.h" />
     <ClInclude Include="ClientApp.h" />
     <ClInclude Include="CompilerOptions.h" />
     <ClInclude Include="JSONMessage.h" />
     <ClInclude Include="NetworkController.h" />
-    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

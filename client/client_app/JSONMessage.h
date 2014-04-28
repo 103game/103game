@@ -60,7 +60,7 @@ class JSONMessage {
 			vector<string> errVec;
 			if(this->hasErrors()){
 				Json::Value errors = params["errors"];
-				Utils::log(errors.asString().c_str());
+				Utils::LOG(errors.asString().c_str());
 				for(int i = 0; i < errors.size(); i++){
 					errVec.push_back(errors[i].asString());
 				}

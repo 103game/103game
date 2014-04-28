@@ -20,7 +20,7 @@ void ClientActions::messageForwarder(JSONMessage msg){
 	} else if (msg.getAction() == "signInCallback") {
 		this->signInCallback(msg);
 	} else {
-		Utils::log(string("Unknown message to forward "+msg.getAction()).c_str());
+		Utils::LOG(string("Unknown message to forward "+msg.getAction()).c_str());
 	}
 }
 
@@ -90,19 +90,19 @@ void ClientActions::signIn(string email, string password) {
 
 void ClientActions::signInCallback(JSONMessage msg) {
 	if(msg.hasErrors()){
-		Utils::log(msg.getErrorsString().c_str());
+		Utils::LOG(msg.getErrorsString().c_str());
 		this->client->app->signInErrorsLabel->setLabel(msg.getErrorsString());
 		return;
 	}
 
-	Utils::log(msg.getString());
+	Utils::LOG(msg.getString());
 
 	string session_id = msg.getParams()["session_id"].asString();
 			
 	this->client->session_id = session_id;
 	this->client->is_authorized = true;
 
-	Utils::log(string("Session id waas set to "+session_id).c_str());
+	Utils::LOG(string("Session id waas set to "+session_id).c_str());
 	this->client->app->setUIState(UI_STATE_SIGNUP);
 }
 
@@ -114,5 +114,5 @@ void ClientActions::signUpCallaback(JSONMessage msg) {
 
 	this->client->app->setUIState(UI_STATE_SIGNIN);
 
-	Utils::log(msg.getString());
+	Utils::LOG(msg.getString());
 }

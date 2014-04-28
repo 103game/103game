@@ -1,6 +1,7 @@
 #ifndef UTILS_CLASS_DEF
 #define UTILS_CLASS_DEF
 
+#include "CompilerOptions.h"
 
 #include <string>
 #include <algorithm>
@@ -21,6 +22,21 @@ class Utils{
 
 public:
 
+	static void LOG(string s){
+#ifdef CLIENT_APP
+		std::wostringstream os_;
+		os_ << s.c_str() << endl;
+		OutputDebugStringW(os_.str().c_str());
+#else
+		cout << s << endl;
+#endif
+	}
+
+	static void ERR(string s){
+		LOG("Error: "+s);
+	}
+
+
 	static std::string randomString( size_t length )
 	{
 		srand( (unsigned)time( NULL ) );
@@ -37,13 +53,6 @@ public:
 		std::generate_n( str.begin(), length, randchar );
 		return str;
 	}
-
-	static void log(string s){		
-		std::wostringstream os_;
-		os_ << s.c_str() << endl;
-		OutputDebugStringW(os_.str().c_str());
-	}
-
 
 	// trim from start
 	static inline std::string &ltrim(std::string &s) {

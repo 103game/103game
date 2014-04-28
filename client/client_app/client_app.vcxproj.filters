@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="shared_classes">
+      <UniqueIdentifier>{c3084a53-6adf-4b27-b367-d2e3852718b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -29,6 +32,12 @@
     </ClCompile>
     <ClCompile Include="ClientApp.cpp">
       <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared_classes\World.cpp">
+      <Filter>shared_classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared_classes\WorldObject.cpp">
+      <Filter>shared_classes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,11 +56,38 @@
     <ClInclude Include="ClientActions.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="Utils.h">
-      <Filter>Заголовочные файлы</Filter>
-    </ClInclude>
     <ClInclude Include="CompilerOptions.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\BSON.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\Creatures.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\DBObject.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\MD5.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\Serializable.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\SurfaceBlock.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\User.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\Utils.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\World.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\WorldObject.h">
+      <Filter>shared_classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

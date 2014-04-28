@@ -52,14 +52,14 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 	// set client identidication code (id)
 	string rndStr = Utils::randomString(5);
 	requester.setsockopt(ZMQ_IDENTITY, rndStr.c_str(), rndStr.length());
-	Utils::log(string("My id is: "+rndStr).c_str());
+	Utils::LOG(string("My id is: "+rndStr).c_str());
 
 	// connect to server
 	requester.connect("tcp://localhost:5556");
 
 	if(!requester.connected()){
 		// if cant reach localhost (not server program)
-		Utils::log("Not connecteed");
+		Utils::LOG("Not connecteed");
 		return;
 	}
 
@@ -80,7 +80,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 			string jsonStr = s_recvf(requester, ZMQ_NOBLOCK);				
 			if(jsonStr.length()){		
 				JSONMessage msg(jsonStr);				
-				Utils::log("Received "+msg.getString());
+				Utils::LOG("Received "+msg.getString());
 				ntw->messageReceiver(msg);
 			}		
 			
@@ -89,7 +89,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 			if(ntw->messagesToSend.size()) {
 				JSONMessage msg = ntw->messagesToSend.front();
-				Utils::log("Sending "+msg.getString());
+				Utils::LOG("Sending "+msg.getString());
 				s_sendf(requester, msg.getString(), ZMQ_NOBLOCK);
 				ntw->messagesToSend.pop();				
 			}

@@ -123,7 +123,7 @@ void ClientApp::signUpGuiEvent(ciUIEvent *event)
 	{
 		ciUITextInput *emailInput = (ciUITextInput *)event->widget;
 		if(emailInput->getTriggerType() == CI_UI_TEXTINPUT_ON_ENTER){
-			Utils::log("Go register");		
+			Utils::LOG("Go register");		
 			this->client->clientActions->signUp(
 					signUpEmailTextField->getTextString(),
 					signUpNameTextField->getTextString(),
@@ -141,14 +141,14 @@ void ClientApp::signInGuiEvent(ciUIEvent *event)
 	{
 		ciUITextInput *emailInput = (ciUITextInput *)event->widget;
 		if(emailInput->getTriggerType() == CI_UI_TEXTINPUT_ON_ENTER){
-			Utils::log("Go login");			
+			Utils::LOG("Go login");			
 			this->client->clientActions->signIn(signInEmailTextField->getTextString(), signInPasswordTextField->getTextString());
 		}
 	}	
 }
 
 void ClientApp::setUIState(UI_STATE newState) {
-	Utils::log("UIState changed to "+std::to_string(newState));
+	Utils::LOG("UIState changed to "+std::to_string(newState));
 	this->UIState = newState;
 
 	this->signInGui->setVisible(false);

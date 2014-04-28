@@ -8,6 +8,14 @@
 #include <algorithm>
 #include <time.h>
 
+#include <winsock2.h>
+#include <Windows.h>
+
+#include <algorithm> 
+#include <functional> 
+#include <cctype>
+#include <locale>
+
 #include "MD5.h"
 
  
@@ -21,7 +29,7 @@ public:
 
 
 	static void LOG(string s){
-#if CLIENT_APP
+#ifdef CLIENT_APP
 		std::wostringstream os_;
 		os_ << s.c_str() << endl;
 		OutputDebugStringW(os_.str().c_str());

@@ -12,6 +12,7 @@
 #include "SignInUIView.h"
 #include "SignUpUIView.h"
 #include "DebugConsoleUIView.h"
+#include "MainUIVIew.h"
 
 class Client;
 
@@ -36,9 +37,13 @@ public:
 	// main logic
 	Client *client;
 
+
+	MainUIView *mainView;
+
 	SignInUIView *signInView;
 	SignUpUIView *signUpView;
 	DebugConsoleUIView *debugConsoleView;
+
 
 
 	

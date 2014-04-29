@@ -39,6 +39,9 @@
     <ClCompile Include="..\..\shared_classes\WorldObject.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\shared_classes\md5.cpp">
+      <Filter>shared_classes</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\shared_classes\Utils.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
@@ -71,9 +74,6 @@
     <ClInclude Include="..\..\shared_classes\DBObject.h">
       <Filter>shared_classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared_classes\MD5.h">
-      <Filter>shared_classes</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\shared_classes\Serializable.h">
       <Filter>shared_classes</Filter>
     </ClInclude>
@@ -102,6 +102,12 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="DebugConsoleUIView.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\md5.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="MainUIVIew.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

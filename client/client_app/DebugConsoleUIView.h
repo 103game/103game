@@ -9,6 +9,7 @@
 
 
 
+
 using namespace std;
 
 class DebugConsoleUIView: public UIView {
@@ -18,43 +19,60 @@ private:
 	ciUICanvas *gui;
 	ciUILabel *lbl;
 
+	bool debug_show;
+
 public:
 
 	DebugConsoleUIView(Client *_client) {
 		client = _client;
 
-		gui = new ciUICanvas(0, 0, getWindowWidth(), 150);
+		gui = new ciUICanvas(0, 0, getWindowWidth(), getWindowHeight());
 		gui->setDrawBack(true);
-		gui->setColorBack(ColorA(0, 0, 0, .3));
-		gui->setFontSize(CI_UI_FONT_MEDIUM, 18);
+		gui->setColorBack(ColorA(0, 0, 0, .5));
+		gui->setFontSize(CI_UI_FONT_MEDIUM, 25);
+		gui->setEmbedded(true);
 		
 
-		lbl = new ciUILabel(0, 0, "CONSOLE", CI_UI_FONT_MEDIUM);
-		lbl->setColorFill(Color(1, 1, 1));
+		lbl = new ciUILabel(10, 10, "", CI_UI_FONT_MEDIUM);
+		lbl->setColorFill(Color(1, 1, 1));		
+		lbl->setColorOutline(Color(1, 1, 1));
 		gui->addWidget(lbl);
 				
 	}
 
 	void update(){
-		stringstream ss;
+		if(debug_show){
+			stringstream ss;
 
-		/*logged.push_back("asdsd sad asdsadsa");
-		logged.push_back("asdsd sad asdsadsa sad as");
-		logged.push_back("asdsd sad asdsads sad sada");*/
+			vector<string> lastLogged = Utils::getLastLogged(30);
+			reverse(lastLogged.begin(), lastLogged.end());
 
-		//Utils::LOG("logged size "+to_string(logged.size()));
-		/*vector<string> lastLogged = Utils::getLastLogged(5);
-		for(int i = 0; i < lastLogged.size(); i++){
-			ss << lastLogged[i] << endl;
-		}*/
+			for(int i = 0; i < lastLogged.size(); i++){
+				ss << lastLogged[i] << endl;
+			}
 
-		lbl->setLabel(ss.str());
+			lbl->setLabel(ss.str());
 
-		gui->update();
+			gui->update();
+		}		
 	}
 
 	void draw() {
-		gui->draw();
+		if(debug_show){
+			gui->draw();
+		}	
+	}
+
+	bool isOpened(){
+		return debug_show;
+	}
+
+	void show(){
+		debug_show = true;
+	}
+
+	void hide(){
+		debug_show = false;
 	}
 
 };

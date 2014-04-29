@@ -35,6 +35,12 @@
     <ClCompile Include="..\..\shared_classes\WorldObject.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\shared_classes\md5.cpp">
+      <Filter>shared_classes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\shared_classes\Utils.cpp">
+      <Filter>shared_classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Server.h">
@@ -79,13 +85,13 @@
     <ClInclude Include="..\..\shared_classes\Utils.h">
       <Filter>shared_classes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared_classes\MD5.h">
-      <Filter>shared_classes</Filter>
-    </ClInclude>
     <ClInclude Include="CompilerOptions.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="..\..\shared_classes\BSON.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\md5.h">
       <Filter>shared_classes</Filter>
     </ClInclude>
   </ItemGroup>

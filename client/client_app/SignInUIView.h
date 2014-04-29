@@ -45,6 +45,8 @@ public:
 		this->signInGui->addWidget(signInErrorsLabel);
 
 		this->signInGui->registerUIEvents(this, &SignInUIView::signInGuiEvent);
+
+		this->signInGui->setVisible(false);
 	}
 
 	void SignInUIView::signInGuiEvent(ciUIEvent *event)

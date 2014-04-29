@@ -56,6 +56,7 @@ public:
 		this->gui->addWidget(errorsLabel);
 
 		this->gui->registerUIEvents(this, &SignUpUIView::signUpGuiEvent);
+		this->gui->setVisible(false);
 	}
 
 	void SignUpUIView::signUpGuiEvent(ciUIEvent *event)

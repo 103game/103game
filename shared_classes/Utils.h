@@ -16,7 +16,7 @@
 #include <cctype>
 #include <locale>
 
-#include "MD5.h"
+#include "md5.h"
 
 #include <vector>
 
@@ -31,16 +31,16 @@ public:
 	static vector<string> getLastLogged(int number){
 		vector<string> ret;
 
-		for(int j = (logged.size()-number >=0)?(logged.size()-number):0; j < logged.size(); j++){
+		int loggedSize = (int) logged.size();
+
+		for(int j = (loggedSize-number >=0)?(loggedSize-number):0; j < loggedSize; j++){
 			ret.push_back(logged[j]);
 		}
 
 		return ret;
 	}
 
-	static void LOG(string s){
-		logged.push_back(s);
-
+	static void STR_OUT(string s){
 #ifdef CLIENT_APP
 		std::wostringstream os_;
 		os_ << s.c_str() << endl;
@@ -49,6 +49,12 @@ public:
 		cout << s << endl;
 #endif
 	}
+
+	static void LOG(string s){
+		logged.push_back(s);
+		STR_OUT(s);
+	}
+
 
 	static void ERR(string s){
 		LOG("Error: "+s);
@@ -72,8 +78,7 @@ public:
 	}
 
 	static std::string md5(std::string str) {
-		static MD5 md5;
-		return md5.digestString((char *)str.c_str());
+		return md5_lib(str);
 	}
 
 	// trim from start

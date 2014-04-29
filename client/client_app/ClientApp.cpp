@@ -19,31 +19,37 @@ void ClientApp::setup()
 
 	
 
+	this->mainView = new MainUIView(this->client);
+
+	
+
 	this->signInView = new SignInUIView(this->client);
 	this->signUpView = new SignUpUIView(this->client);
 	this->debugConsoleView = new DebugConsoleUIView(this->client);
+	this->debugConsoleView->hide();
+
+	this->mainView->addSubview(this->signInView);
+	this->mainView->addSubview(this->signUpView);
+	this->mainView->addSubview(this->debugConsoleView);
+	
 
 	this->setUIState(UI_STATE_SIGNUP);	
+
+//	this->signInView->removeFromParentView();
 }
 
 void ClientApp::update()
 {	
 	this->client->mainLoop();
 		
-	this->signInView->update();
-	this->signUpView->update();
-	this->debugConsoleView->update();
+	this->mainView->update();
 }
 
 void ClientApp::draw()
 {
 	gl::clear( Color( 1.0, 1.0, 1.0) ); 
 
-	this->signInView->draw();
-
-	this->signUpView->draw();
-
-	this->debugConsoleView->draw();
+	this->mainView->draw();
 	
 	
 	
@@ -52,12 +58,18 @@ void ClientApp::draw()
 // key events
 void ClientApp::keyDown( KeyEvent event )
 {
-	/*switch( event.getCode() )
+	switch( event.getCode() )
 	{
-	case KeyEvent::KEY_ESCAPE:
-		quit();
-		break;
-	}*/
+		case KeyEvent::KEY_ESCAPE:
+			quit();
+			break;
+		case KeyEvent::KEY_BACKQUOTE:
+			if(debugConsoleView->isOpened())
+				this->debugConsoleView->hide();
+			else
+				this->debugConsoleView->show();
+			break;
+	}
 }
 
 

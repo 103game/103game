@@ -10,7 +10,8 @@ private:
 	Client *client;
 
 public:
-	MainUIView (Client *_client) {
+	MainUIView (UIRect _rect, Client *_client) {
+		rect = _rect;
 		client = _client;
 	}
 

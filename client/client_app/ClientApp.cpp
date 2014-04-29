@@ -16,16 +16,17 @@ void ClientApp::prepareSettings( Settings *settings )
 void ClientApp::setup()
 {
 	this->client = new Client(this);	
+	windW = getWindowWidth();
+	windH = getWindowHeight();
+	
+
+	this->mainView = new MainUIView(UIRect(0, 0, windW, windH), this->client);
 
 	
 
-	this->mainView = new MainUIView(this->client);
-
-	
-
-	this->signInView = new SignInUIView(this->client);
-	this->signUpView = new SignUpUIView(this->client);
-	this->debugConsoleView = new DebugConsoleUIView(this->client);
+	this->signInView = new SignInUIView(UIRect(0, 0, windW, windH), this->client);
+	this->signUpView = new SignUpUIView(UIRect(0, 0, windW, windH), this->client);
+	this->debugConsoleView = new DebugConsoleUIView(UIRect(0, 0, windW, windH), this->client);
 	this->debugConsoleView->hide();
 
 	this->mainView->addSubview(this->signInView);
@@ -40,6 +41,9 @@ void ClientApp::setup()
 
 void ClientApp::update()
 {	
+	windW = getWindowWidth();
+	windH = getWindowHeight();
+
 	this->client->mainLoop();
 		
 	this->mainView->update();

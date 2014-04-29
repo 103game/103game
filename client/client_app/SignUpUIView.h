@@ -19,12 +19,12 @@ private:
 
 public:
 
-	SignUpUIView(Client *_client) {
+	SignUpUIView(UIRect _rect, Client *_client) {
 
-
+		rect = _rect;
 		client = _client;
 
-		this->gui = new ciUICanvas(0, 0, getWindowWidth(), getWindowHeight());
+		this->gui = new ciUICanvas(rect.x, rect.y, rect.width, rect.height);
 		this->gui->setTheme(CI_UI_THEME_MINBLACK);
 		this->gui->setFontSize(CI_UI_FONT_LARGE, 100);
 		this->gui->setFontSize(CI_UI_FONT_MEDIUM, 24);

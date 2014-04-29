@@ -23,10 +23,12 @@ private:
 
 public:
 
-	DebugConsoleUIView(Client *_client) {
+	DebugConsoleUIView(UIRect _rect, Client *_client) {
+
+		rect = _rect;
 		client = _client;
 
-		gui = new ciUICanvas(0, 0, getWindowWidth(), getWindowHeight());
+		gui = new ciUICanvas(rect.x, rect.y, rect.width, rect.height);
 		gui->setDrawBack(true);
 		gui->setColorBack(ColorA(0, 0, 0, .5));
 		gui->setFontSize(CI_UI_FONT_MEDIUM, 25);

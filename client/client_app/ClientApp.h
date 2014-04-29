@@ -37,6 +37,8 @@ public:
 	// main logic
 	Client *client;
 
+	int windW, windH;
+
 
 	MainUIView *mainView;
 

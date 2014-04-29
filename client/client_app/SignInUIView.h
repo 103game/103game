@@ -16,12 +16,12 @@ private:
 
 public:
 
-	SignInUIView(Client *_client) {
+	SignInUIView(UIRect _rect,  Client *_client) {
 
-
+		rect = _rect;
 		client = _client;
 
-		this->signInGui = new ciUICanvas(0, 0, getWindowWidth(), getWindowHeight());
+		this->signInGui = new ciUICanvas(rect.x, rect.y, rect.width, rect.height);
 		this->signInGui->setTheme(CI_UI_THEME_MINBLACK);
 		this->signInGui->setFontSize(CI_UI_FONT_LARGE, 100);
 		this->signInGui->setFontSize(CI_UI_FONT_MEDIUM, 24);

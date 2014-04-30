@@ -8,8 +8,6 @@
 #include "Utils.h"
 #include "NetworkController.h"
 
-#include <json/json.h>
-
 #include <boost/thread/thread.hpp>
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;

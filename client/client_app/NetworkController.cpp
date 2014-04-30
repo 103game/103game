@@ -6,7 +6,6 @@
 #include <zmq.hpp>
 #include <zhelpers.hpp>
 
-#include <json/json.h>
 
 
 #include <exception>

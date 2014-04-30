@@ -95,6 +95,7 @@
     <ClInclude Include="MainUIVIew.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="SignUpUIView.h" />
+    <ClInclude Include="SurfaceBlockUIView.h" />
     <ClInclude Include="UIView.h">
       <FileType>CppCode</FileType>
     </ClInclude>

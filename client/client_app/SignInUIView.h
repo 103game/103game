@@ -31,7 +31,7 @@ public:
 		this->gui->setFontSize(CI_UI_FONT_MEDIUM, 24);
 
 		mImage = loadImage(loadResource(RES_SPARKS));
-		ciUIImage *image = new ciUIImage(600, 200, 300, 300, &mImage, "IMAGE");
+		ciUIImage *image = new ciUIImage(600, 200, 300, 300, &mImage, "FIRE SPARKS");
 
 		this->gui->addWidget(image);
 

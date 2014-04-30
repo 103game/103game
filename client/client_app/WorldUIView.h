@@ -5,6 +5,7 @@
 #include "Client.h"
 
 #include "SurfaceBlock.h"
+#include "SurfaceBlockUIView.h"
 
 #include <cinder/app/AppBasic.h>
 #include <cinder/gl/gl.h>
@@ -32,16 +33,24 @@ public:
 		ciUILabel *signUpTitle = new ciUILabel(100, 100, "signUpTitle", "WORLD", CI_UI_FONT_LARGE);
 		signUpTitle->setColorFill(ColorA(0, 0, 0, .7));
 		this->gui->addWidget(signUpTitle);
+
+		addSubview(new SurfaceBlockUIView(
+					UIRect(300, 300, 150, 150)
+					//new SurfaceBlock(COORDS(0, 0))
+			));
 		
 	}
 
 	void update() {
+		UIView::update();
 		gui->update();
 	}
 
 	void draw() {
-		gui->draw();
-		drawSolidCircle(Vec2f(200, 200), 100);
+		UIView::draw();
+		if(isVisible()){
+			gui->draw();
+		}		
 	}
 
 

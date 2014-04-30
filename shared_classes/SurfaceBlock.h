@@ -61,11 +61,17 @@ private:
 
 public:
 
+	SurfaceBlock(COORDS _coords, SURFACE _surfaceType) {
+		SurfaceBlock::SurfaceBlock(_coords);
+		setSurfaceType(_surfaceType);
+	}
+
 	SurfaceBlock(COORDS _coords) {
 		setClassName("SurfaceBlock");		
 		coords = _coords;
 		surfaceType = SURFACE_GRASS;	
 		object = NULL;
+		setSurfaceType(SURFACE_GRASS);
 	}
 	
 

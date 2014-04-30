@@ -7,6 +7,8 @@
 #include "ClientActions.h"
 
 
+
+
 void ClientApp::prepareSettings( Settings *settings )
 {	
 	settings->setWindowSize(1024, 768);
@@ -31,10 +33,14 @@ void ClientApp::setup()
 
 	this->mainView->addSubview(this->signInView);
 	this->mainView->addSubview(this->signUpView);
+
+	wv = new WorldUIView(UIRect(0, 0, windW, windH-30), this->client);
+
+	this->mainView->addSubview(wv);
 	this->mainView->addSubview(this->debugConsoleView);
 	
 
-	this->setUIState(UI_STATE_SIGNIN);	
+	this->setUIState(UI_STATE_GAME);	
 
 //	this->signInView->removeFromParentView();
 }
@@ -83,6 +89,7 @@ void ClientApp::setUIState(UI_STATE newState) {
 
 	this->signInView->setVisible(false);
 	this->signUpView->setVisible(false);
+	this->wv->setVisible(false);
 
 	switch(newState){
 		case UI_STATE_SIGNIN:
@@ -90,6 +97,9 @@ void ClientApp::setUIState(UI_STATE newState) {
 			break;
 		case UI_STATE_SIGNUP:
 			this->signUpView->setVisible(true);
+			break;
+		case UI_STATE_GAME:
+			this->wv->setVisible(true);
 			break;
 	}
 }

@@ -28,10 +28,14 @@ public:
 		setName("debug_console_view");
 
 		gui = new ciUICanvas(rect.x, rect.y, rect.width, rect.height);
+
+		// gui->setFont("resources/Helvetica_Regular.ttf");
+		gui->setFont("resources/CricketHeavy.ttf");
+
 		gui->setDrawBack(true);
 		gui->setColorBack(ColorA(0, 0, 0, .5));
 		gui->setFontSize(CI_UI_FONT_MEDIUM, 25);
-		gui->setEmbedded(true);
+		
 		
 
 		lbl = new ciUILabel(10, 10, "", CI_UI_FONT_MEDIUM);

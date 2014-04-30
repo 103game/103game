@@ -98,6 +98,7 @@
     <ClInclude Include="UIView.h">
       <FileType>CppCode</FileType>
     </ClInclude>
+    <ClInclude Include="WorldUIView.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared_classes\BSON.h" />

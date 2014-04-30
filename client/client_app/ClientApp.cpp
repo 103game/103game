@@ -26,7 +26,7 @@ void ClientApp::setup()
 
 	this->signInView = new SignInUIView(UIRect(0, 0, windW, windH), this->client);
 	this->signUpView = new SignUpUIView(UIRect(0, 0, windW, windH), this->client);
-	this->debugConsoleView = new DebugConsoleUIView(UIRect(0, 0, windW, windH), this->client);
+	this->debugConsoleView = new DebugConsoleUIView(UIRect(0, 0, windW, windH-300), this->client);
 	this->debugConsoleView->hide();
 
 	this->mainView->addSubview(this->signInView);
@@ -34,7 +34,7 @@ void ClientApp::setup()
 	this->mainView->addSubview(this->debugConsoleView);
 	
 
-	this->setUIState(UI_STATE_SIGNUP);	
+	this->setUIState(UI_STATE_SIGNIN);	
 
 //	this->signInView->removeFromParentView();
 }
@@ -68,7 +68,7 @@ void ClientApp::keyDown( KeyEvent event )
 			quit();
 			break;
 		case KeyEvent::KEY_BACKQUOTE:
-			if(debugConsoleView->isOpened())
+			if(debugConsoleView->isVisible())
 				this->debugConsoleView->hide();
 			else
 				this->debugConsoleView->show();

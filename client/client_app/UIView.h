@@ -40,11 +40,14 @@ public:
 
 class UIView {
 
+
+
 private:
-	bool visible;
-	vector<UIView*> subviews;
+	bool visible;	
+	bool interactionsEnabled;
 	UIView *parentView;
 	string viewId;
+	string name;
 
 	app::App *mApp;
 	ci::signals::scoped_connection mCbMouseDown, mCbMouseDrag, mCbMouseUp, mCbMouseMove;
@@ -52,12 +55,17 @@ private:
 
 public:
 	UIRect rect;
+	vector<UIView*> subviews;
 
 	UIView() {
 		rect = UIRect();
-		mApp = app::App::get();
-		setVisible(true);
+		setParentView(NULL);
+		mApp = app::App::get();		
 		viewId = Utils::randomString(10);
+		setName("view_"+viewId);
+		
+		setVisible(true);
+		setInteractionsEnabled(true);
 	}
 
 	UIView(UIRect _rect) {
@@ -77,6 +85,37 @@ public:
 		}
 	}
 
+	bool isThereMoreForegroundView(int x, int y, UIView *dont_check, bool check_self = false) {	
+		
+		if(check_self){
+			bool after_dont_check = false;
+			for(int i = 0; i < subviews.size(); i++){
+				UIView *curSubview = subviews[i];
+				if(curSubview->getViewId() == dont_check->getViewId()){
+					after_dont_check = true;
+					continue;
+				}
+
+				if(after_dont_check 
+					|| !dont_check->isVisible()
+					|| !dont_check->areInteractionsEnabled())
+				{
+					if(curSubview->rect.inside(x, y)){
+						return true;
+					}
+				}
+			}
+		}
+
+		if(this->getParentView() != NULL) {
+			if(this->getParentView()->isThereMoreForegroundView(x, y, this, true)){
+				return true;
+			}
+		}
+
+		return false;		
+	}
+
 	virtual void mouseMove(MouseEvent &event) {}
 	virtual void mouseDrag(MouseEvent &event) {}
 	virtual void mouseDown(MouseEvent &event) {}
@@ -87,43 +126,65 @@ public:
 	virtual void keyUp( KeyEvent &event ) {}
 
 	bool fireMouseMove(MouseEvent event){
+		int x = event.getX();
+		int y = event.getY();
+
 		if(rect.inside(event.getX(), event.getY())){
-			mouseMove(event);
+			if(!isThereMoreForegroundView(x, y, this)){
+				mouseMove(event);
+			}
 		}
 		
 		return false;
 	}
 
 	bool fireMouseDrag(MouseEvent event){
-		if(rect.inside(event.getX(), event.getY())){
-			mouseDrag(event);			
+		int x = event.getX();
+		int y = event.getY();
+
+		if(rect.inside(x, y)){
+			if(!isThereMoreForegroundView(x, y, this)){
+				mouseDrag(event);			
+			}			
 		}
 
 		return false;
 	}
 
 	bool fireMouseDown(MouseEvent event){
+		int x = event.getX();
+		int y = event.getY();
+
 		if(rect.inside(event.getX(), event.getY())){
-			mouseDown(event);
+			if(!isThereMoreForegroundView(x, y, this)){
+				mouseDown(event);
+			}
 		}
 
 		return false;
 	}
 
 	bool fireMouseUp(MouseEvent event){
+		int x = event.getX();
+		int y = event.getY();
+
 		if(rect.inside(event.getX(), event.getY())){
-			mouseUp(event);
+			if(!isThereMoreForegroundView(x, y, this)){
+				mouseUp(event);
+			}
 		}
 
 		return false;
 	}
 
 	bool fireMouseWheel(MouseEvent event){		
-		mouseWheel(event);		
+		mouseWheel(event);
+
 		return false;
 	}
 
-	bool fireKeyDown(KeyEvent event){
+	bool fireKeyDown(KeyEvent event){	
+
 		keyDown(event);
 		return false;
 	}
@@ -139,7 +200,7 @@ public:
 		mCbMouseDown = mApp->getWindow()->getSignalMouseDown().connect( std::bind( &UIView::fireMouseDown, this, std::_1 ) );
 		mCbMouseUp = mApp->getWindow()->getSignalMouseUp().connect( std::bind( &UIView::fireMouseUp, this, std::_1 ) );
 		mCbMouseMove = mApp->getWindow()->getSignalMouseMove().connect( std::bind( &UIView::fireMouseMove, this, std::_1 ) );
-		mCbMouseDrag = mApp->getWindow()->getSignalMouseDrag().connect( std::bind( &UIView::fireMouseDrag, this, std::_1 ) );
+		mCbMouseDrag = mApp->getWindow()->getSignalMouseDrag().connect( std::bind( &UIView::fireMouseDrag, this, std::_1 ) );		
 	}
 
 	//Mouse Callbacks
@@ -148,7 +209,7 @@ public:
 		mCbMouseDown.disconnect();
 		mCbMouseUp.disconnect();
 		mCbMouseMove.disconnect();
-		mCbMouseDrag.disconnect();
+		mCbMouseDrag.disconnect();		
 	}	
 
 	//KeyBoard Callbacks
@@ -176,7 +237,8 @@ public:
 		for(int i = 0; i < subviews.size(); i++){
 			UIView *curView = subviews[i];
 			if(curView->viewId == view->viewId){
-				subviews.erase(subviews.begin()+i);
+				curView->
+				subviews.erase(subviews.begin()+i);				
 			}
 		}
 	}
@@ -185,11 +247,34 @@ public:
 		parentView->removeSubivew(this);
 	}
 
-	void setVisible(bool _visible){visible = _visible;}
-	void hide(){visible = false;}
-	void show(){visible = true;}
+	void setVisible(bool _visible){
+		visible = _visible;
+		setInteractionsEnabled(_visible);
+	}
+	void hide(){setVisible(false);}
+	void show(){setVisible(true);}
 	bool isVisible(){return visible;}
 
+	string getViewId(){return viewId;}	
+
+	string getName(){return name;}
+	void setName(string _name){name = _name;}
+
+	void setParentView(UIView *_parentView) {parentView = _parentView;}
+	UIView* getParentView(){return parentView;}
+
+	void setInteractionsEnabled(bool _enabled){
+		interactionsEnabled = _enabled;
+		if(_enabled){
+			enableMouseEventCallbacks();			
+		}else{
+			disableMouseEventCallbacks();
+		}
+	}
+
+	bool areInteractionsEnabled(){
+		return interactionsEnabled;
+	}
 
 };
 

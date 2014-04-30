@@ -99,7 +99,7 @@ void ClientActions::signInCallback(JSONMessage msg) {
 	this->client->is_authorized = true;
 
 	Utils::LOG(string("Session id waas set to "+session_id).c_str());
-	this->client->app->setUIState(UI_STATE_SIGNUP);
+	//this->client->app->setUIState(UI_STATE_SIGNUP);
 }
 
 void ClientActions::signUpCallaback(JSONMessage msg) {
@@ -107,9 +107,10 @@ void ClientActions::signUpCallaback(JSONMessage msg) {
 	if(msg.hasErrors()){
 		this->client->app->signUpView->setErrorLabel(msg.getErrorsString());
 		return;
-	}else{
-		this->client->app->setUIState(UI_STATE_SIGNIN);
-	}	
+	}
+	
+	//this->client->app->setUIState(UI_STATE_SIGNIN);
+		
 
 	Utils::LOG(msg.getString());
 }

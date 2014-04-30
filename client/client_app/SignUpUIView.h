@@ -23,6 +23,7 @@ public:
 
 		rect = _rect;
 		client = _client;
+		setName("sign_up_view");
 
 		this->gui = new ciUICanvas(rect.x, rect.y, rect.width, rect.height);
 		this->gui->setTheme(CI_UI_THEME_MINBLACK);
@@ -80,6 +81,10 @@ public:
 
 	void setErrorLabel(string str){
 		errorsLabel->setLabel(str);
+	}
+
+	void mouseDown(MouseEvent &event){
+		Utils::LOG("Mouse down in SignUpView");
 	}
 
 

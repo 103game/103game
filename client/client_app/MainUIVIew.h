@@ -12,7 +12,12 @@ private:
 public:
 	MainUIView (UIRect _rect, Client *_client) {
 		rect = _rect;
-		client = _client;
+		client = _client;		
+		setName("main_view");
+	}
+
+	void mouseDown(MouseEvent &event){
+		Utils::LOG("Mouse down in MainView");
 	}
 
 };

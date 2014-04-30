@@ -19,14 +19,13 @@ private:
 	ciUICanvas *gui;
 	ciUILabel *lbl;
 
-	bool debug_show;
-
 public:
 
 	DebugConsoleUIView(UIRect _rect, Client *_client) {
 
 		rect = _rect;
 		client = _client;
+		setName("debug_console_view");
 
 		gui = new ciUICanvas(rect.x, rect.y, rect.width, rect.height);
 		gui->setDrawBack(true);
@@ -43,7 +42,7 @@ public:
 	}
 
 	void update(){
-		if(debug_show){
+		if(isVisible()){
 			stringstream ss;
 
 			vector<string> lastLogged = Utils::getLastLogged(30);
@@ -59,23 +58,15 @@ public:
 		}		
 	}
 
-	void draw() {
-		if(debug_show){
-			gui->draw();
-		}	
-	}
+	void mouseDown(MouseEvent &event){
+		Utils::LOG("Mouse down in DebugConsole");
+	}	
 
-	bool isOpened(){
-		return debug_show;
-	}
-
-	void show(){
-		debug_show = true;
-	}
-
-	void hide(){
-		debug_show = false;
-	}
+	void draw() {	
+		if(isVisible()){
+			gui->draw();		
+		}
+	}		
 
 };
 

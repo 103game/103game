@@ -19,11 +19,9 @@ void World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {
 
 
 shared_ptr<SurfaceBlock> World::getSurfaceBlockByCoords(COORDS coords) {
-	for(int i = 0; i < surfaceBlocks.size(); i++){
-		shared_ptr<SurfaceBlock> block = surfaceBlocks[i];
-		if(block->getCoords() == coords){
-			return block;
-		}
+	unordered_map<COORDS, shared_ptr<SurfaceBlock>, COORDSHasher>::iterator it = sbMap.find(coords);
+	if(it != sbMap.end()){
+		return it->second;
 	}
 	return NULL;
 }

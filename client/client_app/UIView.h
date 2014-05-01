@@ -59,9 +59,15 @@ private:
 	ci::signals::scoped_connection mCbMouseDown, mCbMouseDrag, mCbMouseUp, mCbMouseMove, mCbMouseWheel;
 	ci::signals::scoped_connection mCbKeyDown, mCbKeyUp;
 
+	
+protected:
+	gl::TextureFontRef textDrawer;
+
 public:
 	UIRect rect;
 	vector<UIView*> subviews;
+
+	
 
 	UIView() {
 		construct();		
@@ -83,6 +89,8 @@ public:
 
 		glEnable (GL_BLEND);
 		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		setFont( "Arial", 20 );		
 	}
 
 	virtual void draw() {
@@ -315,6 +323,11 @@ public:
 
 	bool areInteractionsEnabled(){
 		return interactionsEnabled;
+	}
+
+	void setFont(string name, float size){
+		Font mFont = Font(name, size);
+		textDrawer = gl::TextureFont::create( mFont );
 	}
 
 };

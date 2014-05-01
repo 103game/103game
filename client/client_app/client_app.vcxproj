@@ -90,6 +90,7 @@
     <ClCompile Include="ClientApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
+    <ClCompile Include="WorldUIView.cpp" />
     <ClInclude Include="..\..\shared_classes\md5.h" />
     <ClInclude Include="DebugConsoleUIView.h" />
     <ClInclude Include="MainUIVIew.h" />

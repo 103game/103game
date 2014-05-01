@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\shared_classes\Utils.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
+    <ClCompile Include="WorldUIView.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetworkController.h">

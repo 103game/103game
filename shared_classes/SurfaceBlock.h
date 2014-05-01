@@ -14,6 +14,8 @@ typedef enum {
 } SURFACE ;
 
 
+
+
 class COORDS: public Serializable {
 public:
 	long x;
@@ -35,6 +37,13 @@ public:
 		return (coords.x == x) && (coords.y == y);
 	}
 
+	
+
+	friend bool operator==(const COORDS& lhs, const COORDS& rhs) //friend claim has to be here
+	{
+		return 	lhs.x == rhs.x && lhs.y == rhs.y;
+	}
+
 	string toString(){
 		return "("+to_string(x)+", "+to_string(y)+")";
 	}
@@ -52,6 +61,14 @@ public:
 		Serializable::fromBSON(obj);
 		x = obj.getIntField("x");
 		y = obj.getIntField("y");		
+	}
+};
+
+
+struct COORDSHasher {
+	size_t operator()(const COORDS& t) const {
+		std::hash<float> h;
+		return (size_t)(h(t.x) ^ h(t.y));
 	}
 };
 

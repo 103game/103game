@@ -9,13 +9,15 @@
 
 #include "BSON.h"
 
+#include <unordered_map>
+
 
 using namespace std;
 
 class World : Serializable
 {
 	public: 		
-		vector<shared_ptr<SurfaceBlock>> surfaceBlocks;	
+		unordered_map<COORDS, shared_ptr<SurfaceBlock>, COORDSHasher> sbMap;
 
 
 		World() {
@@ -32,8 +34,8 @@ class World : Serializable
 			BSONObjBuilder builder;
 
 			BSONArrayBuilder arrBuilder;
-			for(int i = 0; i < surfaceBlocks.size(); i++) {
-				arrBuilder.append(surfaceBlocks[i]->toBSON());
+			for(unordered_map<COORDS, shared_ptr<SurfaceBlock>, COORDSHasher>::iterator it = sbMap.begin(); it != sbMap.end(); it++) {
+				arrBuilder.append(it->second->toBSON());
 			}
 
 			builder.appendElements(Serializable::toBSON())

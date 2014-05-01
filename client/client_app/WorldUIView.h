@@ -53,7 +53,6 @@ public:
 	
 	void drawBg();
 	void drawSurfaceBlock(shared_ptr<SurfaceBlock> sb, UIRect sbRect);
-	void drawSurfaceBlock(UIRect sbRect);
 	void drawSurface();
 	
 

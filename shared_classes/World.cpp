@@ -20,9 +20,9 @@ void World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {
 
 shared_ptr<SurfaceBlock> World::getSurfaceBlockByCoords(COORDS coords) {
 	for(int i = 0; i < surfaceBlocks.size(); i++){
-		SurfaceBlock *block = &surfaceBlocks[i];
+		shared_ptr<SurfaceBlock> block = surfaceBlocks[i];
 		if(block->getCoords() == coords){
-			return shared_ptr<SurfaceBlock>(block);
+			return block;
 		}
 	}
 	return NULL;

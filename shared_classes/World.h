@@ -15,7 +15,7 @@ using namespace std;
 class World : Serializable
 {
 	public: 		
-		vector<SurfaceBlock> surfaceBlocks;	
+		vector<shared_ptr<SurfaceBlock>> surfaceBlocks;	
 
 
 		World() {
@@ -33,7 +33,7 @@ class World : Serializable
 
 			BSONArrayBuilder arrBuilder;
 			for(int i = 0; i < surfaceBlocks.size(); i++) {
-				arrBuilder.append(surfaceBlocks[i].toBSON());
+				arrBuilder.append(surfaceBlocks[i]->toBSON());
 			}
 
 			builder.appendElements(Serializable::toBSON())

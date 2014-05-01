@@ -10,16 +10,16 @@
 
 #include <vector>
 
-
+using namespace ci::gl;
 using namespace std;
 
 class UIRect {
 
 public:
-	long x, y, width, height;
+	long x, y, width, height, xEnd, yEnd;
 
 	UIRect() {
-		x = y = width = height = 0;
+		x = y = width = height = xEnd = yEnd = 0;
 	}
 
 	UIRect(long _x, long _y, long _w, long _h){
@@ -27,12 +27,18 @@ public:
 		y = _y;
 		width = _w;
 		height = _h;
+		xEnd = x+width;
+		yEnd = y+height;
 	}
 
 	bool inside(long _x, long _y){
 		if(_x > x && _x < x+width && _y > y && _y < y+height)
 			return true;
 		return false;
+	}
+
+	string toString(){
+		return "("+to_string(x)+", "+to_string(y)+", "+to_string(width)+", "+to_string(height)+")";
 	}
 
 
@@ -50,7 +56,7 @@ private:
 	string name;
 
 	app::App *mApp;
-	ci::signals::scoped_connection mCbMouseDown, mCbMouseDrag, mCbMouseUp, mCbMouseMove;
+	ci::signals::scoped_connection mCbMouseDown, mCbMouseDrag, mCbMouseUp, mCbMouseMove, mCbMouseWheel;
 	ci::signals::scoped_connection mCbKeyDown, mCbKeyUp;
 
 public:
@@ -58,19 +64,25 @@ public:
 	vector<UIView*> subviews;
 
 	UIView() {
-		rect = UIRect();
+		construct();		
+	}
+
+	UIView(UIRect _rect) {		
+		construct(_rect);
+	}
+
+	void construct(UIRect _rect = UIRect()){
+		rect = _rect;
 		setParentView(NULL);
 		mApp = app::App::get();		
 		viewId = Utils::randomString(10);
 		setName("view_"+viewId);
-		
+
 		setVisible(true);
 		setInteractionsEnabled(true);
-	}
 
-	UIView(UIRect _rect) {
-		UIView::UIView();
-		rect = _rect;
+		glEnable (GL_BLEND);
+		glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	virtual void draw() {
@@ -96,9 +108,13 @@ public:
 					continue;
 				}
 
-				if(after_dont_check 
-					|| !dont_check->isVisible()
-					|| !dont_check->areInteractionsEnabled())
+				if((after_dont_check 
+						|| !dont_check->isVisible()
+						|| !dont_check->areInteractionsEnabled()
+					)					
+					&& curSubview->isVisible() && curSubview->areInteractionsEnabled()
+				)
+
 				{
 					if(curSubview->rect.inside(x, y)){
 						return true;
@@ -122,12 +138,20 @@ public:
 	virtual void mouseUp(MouseEvent &event) {}
 	virtual void mouseWheel(MouseEvent &event) {}
 
+	virtual void mouseMoveGlobal(MouseEvent &event) {}
+	virtual void mouseDragGlobal(MouseEvent &event) {}
+	virtual void mouseDownGlobal(MouseEvent &event) {}
+	virtual void mouseUpGlobal(MouseEvent &event) {}
+	virtual void mouseWheelGlobal(MouseEvent &event) {}
+
 	virtual void keyDown( KeyEvent &event ) {}
 	virtual void keyUp( KeyEvent &event ) {}
 
 	bool fireMouseMove(MouseEvent event){
 		int x = event.getX();
 		int y = event.getY();
+
+		mouseMoveGlobal(event);
 
 		if(rect.inside(event.getX(), event.getY())){
 			if(!isThereMoreForegroundView(x, y, this)){
@@ -142,6 +166,8 @@ public:
 		int x = event.getX();
 		int y = event.getY();
 
+		mouseDragGlobal(event);
+
 		if(rect.inside(x, y)){
 			if(!isThereMoreForegroundView(x, y, this)){
 				mouseDrag(event);			
@@ -154,6 +180,8 @@ public:
 	bool fireMouseDown(MouseEvent event){
 		int x = event.getX();
 		int y = event.getY();
+
+		mouseDownGlobal(event);
 
 		if(rect.inside(event.getX(), event.getY())){
 			if(!isThereMoreForegroundView(x, y, this)){
@@ -168,6 +196,8 @@ public:
 		int x = event.getX();
 		int y = event.getY();
 
+		mouseUpGlobal(event);
+
 		if(rect.inside(event.getX(), event.getY())){
 			if(!isThereMoreForegroundView(x, y, this)){
 				mouseUp(event);
@@ -178,7 +208,16 @@ public:
 	}
 
 	bool fireMouseWheel(MouseEvent event){		
-		mouseWheel(event);
+		int x = event.getX();
+		int y = event.getY();
+
+		mouseWheelGlobal(event);
+
+		if(rect.inside(event.getX(), event.getY())){
+			if(!isThereMoreForegroundView(x, y, this)){
+				mouseWheel(event);		
+			}
+		}	
 
 		return false;
 	}
@@ -201,6 +240,7 @@ public:
 		mCbMouseUp = mApp->getWindow()->getSignalMouseUp().connect( std::bind( &UIView::fireMouseUp, this, std::_1 ) );
 		mCbMouseMove = mApp->getWindow()->getSignalMouseMove().connect( std::bind( &UIView::fireMouseMove, this, std::_1 ) );
 		mCbMouseDrag = mApp->getWindow()->getSignalMouseDrag().connect( std::bind( &UIView::fireMouseDrag, this, std::_1 ) );		
+		mCbMouseWheel = mApp->getWindow()->getSignalMouseWheel().connect( std::bind( &UIView::fireMouseWheel, this, std::_1 ) );		
 	}
 
 	//Mouse Callbacks
@@ -210,6 +250,7 @@ public:
 		mCbMouseUp.disconnect();
 		mCbMouseMove.disconnect();
 		mCbMouseDrag.disconnect();		
+		mCbMouseWheel.disconnect();		
 	}	
 
 	//KeyBoard Callbacks
@@ -249,7 +290,7 @@ public:
 
 	void setVisible(bool _visible){
 		visible = _visible;
-		setInteractionsEnabled(_visible);
+		//setInteractionsEnabled(_visible);
 	}
 	void hide(){setVisible(false);}
 	void show(){setVisible(true);}

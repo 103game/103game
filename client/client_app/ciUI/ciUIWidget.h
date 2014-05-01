@@ -277,6 +277,10 @@ public:
 	{
 		return rect; 
 	}
+
+	virtual void setRect(int x, int y, int w, int h){
+		rect = new ciUIRectangle(x, y, w, h);
+	}
 	
 	virtual void setName(string _name)
 	{

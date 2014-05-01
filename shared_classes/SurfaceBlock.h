@@ -14,7 +14,7 @@ typedef enum {
 } SURFACE ;
 
 
-class COORDS: Serializable {
+class COORDS: public Serializable {
 public:
 	long x;
 	long y;
@@ -35,6 +35,10 @@ public:
 		return (coords.x == x) && (coords.y == y);
 	}
 
+	string toString(){
+		return "("+to_string(x)+", "+to_string(y)+")";
+	}
+
 	BSONObj toBSON(){
 		BSONObjBuilder builder;
 
@@ -51,28 +55,29 @@ public:
 	}
 };
 
-class SurfaceBlock: Serializable{
+class SurfaceBlock: public Serializable{
 
 private:
 	SURFACE surfaceType;
-	COORDS coords;			
-
+	COORDS coords;		
 	shared_ptr<WorldObject> object;
 
 public:
 
 	SurfaceBlock(COORDS _coords, SURFACE _surfaceType) {
-		SurfaceBlock::SurfaceBlock(_coords);
-		setSurfaceType(_surfaceType);
+		construct(_coords, _surfaceType);		
 	}
 
 	SurfaceBlock(COORDS _coords) {
-		setClassName("SurfaceBlock");		
-		coords = _coords;
-		surfaceType = SURFACE_GRASS;	
-		object = NULL;
-		setSurfaceType(SURFACE_GRASS);
+		construct(_coords);		
 	}
+
+	void construct(COORDS _coords = COORDS(0, 0), SURFACE _surfaceType = SURFACE_GRASS) {
+		setClassName("SurfaceBlock");				
+		object = NULL;		
+		coords = _coords;		
+		setSurfaceType(_surfaceType);
+	}	
 	
 
 	BSONObj toBSON() {

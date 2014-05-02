@@ -24,7 +24,7 @@ void Server::serverMainLoop(Server *server)
 
 	while(true)
 	{
-		server->serverActions->answerRequest();
+		server->serverActions->answerRequests();
 
 		
 		server->world->getSurfaceBlockByCoords(COORDS(rand()%10, rand()%10))

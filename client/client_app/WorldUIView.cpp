@@ -83,6 +83,12 @@ void WorldUIView::drawBorder(){
 	drawStrokedRect(Rectf(rect.x, rect.y, rect.xEnd, rect.yEnd));
 }	
 
+void WorldUIView::drawParams(){
+	color(Color(1, 1, 1));
+	textDrawer->drawString("FPS: "+to_string(1/this->client->fps), Vec2f(25, 25));
+	textDrawer->drawString("WPS: "+to_string(1/this->client->wps), Vec2f(25, 45));
+}
+
 /*	void drawLoading(string str){
 	color(Color(0, 0, 0));
 	Vec2f strSize = textDrawer->measureString(str);		
@@ -182,6 +188,7 @@ void WorldUIView::draw() {
 		drawBg();
 		drawSurface();
 		drawBorder();
+		drawParams();
 	}		
 }
 

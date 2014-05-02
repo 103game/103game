@@ -18,7 +18,7 @@ class ServerActions {
 		
 		
 
-		void ServerActions::answerRequest();
+		void ServerActions::answerRequests();
 		void messageForwarder(JSONMessage msg);
 
 		void signIn(JSONMessage msg);

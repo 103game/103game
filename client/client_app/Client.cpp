@@ -19,6 +19,9 @@ Client::Client(ClientApp *_app) {
 	this->clientActions = new ClientActions(this);
 	this->ticks = 0;
 
+	this->last_frame_update = 0;
+	this->last_world_update = 0;
+
 	this->is_authorized = false;
 	this->session_id = "";
 

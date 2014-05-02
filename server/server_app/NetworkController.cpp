@@ -52,8 +52,9 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 	zmq::socket_t responder(context, ZMQ_ROUTER);
 
 	// set timeout for 1 sec
-	int timeout = 1000; 
+	int timeout = 1; 
 	responder.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
+	responder.setsockopt(ZMQ_SNDTIMEO, &timeout, sizeof(timeout));
 
 	// start listening
 	responder.bind("tcp://*:5556");

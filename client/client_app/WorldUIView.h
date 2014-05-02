@@ -54,6 +54,8 @@ public:
 	void drawBorder();
 	void drawSurfaceBlock(shared_ptr<SurfaceBlock> sb, UIRect sbRect);
 	void drawSurface();
+
+	void drawParams();
 	
 
 	void update();

@@ -46,7 +46,7 @@ void ClientActions::getWorld() {
 	JSONMessage msg(bson.jsonString());
 
 	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
-	this->client->networkController->messagesToSend.push(msg);
+	this->client->networkController->messagesToSend.push(msg);	
 }
 
 void ClientActions::getWorldCallback(JSONMessage msg) {
@@ -55,6 +55,9 @@ void ClientActions::getWorldCallback(JSONMessage msg) {
 	w->fromBSON(msg.getParams());
 	//Utils::LOG("world received. Size: "+to_string(w->sbMap.size()));
 	this->client->world = w;
+
+	this->client->wps = (clock() - this->client->last_world_update)/(double) CLOCKS_PER_SEC;
+	this->client->last_world_update = clock();
 }
 
 

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <time.h>
 
 class ClientApp;
 class ClientActions;
@@ -23,6 +24,9 @@ class Client {
 		string session_id;
 
 		shared_ptr<World> world;
+
+		clock_t last_world_update, last_frame_update;
+		double wps, fps;
 
 		Client(ClientApp *_app);
 		void mainLoop();

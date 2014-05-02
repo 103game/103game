@@ -45,8 +45,9 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 	zmq::socket_t requester(context, ZMQ_DEALER);
 
 	// set timeout for infinite
-	int timeout = -1; 
+	int timeout = 1; 
 	requester.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
+	requester.setsockopt(ZMQ_SNDTIMEO, &timeout, sizeof(timeout));
 	
 	// set client identidication code (id)
 	string rndStr = Utils::randomString(5);

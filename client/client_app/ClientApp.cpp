@@ -63,7 +63,8 @@ void ClientApp::draw()
 
 	this->mainView->draw();
 	
-	
+	this->client->fps = (clock() - this->client->last_frame_update)/(double) CLOCKS_PER_SEC;
+	this->client->last_frame_update = clock();
 	
 }
 

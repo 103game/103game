@@ -16,7 +16,6 @@
 
 
 
-
 #include <boost/thread/thread.hpp>
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 
@@ -29,10 +28,12 @@ ServerActions::ServerActions(NetworkController *_ntw){
 	server = ntw->server;
 }
 
-void ServerActions::answerRequest() {	
-	boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
 
-	if(ntw->receivedMessages.size()) {
+
+void ServerActions::answerRequests() {	
+	boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
+	
+	while(ntw->receivedMessages.size()) {
 		JSONMessage req = ntw->receivedMessages.front();								
 		this->messageForwarder(req);
 		ntw->receivedMessages.pop();		

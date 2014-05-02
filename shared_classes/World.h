@@ -22,7 +22,7 @@ class World : Serializable
 
 		World() {
 			setClassName("World");
-			Utils::LOG("sbSize:" + to_string(sbMap.size()));
+			//Utils::LOG("sbSize:" + to_string(sbMap.size()));
 		}
 
 
@@ -65,7 +65,7 @@ class World : Serializable
 				sbMap.insert(pair<COORDS, shared_ptr<SurfaceBlock>>(sb->getCoords(), sb));
 			}
 
-			Utils::LOG("world unserializeD size: " + to_string(sbMap.size()));
+			//Utils::LOG("world unserializeD size: " + to_string(sbMap.size()));
 			
 
 		}

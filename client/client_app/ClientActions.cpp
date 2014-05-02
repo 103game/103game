@@ -53,7 +53,7 @@ void ClientActions::getWorldCallback(JSONMessage msg) {
 	
 	shared_ptr<World> w = shared_ptr<World>(new World());
 	w->fromBSON(msg.getParams());
-	Utils::LOG("world received. Size: "+to_string(w->sbMap.size()));
+	//Utils::LOG("world received. Size: "+to_string(w->sbMap.size()));
 	this->client->world = w;
 }
 

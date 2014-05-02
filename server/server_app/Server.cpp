@@ -26,10 +26,10 @@ void Server::serverMainLoop(Server *server)
 	{
 		server->serverActions->answerRequest();
 
-		if(rand()%10 == 1){
-			server->world->getSurfaceBlockByCoords(COORDS(rand()%10, rand()%10))
-				->setSurfaceType((SURFACE)(rand()%4));
-		}
+		
+		server->world->getSurfaceBlockByCoords(COORDS(rand()%10, rand()%10))
+			->setSurfaceType((SURFACE)(rand()%4));
+		
 		
 
 		server->ticks++;

@@ -106,7 +106,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 
 				// get next reply from reply queue
 				JSONMessage rep = ntw->messagesToSend.front();
-				cout << "Sending message: " << rep.getString() << endl;
+				cout << "Sending message: " /*<< rep.getString()*/ << endl;
 				// and send it
 				s_sendmore (responder, rep.getClientId());				
 				s_send (responder, rep.getString());

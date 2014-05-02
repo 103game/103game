@@ -5,7 +5,7 @@
 #include <queue>
 
 
-#define NTWK_STATE_SWITCH_TIME 1 // set state time (seconds)
+#define NTWK_STATE_SWITCH_TIME .001 // set state time (seconds)
 
 using namespace std;
 

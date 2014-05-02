@@ -29,7 +29,11 @@ Client::Client(ClientApp *_app) {
 
 void Client::mainLoop() {	
 	this->clientActions->handleServerMessage();	
-	clientActions->getWorld();		
+
+	if(ticks%5 == 0){
+		clientActions->getWorld();
+	}
+	
 
 	this->ticks++;
 } 

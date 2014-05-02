@@ -6,8 +6,9 @@
 WorldUIView::WorldUIView(UIRect _rect, Client *_client) {
 	rect = _rect;
 	client = _client;
+	setName("world_view");
 
-	minZoom = .1;
+	minZoom = .4;
 	maxZoom = 6;
 	sbDefaultSize = 70;
 		
@@ -15,12 +16,15 @@ WorldUIView::WorldUIView(UIRect _rect, Client *_client) {
 	xOffset = 0;
 	yOffset = 0;
 	dragging = false;	
+	
+
+	
 		
 
 	world = shared_ptr<World>(new World());
 
-	for(int i = 0; i < 100; i++){
-		for(int j = 0; j < 130; j++){
+	for(int i = 0; i < 10; i++){
+		for(int j = 0; j < 10; j++){
 			world->sbMap.insert(
 				pair<COORDS, shared_ptr<SurfaceBlock>>(
 					COORDS(i, j),
@@ -30,15 +34,7 @@ WorldUIView::WorldUIView(UIRect _rect, Client *_client) {
 		}
 	}
 
-	Utils::LOG(rect.toString());
-
 	preloadTextures();
-
-	/*addSubview(new SurfaceBlockUIView(
-				UIRect(300, 300, 150, 150),
-				sb
-		));*/		
-		
 }
 
 void WorldUIView::mouseDown(MouseEvent &event){
@@ -63,22 +59,29 @@ void WorldUIView::mouseDrag(MouseEvent &event){
 	}
 }
 
+
+
 void WorldUIView::mouseUpGlobal(MouseEvent &event){
 	Utils::LOG("mouse_up");
 	dragging = false;		
 }
 
 void WorldUIView::mouseWheel(MouseEvent &event){				
-	float _zoom = zoom+event.getWheelIncrement()*.2;
-	Utils::LOG("new zoom "+to_string(_zoom));
+	float _zoom = zoom+event.getWheelIncrement()*.1;
 	_zoom = _zoom<=minZoom?minZoom:_zoom;
 	_zoom = _zoom>=maxZoom?maxZoom:_zoom;
+
+	xOffset = ((float)xOffset)*(((float)sbDefaultSize*_zoom)/sbSize);
+	yOffset = ((float)yOffset)*(((float)sbDefaultSize*_zoom)/sbSize);
+
+	if(event.getWheelIncrement() > 0){
+		xOffset += .1*((float) (lastMoveX - (rect.x +rect.width/2)))*(_zoom*sbDefaultSize)/sbSize;
+		yOffset += .1*((float) (lastMoveY - (rect.y +rect.height/2)))*(_zoom*sbDefaultSize)/sbSize;
+	}
+	
+
 	setZoom(_zoom);
-
 }
-
-
-
 
 void WorldUIView::setZoom(float _zoom) {
 	zoom = _zoom;
@@ -88,6 +91,12 @@ void WorldUIView::setZoom(float _zoom) {
 void WorldUIView::drawBg(){
 	color(Color(0, 140.0/255.0, 240.0/255.0));
 	drawSolidRect(Rectf(rect.x, rect.y, rect.xEnd, rect.yEnd));
+}	
+
+void WorldUIView::drawBorder(){
+	color(Color(0, 0, 0));
+	lineWidth(5);
+	drawStrokedRect(Rectf(rect.x, rect.y, rect.xEnd, rect.yEnd));
 }	
 
 /*	void drawLoading(string str){
@@ -149,12 +158,14 @@ void WorldUIView::drawSurface(){
 
 	int wXStart = (xOffset-rect.width/2)/sbSize;
 	int wYStart = (yOffset-rect.height/2)/sbSize;
-	int wWidth = rect.width*1.5/sbSize;
-	int wHeight = rect.height*1.5/sbSize;
-		
+	int wWidth = rect.width/sbSize+3;
+	int wHeight = rect.height/sbSize+3;
+	COORDS crd(0, 0);
+
 	for(int i = wXStart; i < wXStart+wWidth; i++) {
 		for(int j = wYStart; j < wYStart+wHeight; j++){
-			COORDS crd(i, j);
+			crd.x = i;
+			crd.y = j;
 			shared_ptr<SurfaceBlock> sb = world->getSurfaceBlockByCoords(crd);
 
 			if(sb != NULL){
@@ -186,6 +197,7 @@ void WorldUIView::draw() {
 	if(isVisible()){	
 		drawBg();
 		drawSurface();
+		drawBorder();
 	}		
 }
 

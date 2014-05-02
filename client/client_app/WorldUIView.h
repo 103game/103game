@@ -43,6 +43,7 @@ public:
 	void mouseDown(MouseEvent &event);
 	void mouseDrag(MouseEvent &event);
 	void mouseUpGlobal(MouseEvent &event);
+
 	void mouseWheel(MouseEvent &event);
 
 
@@ -52,6 +53,7 @@ public:
 	void preloadTextures();
 	
 	void drawBg();
+	void drawBorder();
 	void drawSurfaceBlock(shared_ptr<SurfaceBlock> sb, UIRect sbRect);
 	void drawSurface();
 	

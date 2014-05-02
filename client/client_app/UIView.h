@@ -54,6 +54,7 @@ private:
 	UIView *parentView;
 	string viewId;
 	string name;
+	
 
 	app::App *mApp;
 	ci::signals::scoped_connection mCbMouseDown, mCbMouseDrag, mCbMouseUp, mCbMouseMove, mCbMouseWheel;
@@ -62,6 +63,7 @@ private:
 	
 protected:
 	gl::TextureFontRef textDrawer;
+	int lastMoveX, lastMoveY;
 
 public:
 	UIRect rect;
@@ -124,7 +126,7 @@ public:
 				)
 
 				{
-					if(curSubview->rect.inside(x, y)){
+					if(curSubview->rect.inside(x, y)){					
 						return true;
 					}
 				}
@@ -159,6 +161,11 @@ public:
 		int x = event.getX();
 		int y = event.getY();
 
+		
+		lastMoveX = event.getX();
+		lastMoveY = event.getY();
+		
+
 		mouseMoveGlobal(event);
 
 		if(rect.inside(event.getX(), event.getY())){
@@ -189,6 +196,7 @@ public:
 		int x = event.getX();
 		int y = event.getY();
 
+
 		mouseDownGlobal(event);
 
 		if(rect.inside(event.getX(), event.getY())){
@@ -216,12 +224,12 @@ public:
 	}
 
 	bool fireMouseWheel(MouseEvent event){		
-		int x = event.getX();
-		int y = event.getY();
+		int x = lastMoveX;
+		int y = lastMoveY;
 
 		mouseWheelGlobal(event);
-
-		if(rect.inside(event.getX(), event.getY())){
+		
+		if(rect.inside(x, y)){
 			if(!isThereMoreForegroundView(x, y, this)){
 				mouseWheel(event);		
 			}

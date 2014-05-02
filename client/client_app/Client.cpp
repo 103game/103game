@@ -33,9 +33,9 @@ Client::Client(ClientApp *_app) {
 void Client::mainLoop() {	
 	this->clientActions->handleServerMessage();	
 
-	if(ticks%5 == 0){
-		clientActions->getWorld();
-	}
+	
+	clientActions->getWorld();
+	
 	
 
 	this->ticks++;

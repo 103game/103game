@@ -81,6 +81,10 @@ private:
 
 public:
 
+	SurfaceBlock(){
+		construct();
+	}
+
 	SurfaceBlock(COORDS _coords, SURFACE _surfaceType) {
 		construct(_coords, _surfaceType);		
 	}
@@ -114,14 +118,14 @@ public:
 		Serializable::fromBSON(obj);
 
 		COORDS coords;
-		coords.fromBSON(obj);
+		coords.fromBSON(obj.getField("coords").Obj());
 		setCoords(coords);
 
 		setSurfaceType((SURFACE)obj.getIntField("surfaceType"));
 				
 		if(obj.hasField("object")){
 			shared_ptr<WorldObject> wo = make_shared<WorldObject>();
-			wo->fromBSON(obj);
+			wo->fromBSON(obj.getField("object").Obj());
 			setObject(wo);
 		}else{
 			setObject(NULL);

@@ -24,7 +24,12 @@ void Server::serverMainLoop(Server *server)
 
 	while(true)
 	{
-		server->serverActions->answerRequests();
+		server->serverActions->answerRequest();
+
+		if(rand()%10 == 1){
+			server->world->getSurfaceBlockByCoords(COORDS(rand()%10, rand()%10))
+				->setSurfaceType((SURFACE)(rand()%4));
+		}
 		
 
 		server->ticks++;
@@ -45,63 +50,22 @@ Server::Server()
 	this->serverActions = new ServerActions(this->networkController);
 	this->ticks = 0;
 	
-	// place for experiments
+	// create world
 
-
-	shared_ptr<World> world = shared_ptr<World>(new World());
+	this->world = shared_ptr<World>(new World());
 
 
 	
-	SurfaceBlock sb2(COORDS(10, 5));
-	SurfaceBlock sb(COORDS(10, 4));
-	SurfaceBlock sb3(COORDS(10, 1));
-
-	world->surfaceBlocks.push_back(sb2);
-	world->surfaceBlocks.push_back(sb);
-	world->surfaceBlocks.push_back(sb3);
-
-	shared_ptr<User> m = shared_ptr<User>(new User("spamgoga@gmail.ru", "123456", "goga"));
-	sharedDb->saveObject(*m);
-
-
-	shared_ptr<User> me = UserMapper::getUserByEmailAndPassword("spamgoga@gmail.ru", "123456");
-
-	if(me != NULL){
-		cout << me->toBSON().jsonString() << endl;
-
-		shared_ptr<User> me_returns = shared_ptr<User>(new User());
-		me_returns->fromBSON(me->toBSON());
-		cout << me_returns->toBSON().jsonString() << endl;
-
-
-
-
-		shared_ptr<Zombie> zomb = shared_ptr<Zombie>(new Zombie());		
-		zomb->setLife(45);
-		zomb->setBot(false);
-
-		zomb->setUserId(me->getId());
-
-		cout << zomb->toBSON().jsonString() << endl;
-
-		shared_ptr<Zombie> zomb_returns = shared_ptr<Zombie>(new Zombie());
-		zomb_returns->fromBSON(zomb->toBSON());
-		cout << zomb_returns->toBSON().jsonString() << endl;
-
-		shared_ptr<Survivor> srv = shared_ptr<Survivor>(new Survivor());
-		srv->setLife(44);
-
-		world->move(srv, world->getSurfaceBlockByCoords(COORDS(10, 4)));
-		world->move(zomb, world->getSurfaceBlockByCoords(COORDS(10, 5)));
-
-		cout << world->toBSON().jsonString(mongo::Strict, 1) << endl;
+	for(int i = 0; i < 14; i++){
+		for(int j = 0; j < 10; j++){
+			world->insertSb(
+					shared_ptr<SurfaceBlock>(new SurfaceBlock(COORDS(i, j)))
+				);
+		}
 	}
-	
 
-
+	Utils::LOG("world size "+to_string(world->sbMap.size()));
 	
-	
-
 			
 	boost::thread mainLoop(Server::serverMainLoop, this); // start server main loop	
 	mainLoop.join();

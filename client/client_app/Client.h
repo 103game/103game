@@ -2,10 +2,13 @@
 #define CLIENT_CLASS_DEF
 
 #include <string>
+#include <memory>
 
 class ClientApp;
 class ClientActions;
 class NetworkController;
+
+class World;
 
 using namespace std;
 
@@ -18,6 +21,8 @@ class Client {
 
 		bool is_authorized;
 		string session_id;
+
+		shared_ptr<World> world;
 
 		Client(ClientApp *_app);
 		void mainLoop();

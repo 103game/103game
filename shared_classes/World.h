@@ -22,10 +22,14 @@ class World : Serializable
 
 		World() {
 			setClassName("World");
+			Utils::LOG("sbSize:" + to_string(sbMap.size()));
 		}
 
+
+		void insertSb(shared_ptr<SurfaceBlock> sb);
 		void move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);
 		shared_ptr<SurfaceBlock> World::getSurfaceBlockByCoords(COORDS coords);
+
 
 		
 		
@@ -49,11 +53,19 @@ class World : Serializable
 			
 			vector<BSONElement> arr = obj["blocks"].Array();
 
+			sbMap.clear();
+
+			//Utils::LOG("world serialized size: " + to_string(arr.size()));
+
 			for (vector<BSONElement>::iterator it = arr.begin(); it != arr.end(); ++it){
 				BSONObj block = it->Obj();
-				
-
+				shared_ptr<SurfaceBlock> sb = shared_ptr<SurfaceBlock>(new SurfaceBlock());
+				sb->fromBSON(block);
+				//Utils::LOG("unsrlzng: "+sb->toBSON().jsonString());
+				sbMap.insert(pair<COORDS, shared_ptr<SurfaceBlock>>(sb->getCoords(), sb));
 			}
+
+			Utils::LOG("world unserializeD size: " + to_string(sbMap.size()));
 			
 
 		}

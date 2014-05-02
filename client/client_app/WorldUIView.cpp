@@ -16,23 +16,7 @@ WorldUIView::WorldUIView(UIRect _rect, Client *_client) {
 	xOffset = 0;
 	yOffset = 0;
 	dragging = false;	
-	
-
-	
 		
-
-	world = shared_ptr<World>(new World());
-
-	for(int i = 0; i < 10; i++){
-		for(int j = 0; j < 10; j++){
-			world->sbMap.insert(
-				pair<COORDS, shared_ptr<SurfaceBlock>>(
-					COORDS(i, j),
-					shared_ptr<SurfaceBlock>(new SurfaceBlock(COORDS(i, j), SURFACE_GRASS))
-					)
-				);
-		}
-	}
 
 	preloadTextures();
 }
@@ -166,7 +150,7 @@ void WorldUIView::drawSurface(){
 		for(int j = wYStart; j < wYStart+wHeight; j++){
 			crd.x = i;
 			crd.y = j;
-			shared_ptr<SurfaceBlock> sb = world->getSurfaceBlockByCoords(crd);
+			shared_ptr<SurfaceBlock> sb = client->world->getSurfaceBlockByCoords(crd);
 
 			if(sb != NULL){
 				int wX = sb->getCoords().x;

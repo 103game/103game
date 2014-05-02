@@ -3,6 +3,8 @@
 #include "ServerActions.h"
 
 #include "NetworkController.h"
+#include "Server.h"
+#include "World.h"
 
 
 #include "Utils.h"
@@ -13,6 +15,8 @@
 
 
 
+
+
 #include <boost/thread/thread.hpp>
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 
@@ -20,7 +24,12 @@ extern DBController *sharedDb;
 
 using namespace bson;
 
-void ServerActions::answerRequests() {	
+ServerActions::ServerActions(NetworkController *_ntw){
+	ntw = _ntw;
+	server = ntw->server;
+}
+
+void ServerActions::answerRequest() {	
 	boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
 
 	if(ntw->receivedMessages.size()) {
@@ -35,8 +44,24 @@ void ServerActions::messageForwarder(JSONMessage msg){
 		this->signUp(msg);
 	}else if(msg.getAction() == "signin"){
 		this->signIn(msg);
+	}else if(msg.getAction() == "getWorld"){
+		this->getWorld(msg);
+	}else{
+		Utils::LOG("unknown requested action: "+msg.getAction());
 	}
 }
+
+
+void ServerActions::getWorld(JSONMessage msg){
+	Utils::LOG("WORLD REQUESTED");
+	{
+		boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
+		ntw->messagesToSend.push(
+			JSONMessage::actionmsg("getWorldCallback", this->server->world->toBSON(), msg.getClientId())
+			);
+	}
+}
+
 
 void ServerActions::signIn(JSONMessage msg) {
 	vector<string> errors;

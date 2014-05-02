@@ -16,7 +16,12 @@ class ClientActions {
 		
 		ClientActions(Client  *_client):client(_client){};
 
+		void ClientActions::handleServerMessage();
+
 		void messageForwarder(JSONMessage msg);
+
+		void getWorld();
+		void getWorldCallback(JSONMessage msg);
 
 		void signIn(string email, string password);
 		void signUp(string email, string name, string password, string password_repeat);

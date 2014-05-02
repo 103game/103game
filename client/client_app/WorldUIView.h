@@ -19,8 +19,6 @@ class WorldUIView: public UIView {
 private:
 	Client *client;	
 
-	shared_ptr<World> world;
-
 	int sbSize;
 	float zoom;
 	double xOffset, yOffset;

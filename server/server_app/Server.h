@@ -10,6 +10,8 @@ class NetworkController;
 class DBController;
 class ServerActions;
 
+class World;
+
 
 class Server {
 	public:		
@@ -19,6 +21,8 @@ class Server {
 	NetworkController *networkController;
 	DBController *dbController;
 	ServerActions *serverActions;
+
+	shared_ptr<World> world;
 
 	static void serverMainLoop(Server *server);
 	Server();

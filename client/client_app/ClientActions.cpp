@@ -12,15 +12,51 @@
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 
+void ClientActions::handleServerMessage(){
+	boost::unique_lock<boost::mutex> lock(receivedMessagesMutex);
+
+	if(client->networkController->receivedMessages.size()){
+		JSONMessage req = client->networkController->receivedMessages.front();							
+		client->clientActions->messageForwarder(req);
+
+		client->networkController->receivedMessages.pop();
+
+	}
+}
+
 void ClientActions::messageForwarder(JSONMessage msg){
 	if(msg.getAction() == "signUpCallback") {
 		this->signUpCallaback(msg);
 	} else if (msg.getAction() == "signInCallback") {
 		this->signInCallback(msg);
+	}else if(msg.getAction() == "getWorldCallback"){
+		getWorldCallback(msg);
 	} else {
 		Utils::LOG(string("Unknown message to forward "+msg.getAction()).c_str());
 	}
 }
+
+
+void ClientActions::getWorld() {
+	BSONObj bson = BSON(
+		"action" << "getWorld"
+		<< "params" << BSONObj()
+		);
+
+	JSONMessage msg(bson.jsonString());
+
+	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
+	this->client->networkController->messagesToSend.push(msg);
+}
+
+void ClientActions::getWorldCallback(JSONMessage msg) {
+	
+	shared_ptr<World> w = shared_ptr<World>(new World());
+	w->fromBSON(msg.getParams());
+	Utils::LOG("world received. Size: "+to_string(w->sbMap.size()));
+	this->client->world = w;
+}
+
 
 void ClientActions::signUp(string email, string name, string password, string password_repeat) {
 

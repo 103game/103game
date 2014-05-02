@@ -6,6 +6,7 @@
 #include "ClientActions.h"
 #include "NetworkController.h"
 #include "JSONMessage.h"
+#include "World.h"
 
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
@@ -20,25 +21,15 @@ Client::Client(ClientApp *_app) {
 
 	this->is_authorized = false;
 	this->session_id = "";
-}
 
-void Client::mainLoop() {
-			
-	boost::unique_lock<boost::mutex> lock(receivedMessagesMutex);
-	//receivedMessagesCond.wait(lock);
-			
-	if(this->networkController->receivedMessages.size()){
-		JSONMessage req = this->networkController->receivedMessages.front();							
-		this->clientActions->messageForwarder(req);
-
-		this->networkController->receivedMessages.pop();
-				
-	}else{
-		//DBOUT("NO INCOMING MESSAGES");
-	}
+	this->world = shared_ptr<World>(new World());
 
 	
-			
+}
+
+void Client::mainLoop() {	
+	this->clientActions->handleServerMessage();	
+	clientActions->getWorld();		
 
 	this->ticks++;
 } 

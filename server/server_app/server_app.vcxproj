@@ -161,6 +161,7 @@
     <ClCompile Include="..\..\shared_classes\World.cpp" />
     <ClCompile Include="..\..\shared_classes\WorldObject.cpp" />
     <ClCompile Include="DBController.cpp" />
+    <ClCompile Include="GameActions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
     <ClCompile Include="Server.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="..\..\shared_classes\World.h" />
     <ClInclude Include="..\..\shared_classes\WorldObject.h" />
     <ClInclude Include="CompilerOptions.h" />
+    <ClInclude Include="GameActions.h" />
     <ClInclude Include="ServerActions.h" />
     <ClInclude Include="DBController.h" />
     <ClInclude Include="JSONMessage.h" />

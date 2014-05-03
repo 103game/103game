@@ -28,7 +28,7 @@ class World : Serializable
 
 		void insertSb(shared_ptr<SurfaceBlock> sb);
 		void move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);
-		shared_ptr<SurfaceBlock> World::getSurfaceBlockByCoords(COORDS coords);
+		shared_ptr<SurfaceBlock> getSurfaceBlockByCoords(COORDS coords);
 
 
 		

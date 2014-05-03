@@ -8,15 +8,17 @@
 #include <algorithm>
 #include <time.h>
 
+#ifdef WIN32
 #include <winsock2.h>
 #include <Windows.h>
+#endif
 
 #include <algorithm> 
 #include <functional> 
 #include <cctype>
 #include <locale>
 
-#include "md5.h"
+#include "MD5.h"
 
 #include <vector>
 

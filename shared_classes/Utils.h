@@ -53,7 +53,7 @@ public:
 	}
 
 	static void LOG(string s){
-		logged.push_back(s);
+		//logged.push_back(s);
 		STR_OUT(s);
 	}
 

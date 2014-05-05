@@ -5,6 +5,7 @@
 #include <boost/thread/thread.hpp>
 
 boost::mutex receivedMessagesMutex, messagesToSendMutex;
+boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 int main(void)
 {

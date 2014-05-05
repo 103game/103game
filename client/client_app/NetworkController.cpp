@@ -6,11 +6,13 @@
 #include <zmq.hpp>
 #include <zhelpers.hpp>
 
-
+#include "Utils.h"
 
 #include <exception>
 
 #include <boost/thread/thread.hpp>
+
+#define NTWK_STATE_SWITCH_TIME .5
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 
@@ -21,7 +23,7 @@ void NetworkController::switchState() {
 		//Utils::log("STATE changed to SEND");
 	} else {
 		networkLoopState = NTWK_LOOP_STATE_RECEIVE;
-		//Utils::log("STATE changed to RECEIVE");
+		//Utils::LOG("STATE changed to RECEIVE");
 	}	
 }
 
@@ -45,7 +47,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 	zmq::socket_t requester(context, ZMQ_DEALER);
 
 	// set timeout for infinite
-	int timeout = 1; 
+	int timeout = 0; 
 	requester.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
 	requester.setsockopt(ZMQ_SNDTIMEO, &timeout, sizeof(timeout));
 	
@@ -77,7 +79,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 
 		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {	
 			// receive message from server if it exists				
-			string jsonStr = s_recvf(requester, ZMQ_NOBLOCK);				
+			string jsonStr = s_recv(requester);				
 			if(jsonStr.length()){		
 				JSONMessage msg(jsonStr);				
 				Utils::LOG("Received "+msg.getString());
@@ -85,12 +87,12 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 			}		
 			
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {			
-			// send message to server				
+			// send message to server		
 			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
-			if(ntw->messagesToSend.size()) {
+			if(ntw->messagesToSend.size()) {				
 				JSONMessage msg = ntw->messagesToSend.front();
 				Utils::LOG("Sending "+msg.getString());
-				s_sendf(requester, msg.getString(), ZMQ_NOBLOCK);
+				s_send(requester, msg.getString());
 				ntw->messagesToSend.pop();				
 			}
 		}

@@ -4,8 +4,6 @@
 #include <queue>
 #include "JSONMessage.h"
 
-#define NTWK_STATE_SWITCH_TIME .1
-
 class Client; 
 class JSONMessage;
 

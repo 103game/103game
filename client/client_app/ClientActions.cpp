@@ -11,16 +11,19 @@
 #include <boost/thread/thread.hpp>
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
+extern boost::mutex worldMutex;
 
-void ClientActions::handleServerMessage(){
-	boost::unique_lock<boost::mutex> lock(receivedMessagesMutex);
+void ClientActions::handleServerMessage(){	
 
-	if(client->networkController->receivedMessages.size()){
-		JSONMessage req = client->networkController->receivedMessages.front();							
+	while(client->networkController->receivedMessages.size()){
+		JSONMessage req;
+		{
+			boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
+			req = client->networkController->receivedMessages.front();								
+			client->networkController->receivedMessages.pop();
+		}		
+		
 		client->clientActions->messageForwarder(req);
-
-		client->networkController->receivedMessages.pop();
-
 	}
 }
 
@@ -53,7 +56,9 @@ void ClientActions::getWorldCallback(JSONMessage msg) {
 	
 	shared_ptr<World> w = shared_ptr<World>(new World());
 	w->fromBSON(msg.getParams());
-	//Utils::LOG("world received. Size: "+to_string(w->sbMap.size()));
+	Utils::LOG("world received. Size: "+to_string(w->sbMap.size()));
+
+	boost::lock_guard<boost::mutex> lock(worldMutex);
 	this->client->world = w;
 
 	this->client->wps = (clock() - this->client->last_world_update)/(double) CLOCKS_PER_SEC;

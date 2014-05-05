@@ -30,15 +30,21 @@ Client::Client(ClientApp *_app) {
 	
 }
 
-void Client::mainLoop() {	
-	this->clientActions->handleServerMessage();	
+void Client::mainLoop(Client *client) {	
 
-	
-	clientActions->getWorld();
-	
-	
+	static clock_t last_get_world = 0;
 
-	this->ticks++;
+	//while(1){
+		client->clientActions->handleServerMessage();	
+
+		if((clock()-last_get_world)/((double) CLOCKS_PER_SEC) > .7){
+			client->clientActions->getWorld();
+			last_get_world = clock();
+		}
+
+
+		client->ticks++;
+	//}	
 } 
 
 

@@ -29,7 +29,7 @@ class Client {
 		double wps, fps;
 
 		Client(ClientApp *_app);
-		void mainLoop();
+		static void mainLoop(Client *client);
 };
 
 #endif

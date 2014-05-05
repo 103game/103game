@@ -18,6 +18,7 @@
 
 #include <boost/thread/thread.hpp>
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
+extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 extern DBController *sharedDb;
 
@@ -30,13 +31,18 @@ ServerActions::ServerActions(NetworkController *_ntw){
 
 
 
-void ServerActions::answerRequests() {	
-	boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);
-	
-	while(ntw->receivedMessages.size()) {
-		JSONMessage req = ntw->receivedMessages.front();								
-		this->messageForwarder(req);
-		ntw->receivedMessages.pop();		
+void ServerActions::answerRequests() {		
+
+	if(ntw->receivedMessages.size()) {		
+		JSONMessage req;					
+		{		
+			boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);			
+			req = ntw->receivedMessages.front();								
+			ntw->receivedMessages.pop();			
+		}
+
+		this->messageForwarder(req);		
+		
 	}	
 }
 
@@ -55,11 +61,12 @@ void ServerActions::messageForwarder(JSONMessage msg){
 
 void ServerActions::getWorld(JSONMessage msg){
 	Utils::LOG("WORLD REQUESTED");
-	{
+	
+	JSONMessage rpl = JSONMessage::actionmsg("getWorldCallback", this->server->world->toBSON(), msg.getClientId());	
+
+	{	
 		boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
-		ntw->messagesToSend.push(
-			JSONMessage::actionmsg("getWorldCallback", this->server->world->toBSON(), msg.getClientId())
-			);
+		ntw->messagesToSend.push(rpl);
 	}
 }
 

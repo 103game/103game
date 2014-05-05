@@ -145,7 +145,7 @@ void WorldUIView::drawSurfaceBlock(shared_ptr<SurfaceBlock> sb, UIRect sbRect) {
 }
 
 void WorldUIView::drawSurface(){	
-
+	//Utils::LOG("DRAW SURFACE");
 	int wXStart = (xOffset-rect.width/2)/sbSize;
 	int wYStart = (yOffset-rect.height/2)/sbSize;
 	int wWidth = rect.width/sbSize+3;

@@ -36,6 +36,10 @@ class JSONMessage {
 		Json::Value params;
 
 		public:
+
+		JSONMessage(){
+
+		}
 		
 		JSONMessage(string _jsonString, string _clientId):jsonString(_jsonString), clientId(_clientId){
 			Json::Reader reader;

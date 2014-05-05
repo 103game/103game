@@ -18,8 +18,8 @@ typedef enum {
 
 class COORDS: public Serializable {
 public:
-	long long x;
-	long long y;
+	long x;
+	long y;
 
 	COORDS(){
 		setClassName("COORDS");

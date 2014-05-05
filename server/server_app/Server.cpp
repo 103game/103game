@@ -15,6 +15,8 @@
 #include <boost/thread/thread.hpp>
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
+extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
+
 DBController *sharedDb;
 
 
@@ -23,10 +25,16 @@ void Server::serverMainLoop(Server *server)
 	NetworkController *ntw = server->networkController;
 
 	while(true)
-	{
-		server->serverActions->answerRequests();
+	{	
+
+		static clock_t last_asw = 0;
+
+		if((clock()-last_asw)/((double) CLOCKS_PER_SEC) > .5){
+			server->serverActions->answerRequests();
+		}
 
 		
+		//Utils::LOG("SURFACE UPDATE");
 		server->world->getSurfaceBlockByCoords(COORDS(rand()%10, rand()%10))
 			->setSurfaceType((SURFACE)(rand()%4));
 		

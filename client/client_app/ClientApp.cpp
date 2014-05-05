@@ -43,6 +43,7 @@ void ClientApp::setup()
 	
 
 	this->setUIState(UI_STATE_GAME);	
+	
 
 //	this->signInView->removeFromParentView();
 }
@@ -51,9 +52,9 @@ void ClientApp::update()
 {	
 	windW = getWindowWidth();
 	windH = getWindowHeight();
+	
+	this->client->mainLoop(client);
 
-	this->client->mainLoop();
-		
 	this->mainView->update();
 }
 

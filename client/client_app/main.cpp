@@ -5,4 +5,5 @@
 #include <boost/thread/thread.hpp>
 
 boost::mutex receivedMessagesMutex, messagesToSendMutex;
+boost::mutex worldMutex;
 

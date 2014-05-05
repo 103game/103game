@@ -26,6 +26,10 @@ private:
 		BSONObj params;
 
 public:
+
+		JSONMessage(){
+
+		}
 		
 		JSONMessage(string _jsonString):jsonString(_jsonString){
 			try{

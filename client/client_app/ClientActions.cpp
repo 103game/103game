@@ -46,7 +46,7 @@ void ClientActions::getWorld() {
 		<< "params" << BSONObj()
 		);
 
-	JSONMessage msg(bson.jsonString());
+	JSONMessage msg(bson, client->session_id);
 
 	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 	this->client->networkController->messagesToSend.push(msg);	
@@ -100,7 +100,7 @@ void ClientActions::signUp(string email, string name, string password, string pa
 			)
 		);
 
-	JSONMessage msg(bson.jsonString());
+	JSONMessage msg(bson);
 
 	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 	this->client->networkController->messagesToSend.push(msg);
@@ -119,7 +119,7 @@ void ClientActions::signIn(string email, string password) {
 		)
 		);
 
-	JSONMessage msg(bson.jsonString());
+	JSONMessage msg(bson);
 
 	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 	this->client->networkController->messagesToSend.push(msg);
@@ -133,7 +133,7 @@ void ClientActions::signInCallback(JSONMessage msg) {
 		return;
 	}
 
-	Utils::LOG(msg.getString());
+	Utils::LOG(msg.toString());
 
 	string session_id = msg.getParams().getStringField("session_id");
 			
@@ -151,8 +151,7 @@ void ClientActions::signUpCallaback(JSONMessage msg) {
 		return;
 	}
 	
-	//this->client->app->setUIState(UI_STATE_SIGNIN);
-		
+	//this->client->app->setUIState(UI_STATE_SIGNIN);		
 
-	Utils::LOG(msg.getString());
+	Utils::LOG(msg.toString());
 }

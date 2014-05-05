@@ -1,20 +1,16 @@
 #ifndef JSONMESSAGE_CLASS_DEF
 #define JSONMESSAGE_CLASS_DEF
 
-#ifdef WIN32
-#include <json/json.h>
-#else
-#include <jsoncpp/json/json.h>
-#endif
-
 #include <exception>
+#include "BSON.h"
 
-#define STATIC_LIBMONGOCLIENT
-#include <mongo/bson/bson.h>
+#include "Utils.h"
+
+#include "UserMapper.h"
 
 
 using namespace std;
-using namespace mongo;
+
 
 /*
 
@@ -30,10 +26,10 @@ class JSONMessage {
 		string jsonString;
 		string clientId;
 
-		Json::Value root;
+		BSONObj root;
 
 		string action;
-		Json::Value params;
+		BSONObj params;
 
 		public:
 
@@ -42,41 +38,20 @@ class JSONMessage {
 		}
 		
 		JSONMessage(string _jsonString, string _clientId):jsonString(_jsonString), clientId(_clientId){
-			Json::Reader reader;
+			try{
+				root = fromjson(jsonString);
+				action = root.getStringField("action");
+				params = root.getField("params").Obj().getOwned();
 
-			
-			if (!reader.parse(jsonString, root)){					
-				//throw std::exception(reader.getFormattedErrorMessages().c_str());
+
+			}catch(exception &e){
+				Utils::ERR("failed to parse json"+string(e.what()));
 			}
-			
+
+		}
 		
-			if(!root["action"].asString().size()) {
-				//throw std::exception("Wrong JSON format: no action parameter");
-			}
 
-			action = root.get("action", false).asString();
-
-			if(!root["params"]) {
-				//throw std::exception("Wrong JSON format: no params parameter");
-			}
-
-			params = root.get("params", false);
-
-		}
-
-		static JSONMessage fromObject(Json::Value val, string clientId){
-			Json::StyledWriter writer;
-			string jsonString = writer.write(val);
-			JSONMessage msg(jsonString, clientId);
-			return msg;
-		}
-
-		static JSONMessage ok (string clientId) {
-
-			return JSONMessage(BSON("action" << "ok" << "params" << BSONObj()).jsonString(), clientId);
-		}
-
-		static JSONMessage actionmsg(string action, mongo::BSONObj params, string clientId) {	
+		static JSONMessage actionmsg(string action, BSONObj params, string clientId) {	
 			
 
 			BSONObj obj = mongo::BSONObjBuilder().append("action", action)
@@ -109,6 +84,10 @@ class JSONMessage {
 			return clientId;
 		}
 
+		User getUser(){
+
+		}
+
 		string getString() {
 			return jsonString;
 		}
@@ -117,7 +96,7 @@ class JSONMessage {
 			return action;
 		}
 
-		Json::Value getParams() {
+		BSONObj getParams() {
 			return params;
 		}
 

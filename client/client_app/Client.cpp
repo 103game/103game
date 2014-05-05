@@ -37,7 +37,7 @@ void Client::mainLoop(Client *client) {
 	//while(1){
 		client->clientActions->handleServerMessage();	
 
-		if((clock()-last_get_world)/((double) CLOCKS_PER_SEC) > .7){
+		if((clock()-last_get_world)/((double) CLOCKS_PER_SEC) > 1){
 			client->clientActions->getWorld();
 			last_get_world = clock();
 		}

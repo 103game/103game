@@ -30,7 +30,7 @@ class NetworkController
 
 	void switchState();
 
-	JSONMessage messageReceiver(JSONMessage req);
+	void messageReceiver(JSONMessage req);
 
 	static void networkMainLoop(NetworkController *ntw);
 	NetworkController(Server *_server);

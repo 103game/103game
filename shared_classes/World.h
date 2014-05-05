@@ -27,7 +27,16 @@ class World : Serializable
 
 
 		void insertSb(shared_ptr<SurfaceBlock> sb);
-		void move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);
+
+		bool moveRight(shared_ptr<WorldObject> obj);
+		bool moveLeft(shared_ptr<WorldObject> obj);
+		bool moveUp(shared_ptr<WorldObject> obj);
+		bool moveDown(shared_ptr<WorldObject> obj);
+
+		bool move(shared_ptr<WorldObject> obj, COORDS to);
+		bool move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);
+
+
 		shared_ptr<SurfaceBlock> getSurfaceBlockByCoords(COORDS coords);
 
 

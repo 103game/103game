@@ -53,6 +53,7 @@ public:
 	void drawBg();
 	void drawBorder();
 	void drawSurfaceBlock(shared_ptr<SurfaceBlock> sb, UIRect sbRect);
+	void drawObject(shared_ptr<WorldObject> wo, UIRect woRect);
 	void drawSurface();
 
 	void drawParams();

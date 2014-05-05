@@ -52,7 +52,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 	requester.setsockopt(ZMQ_SNDTIMEO, &timeout, sizeof(timeout));
 	
 	// set client identidication code (id)
-	string rndStr = Utils::randomString(5);
+	string rndStr = Utils::randomString(16);
 	requester.setsockopt(ZMQ_IDENTITY, rndStr.c_str(), rndStr.length());
 	Utils::LOG(string("My id is: "+rndStr).c_str());
 
@@ -82,7 +82,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 			string jsonStr = s_recv(requester);				
 			if(jsonStr.length()){		
 				JSONMessage msg(jsonStr);				
-				Utils::LOG("Received "+msg.getString());
+				Utils::LOG("Received "+msg.toString());
 				ntw->messageReceiver(msg);
 			}		
 			
@@ -91,8 +91,8 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 			if(ntw->messagesToSend.size()) {				
 				JSONMessage msg = ntw->messagesToSend.front();
-				Utils::LOG("Sending "+msg.getString());
-				s_send(requester, msg.getString());
+				Utils::LOG("Sending "+msg.toString());
+				s_send(requester, msg.toString());
 				ntw->messagesToSend.pop();				
 			}
 		}

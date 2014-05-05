@@ -89,14 +89,6 @@ void WorldUIView::drawParams(){
 	textDrawer->drawString("WPS: "+to_string(1/this->client->wps), Vec2f(25, 45));
 }
 
-/*	void drawLoading(string str){
-	color(Color(0, 0, 0));
-	Vec2f strSize = textDrawer->measureString(str);		
-	textDrawer->drawString(
-		str, 
-		Vec2f(rect.x+rect.width/2-strSize.x/2, rect.y+rect.width/2+strSize.y/2)
-		);
-}*/
 
 void WorldUIView::preloadTextures(){
 	Utils::LOG("Preloading textures");
@@ -104,6 +96,8 @@ void WorldUIView::preloadTextures(){
 	textures.insert(pair<string,Texture>("sand", loadImage(loadResource(RES_TX_SAND))));
 	textures.insert(pair<string,Texture>("snow", loadImage(loadResource(RES_TX_SNOW))));
 	textures.insert(pair<string,Texture>("lava", loadImage(loadResource(RES_TX_LAVA))));
+
+	textures.insert(pair<string,Texture>("zombie", loadImage(loadResource(RES_TX_ZOMBIE))));
 }
 
 
@@ -142,6 +136,26 @@ void WorldUIView::drawSurfaceBlock(shared_ptr<SurfaceBlock> sb, UIRect sbRect) {
 			Vec2f(sbRect.x+sbRect.width/2, sbRect.y+sbRect.width/2)
 			);
 	}	
+
+	// draw object
+	if(sb->getObject() != NULL){
+		drawObject(sb->getObject(), sbRect);
+	}
+	
+}
+
+void WorldUIView::drawObject(shared_ptr<WorldObject> wo, UIRect woRect){
+	Texture tx;
+
+	if(wo->getClassName() == "Zombie"){
+		tx = textures.find("zombie")->second;
+	}else{
+		
+	}
+
+	// draw texture
+	color(ColorA(1, 1, 1));
+	gl::draw(tx, Rectf(woRect.x, woRect.y, woRect.xEnd, woRect.yEnd));
 }
 
 void WorldUIView::drawSurface(){	

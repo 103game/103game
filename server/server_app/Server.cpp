@@ -19,24 +19,39 @@ extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 DBController *sharedDb;
 
+shared_ptr<Zombie> zmb;
 
 void Server::serverMainLoop(Server *server)
 {
 	NetworkController *ntw = server->networkController;
+	auto world = server->world;
 
 	while(true)
 	{	
 
-		static clock_t last_asw = 0;
+		static clock_t zmb_move = 0;
+		static bool moving_right = true;
 
-		if((clock()-last_asw)/((double) CLOCKS_PER_SEC) > .5){
-			server->serverActions->answerRequests();
+		if((clock()-zmb_move)/((double) CLOCKS_PER_SEC) > 1){
+
+			if(moving_right)
+				if(!world->moveRight(zmb))
+					moving_right = false;
+				else
+					;
+			else
+				if(!world->moveLeft(zmb))
+					moving_right = true;
+				
+			zmb_move = clock();
 		}
+
+		server->serverActions->answerRequests();
 
 		
 		//Utils::LOG("SURFACE UPDATE");
-		server->world->getSurfaceBlockByCoords(COORDS(rand()%10, rand()%10))
-			->setSurfaceType((SURFACE)(rand()%4));
+		/*server->world->getSurfaceBlockByCoords(COORDS(rand()%10, rand()%10))
+			->setSurfaceType((SURFACE)(rand()%4));*/
 		
 		
 
@@ -71,6 +86,9 @@ Server::Server()
 				);
 		}
 	}
+
+	zmb = shared_ptr<Zombie>(new Zombie());
+	world->move(zmb, world->getSurfaceBlockByCoords(COORDS(1, 1)));
 
 	Utils::LOG("world size "+to_string(world->sbMap.size()));
 	

@@ -6,12 +6,15 @@
 #include "Server.h"
 #include "World.h"
 
+#include "UserMapper.h"
+#include "DBController.h"
 
+#include "BSON.h"
 #include "Utils.h"
 #include <vector>
-#include "UserMapper.h"
 
-#include "DBController.h"
+
+
 
 
 
@@ -21,8 +24,6 @@ extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 extern DBController *sharedDb;
-
-using namespace bson;
 
 ServerActions::ServerActions(NetworkController *_ntw){
 	ntw = _ntw;
@@ -73,10 +74,10 @@ void ServerActions::getWorld(JSONMessage msg){
 
 void ServerActions::signIn(JSONMessage msg) {
 	vector<string> errors;
-	Json::Value params = msg.getParams();	
+	BSONObj params = msg.getParams();	
 
-	string email = params["email"].asString();
-	string password = params["password"].asString();
+	string email = params.getStringField("email");
+	string password = params.getStringField("password");
 
 	// TODO validate input strings
 
@@ -111,12 +112,12 @@ void ServerActions::signIn(JSONMessage msg) {
 void ServerActions::signUp(JSONMessage msg) {
 	vector<string> errors;
 
-	Json::Value params = msg.getParams();			
+	BSONObj params = msg.getParams();			
 
 
-	string email = params["email"].asString(), 
-			password = params["password"].asString(),
-			name = params["name"].asString();
+	string email = params.getStringField("email"),
+			password = params.getStringField("password"),
+			name = params.getStringField("name");
 
 
 	// validate input strings TODO:more careful validation

@@ -27,7 +27,7 @@ void NetworkController::switchState() {
 
 
 
-JSONMessage NetworkController::messageReceiver(JSONMessage req) {
+void NetworkController::messageReceiver(JSONMessage req) {
 	
 	cout << "Action " + req.getAction() << endl;
 
@@ -39,11 +39,7 @@ JSONMessage NetworkController::messageReceiver(JSONMessage req) {
 		this->receivedMessages.push(req);
 		/*Utils::LOG("NOTIFY RCVD MSGS");
 		receivedMessagesCond.notify_one();*/
-	}	
-
-	
-
-	return JSONMessage::ok(req.getClientId());		
+	}		
 }
 
 

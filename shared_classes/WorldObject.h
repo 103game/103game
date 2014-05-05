@@ -4,6 +4,7 @@
 #include "DBObject.h"
 
 #include "BSON.h"
+#include "Utils.h"
 
 
 class SurfaceBlock;
@@ -14,10 +15,12 @@ class WorldObject: public DBObject {
 	public:	
 
 		shared_ptr<SurfaceBlock> surfaceBlock;
+		string id;
 
 		WorldObject() {
 			setClassName("WorldObject");
 			setDbCollection("server.worldobjects");
+			id = Utils::randomString(16);
 
 			surfaceBlock = NULL;
 		}
@@ -27,14 +30,16 @@ class WorldObject: public DBObject {
 		
 		BSONObj toBSON(){
 			BSONObjBuilder builder;
-			builder
-				.appendElements(DBObject::toBSON());
+			builder.appendElements(DBObject::toBSON());
 			return builder.obj();
 		}
 
 		void fromBSON(BSONObj obj) {
 			DBObject::fromBSON(obj);			
 		}
+
+
+		shared_ptr<SurfaceBlock> getSurfaceBlock(){return surfaceBlock;}
 
 
 };

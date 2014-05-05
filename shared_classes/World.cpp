@@ -5,18 +5,48 @@
 #include <boost/thread.hpp>
 
 
-void World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {	
+bool World::moveRight(shared_ptr<WorldObject> obj){
+	COORDS crd = obj->getSurfaceBlock()->getCoords();	
+	return move(obj, COORDS(crd.x+1, crd.y));
+}
+
+bool World::moveLeft(shared_ptr<WorldObject> obj){
+	COORDS crd = obj->getSurfaceBlock()->getCoords();	
+	return move(obj, COORDS(crd.x-1, crd.y));
+}
+
+bool World::moveUp(shared_ptr<WorldObject> obj){
+	COORDS crd = obj->getSurfaceBlock()->getCoords();	
+	return move(obj, COORDS(crd.x+1, crd.y));
+}
+
+bool World::moveDown(shared_ptr<WorldObject> obj){
+	COORDS crd = obj->getSurfaceBlock()->getCoords();	
+	return move(obj, COORDS(crd.x+1, crd.y));
+}
+
+bool World::move(shared_ptr<WorldObject> obj, COORDS to) {	
+	auto sb = getSurfaceBlockByCoords(to);
+	if(sb != NULL){
+		move(obj, sb);
+		return true;
+	}
+	return false;
+}
+
+bool World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {	
+
+	if(to == NULL || !to->isEmpty())
+		return false;
+
 	if(obj->surfaceBlock != NULL){
 		obj->surfaceBlock->clear();
 	}
 
-	if(!to->isEmpty()){
-		cout << "MOVED TO NON-EMPTY BLOCK. CAN BE MEM LEAK" << endl;
-		to->clear();
-	}
-
 	to->setObject(obj);
 	obj->surfaceBlock = to;
+
+	return true;
 }
 
 void World::insertSb(shared_ptr<SurfaceBlock> sb){

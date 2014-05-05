@@ -21,27 +21,39 @@ using namespace std;
 class JSONMessage {
 
 private:
-		string jsonString;
+		BSONObj root;		
 		string action;
 		BSONObj params;
+		string session_id;
 
 public:
 
 		JSONMessage(){
-
+			construct(BSON("action" << "none" << "params" << BSONObj()));
 		}
 		
-		JSONMessage(string _jsonString):jsonString(_jsonString){
+		JSONMessage(string _jsonString, string _ssid = ""){			
+			construct(fromjson(_jsonString), _ssid);
+		}
+
+		JSONMessage(BSONObj obj, string _ssid = ""){			
+			construct(obj, _ssid);
+		}
+
+		void construct(BSONObj _obj, string _ssid = ""){
 			try{
-				BSONObj bson = fromjson(jsonString);
-				action = bson.getStringField("action");
-				params = bson.getField("params").Obj().getOwned();
-				
-				
+				root = _obj;
+				action = root.getStringField("action");
+				params = root.getField("params").Obj().getOwned();
+
+				// add ssid to params
+				params = BSONObjBuilder().appendElements(params).append("ssid", session_id).obj();
+
+				root = BSONObjBuilder().append("action", action).append("params", params).obj();
+
 			}catch(exception &e){
 				Utils::ERR("failed to parse json"+string(e.what()));
 			}
-			
 		}
 
 		bool hasErrors(){
@@ -73,9 +85,8 @@ public:
 			return ss.str();			
 		}
 
-
-		string getString() {
-			return jsonString;
+		string toString(){
+			return root.jsonString();
 		}
 
 		string getAction() {

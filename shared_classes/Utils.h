@@ -8,9 +8,11 @@
 #include <algorithm>
 #include <time.h>
 
+#ifdef CLIENT_APP
 #ifdef WIN32
 #include <winsock2.h>
 #include <Windows.h>
+#endif
 #endif
 
 #include <algorithm> 

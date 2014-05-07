@@ -21,33 +21,48 @@ using namespace std;
 */
 class JSONMessage;
 
-class JSONMessage {
-
-		string jsonString;
-		string clientId;
+class JSONMessage {		
 
 		BSONObj root;
 
 		string action;
 		BSONObj params;
 
+		string clientId;
+		string session_id;
+
 		public:
 
 		JSONMessage(){
-
+			construct(BSON("action" << "none" << "params" << BSONObj()), "none");
 		}
 		
-		JSONMessage(string _jsonString, string _clientId):jsonString(_jsonString), clientId(_clientId){
+		JSONMessage(string _jsonString, string _clientId){
+			construct(fromjson(_jsonString), _clientId);
+		}
+
+		JSONMessage(BSONObj obj, string _clientId){
+			construct(obj, _clientId);
+		}
+
+		void construct(BSONObj obj, string _clientId){
 			try{
-				root = fromjson(jsonString);
+				root = obj;
 				action = root.getStringField("action");
 				params = root.getField("params").Obj().getOwned();
 
+				clientId = _clientId;
+
+				if(params.hasField("session_id")){
+					session_id = params.getStringField("session_id");
+					Utils::LOG("session id exist: "+session_id);
+				}else{
+					session_id = "";
+				}
 
 			}catch(exception &e){
 				Utils::ERR("failed to parse json"+string(e.what()));
-			}
-
+			} 
 		}
 		
 
@@ -57,7 +72,7 @@ class JSONMessage {
 			BSONObj obj = mongo::BSONObjBuilder().append("action", action)
 								.append("params", params).obj();
 			
-			return JSONMessage(obj.jsonString(), clientId);
+			return JSONMessage(obj, clientId);
 		}
 
 		static JSONMessage error (string action, string err, string clientId) {
@@ -84,12 +99,20 @@ class JSONMessage {
 			return clientId;
 		}
 
-		User getUser(){
-
+		string getSessionId(){
+			return session_id;
 		}
 
-		string getString() {
-			return jsonString;
+		shared_ptr<User> getUser(){
+			if(getSessionId() != ""){
+				return UserMapper::getBySessionId(getSessionId());
+			}
+
+			return NULL;
+		}
+
+		string toString() {
+			return root.toString();
 		}
 
 		string getAction() {

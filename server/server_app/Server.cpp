@@ -12,6 +12,7 @@
 
 #include "UserMapper.h"
 
+
 #include <boost/thread/thread.hpp>
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
@@ -91,8 +92,8 @@ Server::Server()
 	world->move(zmb, world->getSurfaceBlockByCoords(COORDS(1, 1)));
 
 	Utils::LOG("world size "+to_string(world->sbMap.size()));
+
 	
-			
 	boost::thread mainLoop(Server::serverMainLoop, this); // start server main loop	
 	mainLoop.join();
 }

@@ -32,19 +32,21 @@ Client::Client(ClientApp *_app) {
 
 void Client::mainLoop(Client *client) {	
 
+
+	client->clientActions->handleServerMessage();	
+
+
 	static clock_t last_get_world = 0;
 
-	//while(1){
-		client->clientActions->handleServerMessage();	
-
+	if(client->session_id != ""){
 		if((clock()-last_get_world)/((double) CLOCKS_PER_SEC) > 1){
 			client->clientActions->getWorld();
 			last_get_world = clock();
 		}
+	}
 
-
-		client->ticks++;
-	//}	
+	client->ticks++;
+	
 } 
 
 

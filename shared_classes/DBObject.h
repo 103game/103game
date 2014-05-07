@@ -17,6 +17,7 @@ class DBObject:public Serializable {
 private:
 	string db_collection;
 	string id;
+/*	OID _id;*/
 	bool inDb;
 
 public:
@@ -30,8 +31,8 @@ public:
 
 	BSONObj toBSON(){
 		BSONObjBuilder builder;
-		builder
-			.appendElements(Serializable::toBSON())
+		builder			
+			.appendElements(Serializable::toBSON())			
 			.append("id", id)
 			.append("inDb", inDb);
 		return builder.obj();
@@ -39,7 +40,7 @@ public:
 
 	void fromBSON(BSONObj obj) {
 		Serializable::fromBSON(obj);
-		setId(obj.getStringField("id"));
+		setId(obj.getStringField("id"));		
 		setInDb(obj.getBoolField("inDb"));
 	}
 
@@ -56,6 +57,9 @@ public:
 
 	string getId(){ return id; }
 	void setId(string _id){ id = _id; }
+
+// 	OID getOID(){ return _id; }
+// 	void setOID(OID __id){ _id = __id; }
 };
 
 #endif

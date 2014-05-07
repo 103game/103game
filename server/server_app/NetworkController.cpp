@@ -109,7 +109,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 				cout << "Sending message " /*<< rep.getString()*/ << endl;
 				Utils::LOG("SND_COPYMSG__TIME: "+to_string((clock() - start_snd)/(double) CLOCKS_PER_SEC));
 				s_sendmoref (responder, rep.getClientId(), ZMQ_NOBLOCK);				
-				s_sendf (responder, rep.getString(), ZMQ_NOBLOCK);
+				s_sendf (responder, rep.toString(), ZMQ_NOBLOCK);
 
 				
 				ntw->messagesToSend.pop();

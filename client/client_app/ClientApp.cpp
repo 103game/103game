@@ -42,10 +42,8 @@ void ClientApp::setup()
 
 	
 
-	this->setUIState(UI_STATE_GAME);	
-	
+	this->setUIState(UI_STATE_SIGNIN);	
 
-//	this->signInView->removeFromParentView();
 }
 
 void ClientApp::update()

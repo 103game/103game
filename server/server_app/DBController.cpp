@@ -46,6 +46,7 @@ void DBController::saveObject(DBObject &obj){
 	if(newRecord) {				
 		this->insert(obj.getDbCollection(), bson);		
 	}else {		
+		Utils::LOG("Updating db");
 		this->update(obj.getDbCollection(), BSON("id" << obj.getId()), bson);
 	}	
 }
@@ -94,7 +95,8 @@ void DBController::update(string collection, string json_where, string json_how,
 }
 
 void DBController::update(string collection, mongo::BSONObj where, mongo::BSONObj how, bool create_if_no, bool multi) {
-	this->c->update(collection, where, how, create_if_no, multi);
+	this->c->remove(collection, where, !multi); // !!!!!!! KOSTIL
+	this->c->insert(collection, how, multi);     
 }
 
 void DBController::insert(string collection, mongo::BSONObj obj) {

@@ -30,16 +30,16 @@ void NetworkController::switchState() {
 
 void NetworkController::messageReceiver(JSONMessage msg) {
 	//DBOUT(string("MEssage received: "+msg.getString()).c_str());
-	
+
 	boost::lock_guard<boost::mutex> lock(receivedMessagesMutex); // protect receivedMEssages
 	this->receivedMessages.push(msg);			
-		
+
 }
 
 
 void NetworkController::networkMainLoop(NetworkController *ntw)
 {
-	
+
 	// Setup sockets
 	zmq::context_t context(1);
 
@@ -50,7 +50,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 	int timeout = 0; 
 	requester.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
 	requester.setsockopt(ZMQ_SNDTIMEO, &timeout, sizeof(timeout));
-	
+
 	// set client identidication code (id)
 	string rndStr = Utils::randomString(16);
 	requester.setsockopt(ZMQ_IDENTITY, rndStr.c_str(), rndStr.length());
@@ -65,7 +65,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 		return;
 	}
 
-	
+
 	// setup timer
 	clock_t last_state_started;
 
@@ -85,7 +85,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 				Utils::LOG("Received "+msg.toString());
 				ntw->messageReceiver(msg);
 			}		
-			
+
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {			
 			// send message to server		
 			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
@@ -118,6 +118,6 @@ NetworkController::NetworkController(Client  *_client)
 
 	// this->messagesToPublish.push(PublisherMessage("hello", "to_sub_101"));
 
-	
+
 	boost::thread networkThread(NetworkController::networkMainLoop, this);	
 }

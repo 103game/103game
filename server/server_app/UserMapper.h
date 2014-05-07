@@ -31,6 +31,19 @@ public:
 	}
 
 
+	static shared_ptr<User> getBySessionId(string ssid) {
+		BSONObj obj = sharedDb->getObjectByQuery(USERS_DB_COLLECTION, QUERY("session_id" << ssid));
+
+		if(obj.isEmpty()){
+			return NULL;
+		}		
+
+		shared_ptr<User> usr = shared_ptr<User>(new User());
+		usr->fromBSON(obj);
+
+		return usr;
+	}
+
 
 	static shared_ptr<User> getById(string id) {
 		BSONObj obj = sharedDb->getObjectById(USERS_DB_COLLECTION, OID(id));

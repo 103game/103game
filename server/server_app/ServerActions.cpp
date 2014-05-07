@@ -15,10 +15,6 @@
 
 
 
-
-
-
-
 #include <boost/thread/thread.hpp>
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
@@ -61,9 +57,16 @@ void ServerActions::messageForwarder(JSONMessage msg){
 
 
 void ServerActions::getWorld(JSONMessage msg){
-	Utils::LOG("WORLD REQUESTED");
-	
-	JSONMessage rpl = JSONMessage::actionmsg("getWorldCallback", this->server->world->toBSON(), msg.getClientId());	
+
+	auto requester = msg.getUser();
+	JSONMessage rpl;
+
+	if(requester){
+		Utils::LOG("User "+(requester->getName())+" requested world");
+		rpl = JSONMessage::actionmsg("getWorldCallback", this->server->world->toBSON(), msg.getClientId());		
+	}else{
+		rpl = JSONMessage::error("getWorldCallback", "not_auth", msg.getClientId());		
+	}	
 
 	{	
 		boost::lock_guard<boost::mutex> lock(messagesToSendMutex);

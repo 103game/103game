@@ -46,10 +46,16 @@ public:
 				action = root.getStringField("action");
 				params = root.getField("params").Obj().getOwned();
 
+				session_id = _ssid;
+
 				// add ssid to params
-				params = BSONObjBuilder().appendElements(params).append("ssid", session_id).obj();
+				params = BSONObjBuilder().appendElements(params).append("session_id", session_id).obj();
 
 				root = BSONObjBuilder().append("action", action).append("params", params).obj();
+
+				if(hasErrors()){
+					Utils::LOG(getErrorsString());
+				}
 
 			}catch(exception &e){
 				Utils::ERR("failed to parse json"+string(e.what()));

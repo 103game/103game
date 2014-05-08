@@ -41,6 +41,12 @@
     <ClCompile Include="..\..\shared_classes\Utils.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
+    <ClCompile Include="GameActions.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="User.cpp">
+      <Filter>shared_classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Server.h">
@@ -93,6 +99,9 @@
     </ClInclude>
     <ClInclude Include="..\..\shared_classes\md5.h">
       <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="GameActions.h">
+      <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

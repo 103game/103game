@@ -15,6 +15,8 @@
 #include "MainUIVIew.h"
 #include "WorldUIView.h"
 
+#include "AlertUIView.h"
+
 class Client;
 
 using namespace ci;
@@ -47,6 +49,8 @@ public:
 	SignUpUIView *signUpView;
 	DebugConsoleUIView *debugConsoleView;
 	WorldUIView *wv;
+
+	AlertUIView *alertView;
 
 
 

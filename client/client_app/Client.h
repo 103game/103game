@@ -5,9 +5,12 @@
 #include <memory>
 #include <time.h>
 
+#include "Creatures.h"
+
 class ClientApp;
 class ClientActions;
 class NetworkController;
+
 
 class World;
 
@@ -22,6 +25,7 @@ class Client {
 
 		bool is_authorized;
 		string session_id;
+		shared_ptr<Creature> userCreature;
 
 		shared_ptr<World> world;
 

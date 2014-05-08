@@ -28,35 +28,34 @@ bool DBController::connect()
 	return true;
 }
 
-void DBController::saveObject(DBObject &obj){
-	bool newRecord = !obj.isInDb();	
-	obj.setInDb(true);
+void DBController::saveObject(shared_ptr<DBObject> obj) {
+	bool newRecord = !obj->isInDb();	
+	obj->setInDb(true);
 
 	BSONObj bson;
-	if(obj.getClassName() == "User"){
-		bson = ((User*)&obj)->toBSON();
-	}else if(obj.getClassName() == "Survivor"){
-		bson = ((Survivor*)&obj)->toBSON();
-	}else if(obj.getClassName() == "Zombie"){
-		bson = ((Zombie*)&obj)->toBSON();
+	if(obj->getClassName() == "User"){
+		bson = ((User *)obj.get())->toBSON();
+	}else if(obj->getClassName() == "Survivor"){
+		bson = ((Survivor*)obj.get())->toBSON();
+	}else if(obj->getClassName() == "Zombie"){
+		bson = ((Zombie*)obj.get())->toBSON();
 	}else{
-		Utils::ERR("Save object: unknown DBObject - "+obj.getClassName());
+		Utils::ERR("Save object: unknown DBObject - "+obj->getClassName());
 	}
 
 	if(newRecord) {				
-		this->insert(obj.getDbCollection(), bson);		
-	}else {		
-		Utils::LOG("Updating db");
-		this->update(obj.getDbCollection(), BSON("id" << obj.getId()), bson);
+		this->insert(obj->getDbCollection(), bson);		
+	}else {				
+		this->update(obj->getDbCollection(), BSON("id" << obj->getId()), bson, false, false);
 	}	
 }
 
 
-bool DBController::objectExists(string collection, mongo::OID id){
+bool DBController::objectExists(string collection, string id){
 	return !this->getObjectById(collection, id).isEmpty();
 }
 
-mongo::BSONObj DBController::getObjectById(string collection, mongo::OID id) {
+mongo::BSONObj DBController::getObjectById(string collection, string id) {
 	return this->getObjectByQuery(collection, QUERY("id" << id));
 }
 
@@ -95,8 +94,9 @@ void DBController::update(string collection, string json_where, string json_how,
 }
 
 void DBController::update(string collection, mongo::BSONObj where, mongo::BSONObj how, bool create_if_no, bool multi) {
-	this->c->remove(collection, where, !multi); // !!!!!!! KOSTIL
-	this->c->insert(collection, how, multi);     
+	c->update(collection, where, how, create_if_no, multi);
+	/*this->c->remove(collection, where, !multi); // !!!!!!! KOSTIL
+	this->c->insert(collection, how, multi);   */	
 }
 
 void DBController::insert(string collection, mongo::BSONObj obj) {

@@ -10,6 +10,7 @@
 #include "BSON.h"
 
 #include <unordered_map>
+#include <vector>
 
 
 using namespace std;
@@ -18,6 +19,7 @@ class World : Serializable
 {
 	public: 		
 		unordered_map<COORDS, shared_ptr<SurfaceBlock>, COORDSHasher> sbMap;
+		vector<shared_ptr<WorldObject>> objects;
 
 
 		World() {
@@ -35,6 +37,9 @@ class World : Serializable
 
 		bool move(shared_ptr<WorldObject> obj, COORDS to);
 		bool move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);
+
+		bool World::isOnMap(shared_ptr<WorldObject> wo);
+		void World::remove(shared_ptr<WorldObject> wo);
 
 
 		shared_ptr<SurfaceBlock> getSurfaceBlockByCoords(COORDS coords);

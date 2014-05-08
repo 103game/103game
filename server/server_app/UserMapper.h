@@ -46,7 +46,7 @@ public:
 
 
 	static shared_ptr<User> getById(string id) {
-		BSONObj obj = sharedDb->getObjectById(USERS_DB_COLLECTION, OID(id));
+		BSONObj obj = sharedDb->getObjectById(USERS_DB_COLLECTION, id);
 
 		if(obj.isEmpty()){
 			return NULL;

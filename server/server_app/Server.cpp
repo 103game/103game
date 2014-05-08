@@ -5,6 +5,7 @@
 #include "NetworkController.h"
 #include "DBController.h"
 #include "ServerActions.h"
+#include "GameActions.h"
 
 #include "World.h"
 #include "Creatures.h"
@@ -72,6 +73,7 @@ Server::Server()
 
 	this->networkController = new NetworkController(this);
 	this->serverActions = new ServerActions(this->networkController);
+	this->gameActions = new GameActions(this);
 	this->ticks = 0;
 	
 	// create world
@@ -92,6 +94,8 @@ Server::Server()
 	world->move(zmb, world->getSurfaceBlockByCoords(COORDS(1, 1)));
 
 	Utils::LOG("world size "+to_string(world->sbMap.size()));
+
+
 
 	
 	boost::thread mainLoop(Server::serverMainLoop, this); // start server main loop	

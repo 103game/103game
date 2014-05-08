@@ -25,11 +25,11 @@ class DBController {
 
 	bool connect();
 
-	bool objectExists(string collection, mongo::OID id);
+	bool objectExists(string collection, string id);
 
-	void saveObject(DBObject &obj);
+	void DBController::saveObject(shared_ptr<DBObject> obj);
 
-	mongo::BSONObj getObjectById(string collection, mongo::OID id);
+	mongo::BSONObj getObjectById(string collection, string id);
 	mongo::BSONObj getObjectByQuery(string collection, mongo::Query query, string sort = "");
 	vector<mongo::BSONObj> getObjectsByQuery(string collection, string json_query, string sort = "");
 	vector<mongo::BSONObj> getObjectsByQuery(string collection, mongo::Query query, string sort = "");

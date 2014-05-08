@@ -9,6 +9,8 @@ using namespace std;
 class NetworkController;
 class DBController;
 class ServerActions;
+class GameActions;
+
 
 class World;
 
@@ -21,6 +23,7 @@ class Server {
 	NetworkController *networkController;
 	DBController *dbController;
 	ServerActions *serverActions;
+	GameActions *gameActions;
 
 	shared_ptr<World> world;
 

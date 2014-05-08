@@ -66,7 +66,9 @@ public:
 
 	static std::string randomString( size_t length )
 	{
-		srand( (unsigned)time( NULL ) );
+		static unsigned int i = 0;
+		srand( (unsigned)time( NULL ) + i );
+		i++;
 		auto randchar = []() -> char
 		{
 			const char charset[] =

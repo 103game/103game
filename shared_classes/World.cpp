@@ -36,6 +36,10 @@ bool World::move(shared_ptr<WorldObject> obj, COORDS to) {
 
 bool World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {	
 
+	if(!isOnMap(obj)){
+		objects.push_back(obj);
+	}
+
 	if(to == NULL || !to->isEmpty())
 		return false;
 
@@ -47,6 +51,30 @@ bool World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {
 	obj->surfaceBlock = to;
 
 	return true;
+}
+
+void World::remove(shared_ptr<WorldObject> wo) {
+	shared_ptr<SurfaceBlock> sb = wo->getSurfaceBlock();
+	if(sb != NULL){
+		sb->setObject(NULL);
+	}
+
+	for(vector<shared_ptr<WorldObject>>::iterator it = objects.begin(); it != objects.end(); it++){
+		if(wo->getId() == (*it)->getId()){
+			objects.erase(it);
+			break;
+		}
+	}
+
+}
+
+bool World::isOnMap(shared_ptr<WorldObject> wo) {
+	for(vector<shared_ptr<WorldObject>>::iterator it = objects.begin(); it != objects.end(); it++){
+		if(wo->getId() == (*it)->getId()){
+			return true;
+		}
+	}
+	return false;
 }
 
 void World::insertSb(shared_ptr<SurfaceBlock> sb){

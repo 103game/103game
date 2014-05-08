@@ -54,8 +54,22 @@ void ClientActions::getWorld() {
 
 void ClientActions::getWorldCallback(JSONMessage msg) {
 	
+	if(msg.hasErrors()){
+		client->is_authorized = false;
+		client->session_id = "";
+		client->app->alertView->setAlert("Connection lost", "Disconnected from server");
+		this->client->app->setUIState(UI_STATE_SIGNIN);
+		return;
+	}
+
+	// get user creature
+	client->userCreature = shared_ptr<Creature>(new Creature());
+	client->userCreature->fromBSON(msg.getParams().getField("userCreature").Obj());
+
+	// get world
 	shared_ptr<World> w = shared_ptr<World>(new World());
-	w->fromBSON(msg.getParams());
+	w->fromBSON(msg.getParams().getField("world").Obj());
+
 	Utils::LOG("world received. Size: "+to_string(w->sbMap.size()));
 
 	boost::lock_guard<boost::mutex> lock(worldMutex);
@@ -152,5 +166,7 @@ void ClientActions::signUpCallaback(JSONMessage msg) {
 		return;
 	}
 
+
+	this->client->app->setUIState(UI_STATE_SIGNIN);
 	Utils::LOG(msg.toString());
 }

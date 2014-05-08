@@ -1,10 +1,11 @@
 #ifndef GAMEACTIONS_CLASS_DEF
 #define GAMEACTIONS_CLASS_DEF
 
-#include <iostream>
+#include <memory>
+
 
 class Server;
-class JSONMessage;
+class WorldObject;
 
 using namespace std;
 
@@ -15,6 +16,8 @@ public:
 	Server *server;
 
 	GameActions(Server *_server):server(_server){};	
+
+	void respawnObject(shared_ptr<WorldObject> wo);
 
 };
 

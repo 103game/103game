@@ -27,20 +27,26 @@ void ClientApp::setup()
 	
 
 	this->signInView = new SignInUIView(UIRect(0, 0, windW, windH), this->client);
-	this->signUpView = new SignUpUIView(UIRect(0, 0, windW, windH), this->client);
-	this->debugConsoleView = new DebugConsoleUIView(UIRect(0, 0, windW, windH), this->client);
-	this->debugConsoleView->hide();
-
 	this->mainView->addSubview(this->signInView);
+
+	this->signUpView = new SignUpUIView(UIRect(0, 0, windW, windH), this->client);
 	this->mainView->addSubview(this->signUpView);
 
-
 	wv = new WorldUIView(UIRect(0, 0, windW, windH), this->client);
-
 	this->mainView->addSubview(wv);
+
+	this->alertView = new AlertUIView(UIRect(0, 0, windW, windH), this->client);
+	//this->alertView->setAlert("Title", "text");
+	this->alertView->hide();
+	this->mainView->addSubview(this->alertView);
+
+	this->debugConsoleView = new DebugConsoleUIView(UIRect(0, 0, windW, windH), this->client);
+	this->debugConsoleView->hide();
 	this->mainView->addSubview(this->debugConsoleView);
 
 	
+	
+
 
 	this->setUIState(UI_STATE_SIGNIN);	
 

@@ -24,6 +24,7 @@ Client::Client(ClientApp *_app) {
 
 	this->is_authorized = false;
 	this->session_id = "";
+	this->userCreature = NULL;
 
 	this->world = shared_ptr<World>(new World());
 
@@ -38,7 +39,7 @@ void Client::mainLoop(Client *client) {
 
 	static clock_t last_get_world = 0;
 
-	if(client->session_id != ""){
+	if(client->is_authorized){
 		if((clock()-last_get_world)/((double) CLOCKS_PER_SEC) > 1){
 			client->clientActions->getWorld();
 			last_get_world = clock();

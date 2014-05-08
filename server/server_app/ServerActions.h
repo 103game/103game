@@ -23,6 +23,8 @@ class ServerActions {
 
 		void signIn(JSONMessage msg);
 		void signUp(JSONMessage msg);
+		void signOut(JSONMessage msg);
+		void signOut(shared_ptr<User> usr);
 
 		void getWorld(JSONMessage msg);
 

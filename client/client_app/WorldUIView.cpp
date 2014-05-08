@@ -150,7 +150,7 @@ void WorldUIView::drawObject(shared_ptr<WorldObject> wo, UIRect woRect){
 	if(wo->getClassName() == "Zombie"){
 		tx = textures.find("zombie")->second;
 	}else{
-		
+		tx = textures.find("zombie")->second;
 	}
 
 	// draw texture

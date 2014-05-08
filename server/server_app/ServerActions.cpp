@@ -9,6 +9,10 @@
 #include "UserMapper.h"
 #include "DBController.h"
 
+#include "Creatures.h"
+
+#include "GameActions.h"
+
 #include "BSON.h"
 #include "Utils.h"
 #include <vector>
@@ -63,7 +67,8 @@ void ServerActions::getWorld(JSONMessage msg){
 
 	if(requester){
 		Utils::LOG("User "+(requester->getName())+" requested world");
-		rpl = JSONMessage::actionmsg("getWorldCallback", this->server->world->toBSON(), msg.getClientId());		
+		BSONObj bson = BSON("world" << this->server->world->toBSON() << "userCreature" << requester->getCreature()->toBSON());
+		rpl = JSONMessage::actionmsg("getWorldCallback", bson, msg.getClientId());		
 	}else{
 		rpl = JSONMessage::error("getWorldCallback", "not_auth", msg.getClientId());		
 	}	
@@ -74,6 +79,18 @@ void ServerActions::getWorld(JSONMessage msg){
 	}
 }
 
+
+void ServerActions::signOut(shared_ptr<User> usr) {
+	usr->setSessionId("");
+	sharedDb->saveObject(usr);
+}
+
+void ServerActions::signOut(JSONMessage msg) {
+	auto requester = msg.getUser();
+	if(requester){
+		signOut(requester);
+	}
+}
 
 void ServerActions::signIn(JSONMessage msg) {
 	vector<string> errors;
@@ -97,8 +114,19 @@ void ServerActions::signIn(JSONMessage msg) {
 		string session_id = Utils::randomString(16);
 		user->setSessionId(session_id);
 
-		sharedDb->saveObject(*user);
+		sharedDb->saveObject(user);
 		cout << "User authorized "+user->toBSON().jsonString()<< endl;
+
+		shared_ptr<Creature> userCreature = user->getCreature();
+
+		if(userCreature == NULL){
+			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
+			ntw->messagesToSend.push(JSONMessage::error("signInCallback", "No creature", msg.getClientId()));
+			return;
+		}
+		
+		server->gameActions->respawnObject(userCreature);
+		
 
 		BSONObj params = BSON("session_id" << session_id);
 		
@@ -145,11 +173,20 @@ void ServerActions::signUp(JSONMessage msg) {
 		boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 		ntw->messagesToSend.push(JSONMessage::errors("signUpCallback", errors, msg.getClientId()));
 	}else{
-		User newUser(email, password, name);
-		sharedDb->saveObject(newUser);
-		cout << "New user created: "<< newUser.toBSON().jsonString() << endl; 
+		shared_ptr<User> usr = shared_ptr<User>(new User(email, password, name));
+		// create survivor 
+		shared_ptr<Survivor> srv = shared_ptr<Survivor>(new Survivor());
+		
+		usr->setCreatureId(srv->getId());
+		srv->setUserId(usr->getId());
+		srv->setBot(false);
 
-		BSONObj params = BSON("user" << newUser.toBSON());
+		sharedDb->saveObject(usr);
+		sharedDb->saveObject(srv);
+
+		cout << "New user created: "<< usr->toBSON().jsonString() << endl; 
+
+		BSONObj params = BSON("user" << usr->toBSON());
 
 		{
 			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);

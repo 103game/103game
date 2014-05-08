@@ -93,6 +93,7 @@
     <ClCompile Include="WorldUIView.cpp" />
     <ClInclude Include="..\..\shared_classes\md5.h" />
     <ClInclude Include="DebugConsoleUIView.h" />
+    <ClInclude Include="AlertUIView.h" />
     <ClInclude Include="GameActions.h" />
     <ClInclude Include="MainUIVIew.h" />
     <ClInclude Include="Resources.h" />

@@ -136,8 +136,7 @@ public:
 #ifdef SERVER_APP
 	void update(){
 		COORDS crd = getSurfaceBlock()->getCoords();
-		shared_ptr<SurfaceBlock> sb;
-		Utils::LOG("UPDATE ZOMBIE");
+		shared_ptr<SurfaceBlock> sb;		
 		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_LEFT)){
 			shared_ptr<WorldObject> wo = sb->getObject();
 			if(wo){

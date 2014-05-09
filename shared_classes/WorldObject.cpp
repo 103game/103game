@@ -5,7 +5,7 @@
 
 #include "Creatures.h"
 
-
+#include "ObjectAction.h"
 
 
 
@@ -22,3 +22,16 @@ shared_ptr<SurfaceBlock> WorldObject::getSurfaceBlock(){
 	return surfaceBlock;
 }
 
+
+void WorldObject::addAction(shared_ptr<ObjectAction> _action){	
+	actions.push_back(_action);
+}
+
+void WorldObject::removeAction(shared_ptr<ObjectAction> _action){
+	for(vector<shared_ptr<ObjectAction>>::iterator it = actions.begin(); it != actions.end(); it++){
+		if((*it)->getId() == _action->getId()){
+			actions.erase(it);
+			break;
+		}
+	}
+}

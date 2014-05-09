@@ -12,7 +12,7 @@
 
 #include <boost/thread/thread.hpp>
 
-#define NTWK_STATE_SWITCH_TIME .5
+#define NTWK_STATE_SWITCH_TIME .05
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 
@@ -29,11 +29,9 @@ void NetworkController::switchState() {
 
 
 void NetworkController::messageReceiver(JSONMessage msg) {
-	//DBOUT(string("MEssage received: "+msg.getString()).c_str());
-
+	//DBOUT(string("MEssage received: "+msg.getString()).c_str());	
 	boost::lock_guard<boost::mutex> lock(receivedMessagesMutex); // protect receivedMEssages
-	this->receivedMessages.push(msg);			
-
+	this->receivedMessages.push(msg);				
 }
 
 
@@ -47,9 +45,9 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 	zmq::socket_t requester(context, ZMQ_DEALER);
 
 	// set timeout for infinite
-	int timeout = 0; 
+	/*int timeout = 0; 
 	requester.setsockopt(ZMQ_RCVTIMEO, &timeout, sizeof(timeout));
-	requester.setsockopt(ZMQ_SNDTIMEO, &timeout, sizeof(timeout));
+	requester.setsockopt(ZMQ_SNDTIMEO, &timeout, sizeof(timeout));*/
 
 	// set client identidication code (id)
 	string rndStr = Utils::randomString(16);
@@ -78,19 +76,25 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 	{		
 
 		if(ntw->networkLoopState == NTWK_LOOP_STATE_RECEIVE) {	
-			// receive message from server if it exists				
-			string jsonStr = s_recv(requester);				
-			if(jsonStr.length()){		
-				JSONMessage msg(jsonStr);				
-				Utils::LOG("Received "+msg.toString());
+			// receive message from server if it exists			
+			clock_t receive_start = clock();
+			string jsonStr = s_recvf(requester, ZMQ_NOBLOCK);				
+			if(jsonStr.length()){						
+				clock_t json_parse_start = clock();
+				JSONMessage msg(jsonStr);								
+
+				//Utils::LOG("Received "+msg.toString());
 				ntw->messageReceiver(msg);
+				Utils::LOG("QUEUE_RCV_SIZE: "+to_string(ntw->receivedMessages.size()));
+				Utils::LOG("SINGLE_RCV_TIME: "+to_string((clock() - receive_start)/(double) CLOCKS_PER_SEC));				
 				ntw->last_server_response = clock();
 			}		
 
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {			
 			// send message to server		
 			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
-			if(ntw->messagesToSend.size()) {				
+			if(ntw->messagesToSend.size()) {		
+				Utils::LOG("QUEUE_SND_SIZE: "+to_string(ntw->messagesToSend.size()));
 				JSONMessage msg = ntw->messagesToSend.front();
 				Utils::LOG("Sending "+msg.toString());
 				s_send(requester, msg.toString());

@@ -12,6 +12,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "WorldObject.h"
+
 
 using namespace std;
 
@@ -30,10 +32,12 @@ class World : Serializable
 
 		void insertSb(shared_ptr<SurfaceBlock> sb);
 
-		bool moveRight(shared_ptr<WorldObject> obj);
-		bool moveLeft(shared_ptr<WorldObject> obj);
-		bool moveUp(shared_ptr<WorldObject> obj);
-		bool moveDown(shared_ptr<WorldObject> obj);
+		bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir);
+
+		void moveRight(shared_ptr<WorldObject> obj);
+		void moveLeft(shared_ptr<WorldObject> obj);
+		void moveUp(shared_ptr<WorldObject> obj);
+		void moveDown(shared_ptr<WorldObject> obj);
 
 		bool move(shared_ptr<WorldObject> obj, COORDS to);
 		bool move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);
@@ -42,7 +46,7 @@ class World : Serializable
 		void World::remove(shared_ptr<WorldObject> wo);
 
 		shared_ptr<WorldObject> World::getWorldObjectById(string id);
-		void World::respawnObject(shared_ptr<WorldObject> wo);
+		shared_ptr<WorldObject> World::respawnObject(shared_ptr<WorldObject> wo);
 
 
 		shared_ptr<SurfaceBlock> getSurfaceBlockByCoords(COORDS coords);

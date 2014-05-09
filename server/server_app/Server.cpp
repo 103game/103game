@@ -21,6 +21,8 @@ extern boost::condition_variable receivedMessagesCond, messagesToSendCond;
 
 DBController *sharedDb;
 
+shared_ptr<World> sharedWorld;
+
 shared_ptr<Zombie> zmb;
 
 void Server::serverMainLoop(Server *server)
@@ -34,21 +36,24 @@ void Server::serverMainLoop(Server *server)
 		static clock_t zmb_move = 0;
 		static bool moving_right = true;
 
-		if((clock()-zmb_move)/((double) CLOCKS_PER_SEC) > 1){
+		if((clock()-zmb_move)/((double) CLOCKS_PER_SEC) > .5){
 
 			if(moving_right)
-				if(!world->moveRight(zmb))
-					moving_right = false;
+				if(world->canGo(zmb, DIRECTION_RIGHT))
+					world->moveRight(zmb);
 				else
-					;
+					moving_right = false;
 			else
-				if(!world->moveLeft(zmb))
+				if(world->canGo(zmb, DIRECTION_LEFT))
+					world->moveLeft(zmb);
+				else
 					moving_right = true;
 				
 			zmb_move = clock();
 		}
 
 		server->serverActions->answerRequests();
+		server->gameActions->updateObjectActions();
 
 		
 		//Utils::LOG("SURFACE UPDATE");
@@ -79,7 +84,7 @@ Server::Server()
 	
 	// create world
 
-	this->world = shared_ptr<World>(new World());
+	sharedWorld = this->world = shared_ptr<World>(new World());
 
 
 	
@@ -100,7 +105,8 @@ Server::Server()
 
 	
 	boost::thread mainLoop(Server::serverMainLoop, this); // start server main loop	
-	mainLoop.join();
+	//mainLoop.join();
+	cin.get();
 }
 
 

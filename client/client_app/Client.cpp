@@ -34,19 +34,27 @@ Client::Client(ClientApp *_app) {
 
 void Client::mainLoop(Client *client) {	
 
-	client->clientActions->handleServerMessage();	
+
+	while(true){
+		clock_t handle_start = clock();
+		client->clientActions->handleServerMessage();	
+		//Utils::LOG("HANDLE_MSG_TIME: "+to_string((clock() - handle_start)/(double) CLOCKS_PER_SEC));
 
 
-	static clock_t last_get_world = 0;
+		static clock_t last_get_world = 0;
 
-	if(client->is_authorized){
-		if((clock()-last_get_world)/((double) CLOCKS_PER_SEC) > 1){
-			client->clientActions->getWorld();
-			last_get_world = clock();
+		if(client->is_authorized){
+			if((clock()-last_get_world)/((double) CLOCKS_PER_SEC) > .3){
+				client->clientActions->getWorld();
+				last_get_world = clock();
+			}
 		}
-	}
 
-	client->ticks++;
+		//Utils::LOG("TICK_TIME: "+to_string((clock() - handle_start)/(double) CLOCKS_PER_SEC));
+
+		client->ticks++;
+	}
+	
 	
 } 
 

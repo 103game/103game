@@ -4,6 +4,10 @@
 
 #include <map>
 
+#include <boost/thread.hpp>
+
+extern boost::mutex worldMutex;
+
 WorldUIView::WorldUIView(UIRect _rect, Client *_client) {
 	rect = _rect;
 	client = _client;
@@ -198,7 +202,9 @@ void WorldUIView::drawSurface(){
 		for(int j = wYStart; j < wYStart+wHeight; j++){
 			crd.x = i;
 			crd.y = j;
+			worldMutex.lock();
 			shared_ptr<SurfaceBlock> sb = client->world->getSurfaceBlockByCoords(crd);
+			worldMutex.unlock();
 
 			if(sb != NULL){
 				int wX = sb->getCoords().x;

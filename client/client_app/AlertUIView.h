@@ -58,10 +58,14 @@ public:
 		gui->addWidget(txt);
 		txt->setLabel(text);
 
-		ciUIButton *okButton = new ciUIButton(rect.width/2-125, rect.height/2+300, 90, 40, false, "Ok", CI_UI_FONT_LARGE);				
-		gui->addWidget(okButton);
-		ciUIButton *cancelButton = new ciUIButton(rect.width/2+5, rect.height/2+300, 90, 40, false, "Cancel", CI_UI_FONT_LARGE);
-		gui->addWidget(cancelButton);	
+		ciUIButton *okButton = new ciUIButton(200, rect.height/2+100, 100, 80, false, "Ok", CI_UI_FONT_LARGE);		
+		okButton->setColorBack(Color(0, 0, 0));
+		gui->addWidget(okButton);				
+
+		ciUIButton *cancelButton = new ciUIButton(300, rect.height/2+100, 100, 80, false,  "Cancel", CI_UI_FONT_LARGE);
+		cancelButton->setColorBack(Color(0, 0, 0));
+		gui->addWidget(cancelButton);			
+
 		gui->registerUIEvents(this, &AlertUIView::guiEvent);
 
 		this->setVisible(true);

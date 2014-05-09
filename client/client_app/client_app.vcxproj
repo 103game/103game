@@ -82,6 +82,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\shared_classes\md5.cpp" />
+    <ClCompile Include="..\..\shared_classes\SurfaceBlock.cpp" />
+    <ClCompile Include="..\..\shared_classes\User.cpp" />
     <ClCompile Include="..\..\shared_classes\Utils.cpp" />
     <ClCompile Include="..\..\shared_classes\World.cpp" />
     <ClCompile Include="..\..\shared_classes\WorldObject.cpp" />

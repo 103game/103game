@@ -32,9 +32,11 @@ ServerActions::ServerActions(NetworkController *_ntw){
 
 
 
+
+
 void ServerActions::answerRequests() {		
 
-	if(ntw->receivedMessages.size()) {		
+	while(ntw->receivedMessages.size()) {		
 		JSONMessage req;					
 		{		
 			boost::lock_guard<boost::mutex> lock(receivedMessagesMutex);			
@@ -129,7 +131,14 @@ void ServerActions::signIn(JSONMessage msg) {
 			return;
 		}
 		
-		server->world->respawnObject(userCreature);
+		userCreature = static_pointer_cast<Creature>(server->world->respawnObject(userCreature));
+
+		if(userCreature == NULL){
+			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
+			ntw->messagesToSend.push(JSONMessage::error("signInCallback", "Cant respawn", msg.getClientId()));
+			return;
+		}
+
 
 		Utils::LOG("Creature respawned at "+userCreature->getSurfaceBlock()->getCoords().toString());
 		

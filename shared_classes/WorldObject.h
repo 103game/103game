@@ -8,14 +8,25 @@
 
 #include "SurfaceBlock.h"
 
+class ObjectAction;
+
 
 class COORDS;
+
+
+typedef enum{
+	DIRECTION_UP,
+	DIRECTION_DOWN,
+	DIRECTION_RIGHT,
+	DIRECTION_LEFT
+} DIRECTION;
 
 class WorldObject: public DBObject {
 
 	public:	
 
 		shared_ptr<SurfaceBlock> surfaceBlock;		
+		vector<shared_ptr<ObjectAction>> actions;
 
 		WorldObject() {
 			setClassName("WorldObject");
@@ -38,6 +49,10 @@ class WorldObject: public DBObject {
 		}
 
 		shared_ptr<SurfaceBlock> getSurfaceBlock();
+
+		void addAction(shared_ptr<ObjectAction> _action);
+		void removeAction(shared_ptr<ObjectAction> _action);
+		
 		
 
 

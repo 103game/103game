@@ -21,6 +21,8 @@ using namespace std;
 class JSONMessage {
 
 private:
+		string jsonString;
+
 		BSONObj root;		
 		string action;
 		BSONObj params;
@@ -33,7 +35,12 @@ public:
 		}
 		
 		JSONMessage(string _jsonString, string _ssid = ""){			
-			construct(fromjson(_jsonString), _ssid);
+			jsonString = _jsonString;
+			session_id = _ssid;
+		}
+
+		void parse(){
+			construct(fromjson(jsonString), session_id);
 		}
 
 		JSONMessage(BSONObj obj, string _ssid = ""){			

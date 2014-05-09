@@ -2,27 +2,50 @@
 #include "World.h"
 #include "Creatures.h"
 
+#include "ObjectActionMove.h"
+
 #include <boost/thread.hpp>
 
 
-bool World::moveRight(shared_ptr<WorldObject> obj){
-	COORDS crd = obj->getSurfaceBlock()->getCoords();	
-	return move(obj, COORDS(crd.x+1, crd.y));
+#ifdef SERVER_APP
+
+bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir) {
+	shared_ptr<SurfaceBlock> sb;
+	COORDS crd = wo->getSurfaceBlock()->getCoords();
+
+	switch(dir){
+		case DIRECTION_UP:
+			sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y-1));			
+			break;
+		case DIRECTION_DOWN:
+			sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y+1));			
+			break;
+		case DIRECTION_LEFT:
+			sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x-1, crd.y));			
+			break;
+		case DIRECTION_RIGHT:
+			sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x+1, crd.y));			
+			break;
+	}
+
+	return sb != NULL && sb->isEmpty();
 }
 
-bool World::moveLeft(shared_ptr<WorldObject> obj){
-	COORDS crd = obj->getSurfaceBlock()->getCoords();	
-	return move(obj, COORDS(crd.x-1, crd.y));
+
+void World::moveRight(shared_ptr<WorldObject> obj){	
+	obj->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(obj, 1, DIRECTION_RIGHT)));
 }
 
-bool World::moveUp(shared_ptr<WorldObject> obj){
-	COORDS crd = obj->getSurfaceBlock()->getCoords();	
-	return move(obj, COORDS(crd.x, crd.y-1));
+void World::moveLeft(shared_ptr<WorldObject> obj){
+	obj->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(obj, 1, DIRECTION_LEFT)));
 }
 
-bool World::moveDown(shared_ptr<WorldObject> obj){
-	COORDS crd = obj->getSurfaceBlock()->getCoords();	
-	return move(obj, COORDS(crd.x, crd.y+1));
+void World::moveUp(shared_ptr<WorldObject> obj){
+	obj->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(obj, 1, DIRECTION_UP)));
+}
+
+void World::moveDown(shared_ptr<WorldObject> obj){
+	obj->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(obj, 1, DIRECTION_DOWN)));
 }
 
 bool World::move(shared_ptr<WorldObject> obj, COORDS to) {	
@@ -85,19 +108,24 @@ shared_ptr<WorldObject> World::getWorldObjectById(string id) {
 	return NULL;
 }
 
-void World::respawnObject(shared_ptr<WorldObject> wo){
+shared_ptr<WorldObject> World::respawnObject(shared_ptr<WorldObject> wo){
 
 	if(isOnMap(wo))
-		return;
+		return getWorldObjectById(wo->getId());
 
 	for(unordered_map<COORDS, shared_ptr<SurfaceBlock>, COORDSHasher>::iterator it = sbMap.begin(); it != sbMap.end(); it++){
 		shared_ptr<SurfaceBlock> sb = it->second;
 		if(sb->getObject() == NULL){
 			move(wo, sb);
+			return wo;
 			break;
 		}
 	}
+
+	return NULL;
 }
+
+#endif
 
 
 bool World::isOnMap(shared_ptr<WorldObject> wo) {
@@ -118,15 +146,13 @@ void World::insertSb(shared_ptr<SurfaceBlock> sb){
 	);
 }
 
-
-
 shared_ptr<SurfaceBlock> World::getSurfaceBlockByCoords(COORDS coords) {
-	//boost::lock_guard<boost::mutex> lock(worldMutex);
 	if(sbMap.size()){
+
 		unordered_map<COORDS, shared_ptr<SurfaceBlock>, COORDSHasher>::iterator it = sbMap.find(coords);
 		if(it != sbMap.end()){
 			return it->second;
-		}
+		}		
 	}	
 	return NULL;
 }

@@ -46,7 +46,7 @@ void ClientApp::setup()
 
 	
 	
-
+	boost::thread mainLoopThread(Client::mainLoop, client);
 
 	this->setUIState(UI_STATE_SIGNIN);	
 
@@ -57,7 +57,7 @@ void ClientApp::update()
 	windW = getWindowWidth();
 	windH = getWindowHeight();
 	
-	this->client->mainLoop(client);
+	
 
 	this->mainView->update();
 }

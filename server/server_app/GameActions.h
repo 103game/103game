@@ -20,7 +20,7 @@ public:
 
 
 	void control(JSONMessage msg);
-
+	void GameActions::updateObjectActions();
 };
 
 

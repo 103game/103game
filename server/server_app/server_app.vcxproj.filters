@@ -44,10 +44,10 @@
     <ClCompile Include="GameActions.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
-    <ClCompile Include="User.cpp">
+    <ClCompile Include="..\..\shared_classes\SurfaceBlock.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
-    <ClCompile Include="SurfaceBlock.cpp">
+    <ClCompile Include="..\..\shared_classes\User.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
   </ItemGroup>
@@ -105,6 +105,12 @@
     </ClInclude>
     <ClInclude Include="GameActions.h">
       <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\ObjectAction.h">
+      <Filter>shared_classes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\shared_classes\ObjectActionMove.h">
+      <Filter>shared_classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

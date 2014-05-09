@@ -28,6 +28,10 @@ void ClientActions::handleServerMessage(){
 }
 
 void ClientActions::messageForwarder(JSONMessage msg){
+	clock_t start_parse = clock();
+	msg.parse();
+	Utils::LOG("JSON_PARSE_TIME: "+to_string((clock() - start_parse)/(double) CLOCKS_PER_SEC));
+
 	if(msg.getAction() == "signUpCallback") {
 		this->signUpCallaback(msg);
 	} else if (msg.getAction() == "signInCallback") {
@@ -89,8 +93,12 @@ void ClientActions::getWorldCallback(JSONMessage msg) {
 
 	Utils::LOG("world received. Size: "+to_string(w->sbMap.size()));
 
-	boost::lock_guard<boost::mutex> lock(worldMutex);
-	this->client->world = w;
+	{
+		worldMutex.lock();
+		this->client->world = w;
+		worldMutex.unlock();
+	}
+	
 
 	this->client->wps = (clock() - this->client->last_world_update)/(double) CLOCKS_PER_SEC;
 	this->client->last_world_update = clock();

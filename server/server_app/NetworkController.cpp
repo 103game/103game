@@ -88,6 +88,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 					// create immediate reply with created request	
 					clock_t msg_receiver_start = clock();
 					ntw->messageReceiver(JSONMessage(message, address));
+					Utils::LOG("QUEUE_RCV_SIZE: "+to_string(ntw->receivedMessages.size()));
 					Utils::LOG("RCV_TIME: "+to_string((clock() - msg_receiver_start)/(double) CLOCKS_PER_SEC));
 
 				}
@@ -101,6 +102,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 			
 
 			if(ntw->messagesToSend.size()) {
+				Utils::LOG("QUEUE_SND_SIZE: "+to_string(ntw->messagesToSend.size()));
 				clock_t start_snd = clock();
 				boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 				Utils::LOG("SND_LOCK_TIME: "+to_string((clock() - start_snd)/(double) CLOCKS_PER_SEC));

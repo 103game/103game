@@ -5,7 +5,6 @@
 
 #include <string>
 
-#include "Utils.h"
 
 #include "BSON.h"
 
@@ -15,16 +14,13 @@ using namespace std;
 class DBObject:public Serializable {
 
 private:
-	string db_collection;
-	string id;
-/*	OID _id;*/
+	string db_collection;	
 	bool inDb;
 
 public:
 
 	DBObject() {
-		setClassName("DBObject");
-		id = Utils::randomString(20); 
+		setClassName("DBObject");		
 		db_collection = "";
 		setInDb(false);
 	}
@@ -32,15 +28,13 @@ public:
 	BSONObj toBSON(){
 		BSONObjBuilder builder;
 		builder			
-			.appendElements(Serializable::toBSON())			
-			.append("id", id)
+			.appendElements(Serializable::toBSON())						
 			.append("inDb", inDb);
 		return builder.obj();
 	}
 
 	void fromBSON(BSONObj obj) {
-		Serializable::fromBSON(obj);
-		setId(obj.getStringField("id"));		
+		Serializable::fromBSON(obj);		
 		setInDb(obj.getBoolField("inDb"));
 	}
 
@@ -55,11 +49,7 @@ public:
 	string getDbCollection(){return db_collection;}
 	void setDbCollection(string _db_collection){db_collection = _db_collection;}
 
-	string getId(){ return id; }
-	void setId(string _id){ id = _id; }
 
-// 	OID getOID(){ return _id; }
-// 	void setOID(OID __id){ _id = __id; }
 };
 
 #endif

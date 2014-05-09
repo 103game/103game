@@ -157,6 +157,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\shared_classes\md5.cpp" />
+    <ClCompile Include="..\..\shared_classes\SurfaceBlock.cpp" />
+    <ClCompile Include="..\..\shared_classes\User.cpp" />
     <ClCompile Include="..\..\shared_classes\Utils.cpp" />
     <ClCompile Include="..\..\shared_classes\World.cpp" />
     <ClCompile Include="..\..\shared_classes\WorldObject.cpp" />
@@ -165,14 +167,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
     <ClCompile Include="Server.cpp" />
-    <ClCompile Include="SurfaceBlock.cpp" />
-    <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\shared_classes\BSON.h" />
     <ClInclude Include="..\..\shared_classes\Creatures.h" />
     <ClInclude Include="..\..\shared_classes\DBObject.h" />
     <ClInclude Include="..\..\shared_classes\md5.h" />
+    <ClInclude Include="..\..\shared_classes\ObjectAction.h" />
+    <ClInclude Include="..\..\shared_classes\ObjectActionMove.h" />
     <ClInclude Include="..\..\shared_classes\Serializable.h" />
     <ClInclude Include="..\..\shared_classes\SurfaceBlock.h" />
     <ClInclude Include="..\..\shared_classes\User.h" />

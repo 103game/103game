@@ -16,9 +16,8 @@ bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir) {
 	return sb != NULL && sb->isEmpty();
 }
 
-shared_ptr<SurfaceBlock> World::getSbFrom(shared_ptr<WorldObject> wo, DIRECTION dir){
+shared_ptr<SurfaceBlock> World::getSbFrom(COORDS crd, DIRECTION dir){	
 	shared_ptr<SurfaceBlock> sb;
-	COORDS crd = wo->getSurfaceBlock()->getCoords();
 	switch(dir){
 	case DIRECTION_UP:
 		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y-1));			
@@ -34,6 +33,11 @@ shared_ptr<SurfaceBlock> World::getSbFrom(shared_ptr<WorldObject> wo, DIRECTION 
 		break;
 	}
 	return sb;
+}
+
+shared_ptr<SurfaceBlock> World::getSbFrom(shared_ptr<WorldObject> wo, DIRECTION dir){	
+	COORDS crd = wo->getSurfaceBlock()->getCoords();
+	return getSbFrom(crd, dir);
 }
 
 

@@ -58,6 +58,10 @@ class WorldObject: public DBObject {
 		shared_ptr<SurfaceBlock> getSurfaceBlock();
 		void setSurfaceBlock(shared_ptr<SurfaceBlock> _sb);
 
+
+#ifdef SERVER_APP
+		virtual void update(){}		
+#endif
 		
 		
 #ifdef CLIENT_APP

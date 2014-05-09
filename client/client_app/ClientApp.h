@@ -14,6 +14,7 @@
 #include "DebugConsoleUIView.h"
 #include "MainUIVIew.h"
 #include "WorldUIView.h"
+#include "HUDUIView.h"
 
 #include "AlertUIView.h"
 
@@ -49,6 +50,7 @@ public:
 	SignUpUIView *signUpView;
 	DebugConsoleUIView *debugConsoleView;
 	WorldUIView *wv;
+	HUDUIView *hudView;
 
 	AlertUIView *alertView;
 

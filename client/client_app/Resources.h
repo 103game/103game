@@ -9,4 +9,5 @@
 #define RES_TX_SNOW    CINDER_RESOURCE( resources/textures/surface/, snow.jpg, 132, IMAGE )
 #define RES_TX_LAVA    CINDER_RESOURCE( resources/textures/surface/, lava.jpg, 133, IMAGE )
 
-#define RES_TX_ZOMBIE    CINDER_RESOURCE( resources/textures/creatures/zombies/, zombie.png, 134, IMAGE )
+#define RES_TX_ZOMBIE    CINDER_RESOURCE( resources/textures/creatures/zombies/, zombie1.png, 134, IMAGE )
+#define RES_TX_SURVIVOR   CINDER_RESOURCE( resources/textures/creatures/survivors/, Man1.png, 135, IMAGE )

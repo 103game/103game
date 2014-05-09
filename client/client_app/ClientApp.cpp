@@ -36,6 +36,9 @@ void ClientApp::setup()
 	wv = new WorldUIView(UIRect(0, 0, windW, windH), this->client);
 	this->mainView->addSubview(wv);
 
+	hudView = new HUDUIView(UIRect(0, 0, windW, windH), this->client);
+	wv->addSubview(hudView);
+
 	this->alertView = new AlertUIView(UIRect(0, 0, windW, windH), this->client);
 	//this->alertView->setAlert("Title", "text");
 	this->alertView->hide();
@@ -49,7 +52,7 @@ void ClientApp::setup()
 	
 	boost::thread mainLoopThread(Client::mainLoop, client);
 
-	this->setUIState(UI_STATE_SIGNIN);	
+	this->setUIState(UI_STATE_SIGNUP);	
 
 }
 

@@ -6,10 +6,16 @@
 
 #include "BSON.h"
 
+#include "World.h"
+
 #define NO_USER "no_user"
 
 #ifdef CLIENT_APP
 	extern map<string, Texture> sharedTextures;
+#endif
+
+#ifdef SERVER_APP
+	extern shared_ptr<World> sharedWorld;
 #endif
 
 class Creature: public WorldObject {
@@ -59,6 +65,8 @@ public:
 	int getLife(){return life;}
 	void setLife(int _life){life = _life;}
 
+	void decrLife(int decr){life-=decr; life = life>=0?life:0;}
+
 	bool isBot(){return bot;}
 	void setBot(bool _bot){bot = _bot;}
 
@@ -86,6 +94,12 @@ public:
 	void draw(UIRect rect){
 		Creature::draw(rect);		
 	}
+#endif
+
+#ifdef SERVER_APP
+	void update(){
+
+	}		
 #endif
 
 	BSONObj toBSON(){
@@ -117,6 +131,57 @@ public:
 	void draw(UIRect rect){
 		Creature::draw(rect);		
 	}
+#endif
+
+#ifdef SERVER_APP
+	void update(){
+		COORDS crd = getSurfaceBlock()->getCoords();
+		shared_ptr<SurfaceBlock> sb;
+		Utils::LOG("UPDATE ZOMBIE");
+		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_LEFT)){
+			shared_ptr<WorldObject> wo = sb->getObject();
+			if(wo){
+				if(wo->getClassName() == "Survivor"){					
+					shared_ptr<Survivor> srv = static_pointer_cast<Survivor>(wo);
+					srv->decrLife(10);
+					srv->setLife(10);
+				}
+			}
+		}
+
+		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_RIGHT)){
+			shared_ptr<WorldObject> wo = sb->getObject();
+			if(wo){
+				if(wo->getClassName() == "Survivor"){					
+					shared_ptr<Survivor> srv = static_pointer_cast<Survivor>(wo);
+					srv->decrLife(10);
+					srv->setLife(10);
+				}
+			}
+		}
+
+		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_UP)){
+			shared_ptr<WorldObject> wo = sb->getObject();
+			if(wo){
+				if(wo->getClassName() == "Survivor"){					
+					shared_ptr<Survivor> srv = static_pointer_cast<Survivor>(wo);
+					srv->decrLife(10);
+					srv->setLife(10);
+				}
+			}
+		}
+
+		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_DOWN)){
+			shared_ptr<WorldObject> wo = sb->getObject();
+			if(wo){
+				if(wo->getClassName() == "Survivor"){					
+					shared_ptr<Survivor> srv = static_pointer_cast<Survivor>(wo);
+					srv->decrLife(10);
+					srv->setLife(10);
+				}
+			}
+		}
+	}		
 #endif
 
 	BSONObj toBSON(){

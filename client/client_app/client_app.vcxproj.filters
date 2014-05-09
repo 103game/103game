@@ -57,6 +57,9 @@
     <ClCompile Include="GameActions.cpp">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
+    <ClCompile Include="HUDUIView.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetworkController.h">
@@ -132,6 +135,9 @@
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
     <ClInclude Include="AlertUIView.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="HUDUIView.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
   </ItemGroup>

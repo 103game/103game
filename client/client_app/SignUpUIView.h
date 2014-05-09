@@ -5,6 +5,7 @@
 #include "Client.h"
 #include "ClientActions.h"
 
+
 class SignUpUIView : public UIView {
 
 private:
@@ -56,6 +57,9 @@ public:
 		errorsLabel->setColorFill(ColorA(1, 0, 0, .8));		
 		this->gui->addWidget(errorsLabel);
 
+		/*ciUIButton *goSignin = new ciUIButton(10, 10, 50, 10, false, "Sign in", CI_UI_FONT_MEDIUM);
+		this->gui->addWidget(goSignin);*/
+
 		this->gui->registerUIEvents(this, &SignUpUIView::signUpGuiEvent);
 		this->gui->setVisible(false);
 	}
@@ -76,7 +80,9 @@ public:
 					passwordRepeatTextField->getTextString()					
 					);
 			}
-		}	
+		}else if(name == "Sign in")	{
+			//client->app->setUIState(UI_STATE_SIGNIN);
+		}
 	}
 
 	void setErrorLabel(string str){

@@ -18,6 +18,8 @@ public:
 
 	GameActions(Server *_server):server(_server){};	
 	void control(JSONMessage msg);	
+
+	void updateObjects();
 };
 
 

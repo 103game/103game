@@ -91,6 +91,7 @@
     <ClCompile Include="ClientActions.cpp" />
     <ClCompile Include="ClientApp.cpp" />
     <ClCompile Include="GameActions.cpp" />
+    <ClCompile Include="HUDUIView.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
     <ClCompile Include="WorldUIView.cpp" />
@@ -98,6 +99,7 @@
     <ClInclude Include="DebugConsoleUIView.h" />
     <ClInclude Include="AlertUIView.h" />
     <ClInclude Include="GameActions.h" />
+    <ClInclude Include="HUDUIView.h" />
     <ClInclude Include="MainUIVIew.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="SignUpUIView.h" />

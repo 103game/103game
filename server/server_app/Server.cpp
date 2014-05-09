@@ -53,6 +53,7 @@ void Server::serverMainLoop(Server *server)
 		}
 
 		server->serverActions->answerRequests();
+		server->gameActions->updateObjects();
 
 		
 		//Utils::LOG("SURFACE UPDATE");

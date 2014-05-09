@@ -6,6 +6,7 @@
 #include "ClientActions.h"
 #include "Resources.h"
 
+
 class SignInUIView : public UIView {
 	
 private:
@@ -30,7 +31,7 @@ public:
 		this->gui->setFontSize(CI_UI_FONT_LARGE, 100);
 		this->gui->setFontSize(CI_UI_FONT_MEDIUM, 24);
 
-		mImage = loadImage(loadResource(RES_TX_ZOMBIE));
+		mImage = loadImage(loadResource(RES_TX_SURVIVOR));
 		ciUIImage *image = new ciUIImage(600, 200, 300, 300, &mImage, "");
 
 		this->gui->addWidget(image);
@@ -52,6 +53,9 @@ public:
 		errorsLabel->setColorFill(ColorA(1, 0, 0, .8));		
 		this->gui->addWidget(errorsLabel);
 
+		/*ciUIButton *goSignup = new ciUIButton(10, 10, 50, 10, false, "Sign up", CI_UI_FONT_MEDIUM);
+		this->gui->addWidget(goSignup);*/
+
 		this->gui->registerUIEvents(this, &SignInUIView::guiEvent);
 
 		this->gui->setVisible(false);
@@ -67,7 +71,9 @@ public:
 				Utils::LOG("Go login");			
 				this->client->clientActions->signIn(emailTextField->getTextString(), passwordTextField->getTextString());
 			}
-		}	
+		}else if(name == "Sign up"){
+			//client->app->setUIState(UI_STATE_SIGNUP);
+		}
 	}
 
 	void setErrorLabel(string str){

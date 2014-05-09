@@ -305,7 +305,7 @@ public:
 	}
 
 	void setVisible(bool _visible){
-		visible = _visible;
+		visible = _visible;		
 		//setInteractionsEnabled(_visible);
 	}
 	void hide(){setVisible(false);}

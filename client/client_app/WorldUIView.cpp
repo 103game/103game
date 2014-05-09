@@ -131,7 +131,7 @@ void WorldUIView::preloadTextures(){
 	sharedTextures.insert(pair<string,Texture>("snow", loadImage(loadResource(RES_TX_SNOW))));
 	sharedTextures.insert(pair<string,Texture>("lava", loadImage(loadResource(RES_TX_LAVA))));
 	sharedTextures.insert(pair<string,Texture>("Zombie", loadImage(loadResource(RES_TX_ZOMBIE))));
-	sharedTextures.insert(pair<string,Texture>("Survivor", loadImage(loadResource(RES_TX_ZOMBIE))));
+	sharedTextures.insert(pair<string,Texture>("Survivor", loadImage(loadResource(RES_TX_SURVIVOR))));
 }
 
 
@@ -190,14 +190,16 @@ void WorldUIView::update() {
 	UIView::update();
 }
 
-void WorldUIView::draw() {
-	UIView::draw();
+void WorldUIView::draw() {	
 	if(isVisible()){	
 		drawBg();
 		drawSurface();
 		drawObjects();
 		drawBorder();
 		drawParams();
+
+		UIView::draw();
 	}		
+	
 }
 

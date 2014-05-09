@@ -34,6 +34,7 @@ class World : Serializable
 
 		bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir);	
 		shared_ptr<SurfaceBlock> getSbFrom(shared_ptr<WorldObject> wo, DIRECTION dir);
+		shared_ptr<SurfaceBlock> getSbFrom(COORDS crd, DIRECTION dir);
 
 		bool World::move(shared_ptr<WorldObject> obj, DIRECTION to);
 		bool move(shared_ptr<WorldObject> obj, COORDS to);

@@ -36,16 +36,16 @@ void Server::serverMainLoop(Server *server)
 		static clock_t zmb_move = 0;
 		static bool moving_right = true;
 
-		if((clock()-zmb_move)/((double) CLOCKS_PER_SEC) > .5){
+		if((clock()-zmb_move)/((double) CLOCKS_PER_SEC) > 1){
 
 			if(moving_right)
 				if(world->canGo(zmb, DIRECTION_RIGHT))
-					world->moveRight(zmb);
+					world->move(zmb, DIRECTION_RIGHT);
 				else
 					moving_right = false;
 			else
 				if(world->canGo(zmb, DIRECTION_LEFT))
-					world->moveLeft(zmb);
+					world->move(zmb, DIRECTION_LEFT);
 				else
 					moving_right = true;
 				
@@ -53,7 +53,6 @@ void Server::serverMainLoop(Server *server)
 		}
 
 		server->serverActions->answerRequests();
-		server->gameActions->updateObjectActions();
 
 		
 		//Utils::LOG("SURFACE UPDATE");

@@ -5,7 +5,6 @@
 
 #include "Creatures.h"
 
-#include "ObjectAction.h"
 
 
 
@@ -22,16 +21,21 @@ shared_ptr<SurfaceBlock> WorldObject::getSurfaceBlock(){
 	return surfaceBlock;
 }
 
-
-void WorldObject::addAction(shared_ptr<ObjectAction> _action){	
-	actions.push_back(_action);
+void WorldObject::setSurfaceBlock(shared_ptr<SurfaceBlock> _sb){
+	surfaceBlock = _sb;
 }
 
-void WorldObject::removeAction(shared_ptr<ObjectAction> _action){
-	for(vector<shared_ptr<ObjectAction>>::iterator it = actions.begin(); it != actions.end(); it++){
-		if((*it)->getId() == _action->getId()){
-			actions.erase(it);
-			break;
-		}
-	}
+
+
+BSONObj WorldObject::toBSON(){
+	
+	BSONObjBuilder builder;
+	builder.appendElements(DBObject::toBSON());	
+
+	return builder.obj();
+}
+
+void WorldObject::fromBSON(BSONObj obj) {
+	DBObject::fromBSON(obj);		
+
 }

@@ -90,6 +90,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientActions.cpp" />
     <ClCompile Include="ClientApp.cpp" />
+    <ClCompile Include="GameActions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NetworkController.cpp" />
     <ClCompile Include="WorldUIView.cpp" />

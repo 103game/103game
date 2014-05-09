@@ -8,14 +8,14 @@
 
 #define NO_USER "no_user"
 
-
-
+#ifdef CLIENT_APP
+	extern map<string, Texture> sharedTextures;
+#endif
 
 class Creature: public WorldObject {
 
 private:
 	int life;
-
 	bool bot;
 	string userId;
 
@@ -64,6 +64,14 @@ public:
 
 	string getUserId(){return userId;}
 	void setUserId(string _userId){userId = _userId;}
+
+#ifdef CLIENT_APP
+	void draw(UIRect rect){
+		WorldObject::draw(rect);		
+	}
+#endif
+	
+	
 };
 
 class Survivor: public Creature {
@@ -73,6 +81,12 @@ public:
 	Survivor() {
 		setClassName("Survivor");
 	}
+
+#ifdef CLIENT_APP
+	void draw(UIRect rect){
+		Creature::draw(rect);		
+	}
+#endif
 
 	BSONObj toBSON(){
 		BSONObjBuilder builder;
@@ -98,6 +112,12 @@ public:
 		setClassName("Zombie");
 		setZombieType("simple");
 	}
+
+#ifdef CLIENT_APP	
+	void draw(UIRect rect){
+		Creature::draw(rect);		
+	}
+#endif
 
 	BSONObj toBSON(){
 		BSONObjBuilder builder;

@@ -126,9 +126,15 @@ void ServerActions::signIn(JSONMessage msg) {
 		shared_ptr<Creature> userCreature = user->getCreature();
 
 		if(userCreature == NULL){
-			boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
-			ntw->messagesToSend.push(JSONMessage::error("signInCallback", "No creature", msg.getClientId()));
-			return;
+			// create survivor 
+			userCreature = shared_ptr<Survivor>(new Survivor());
+
+			user->setCreatureId(userCreature->getId());
+			userCreature->setUserId(user->getId());
+			userCreature->setBot(false);
+
+			sharedDb->saveObject(user);
+			sharedDb->saveObject(userCreature);			
 		}
 		
 		userCreature = static_pointer_cast<Creature>(server->world->respawnObject(userCreature));

@@ -10,6 +10,7 @@
 class ClientApp;
 class ClientActions;
 class NetworkController;
+class GameActions;
 
 
 class World;
@@ -21,6 +22,7 @@ class Client {
 		NetworkController *networkController;
 		ClientApp *app;
 		ClientActions *clientActions;
+		GameActions *gameActions;
 		long long ticks;
 
 		bool is_authorized;

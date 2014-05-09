@@ -8,6 +8,18 @@
 
 #include "SurfaceBlock.h"
 
+#ifdef CLIENT_APP
+	#include <cinder/app/AppBasic.h>
+	#include <cinder/gl/gl.h>
+	#include "Resources.h"
+	#include "UIView.h"
+	using namespace ci::gl;
+
+	extern map<string, Texture> sharedTextures;
+#endif
+
+
+
 class ObjectAction;
 
 
@@ -26,34 +38,35 @@ class WorldObject: public DBObject {
 	public:	
 
 		shared_ptr<SurfaceBlock> surfaceBlock;		
-		vector<shared_ptr<ObjectAction>> actions;
+
+
 
 		WorldObject() {
 			setClassName("WorldObject");
 			setDbCollection("server.worldobjects");			
 
 			surfaceBlock = NULL;
+
 		}
 
 		static BSONObj objectToBSON(shared_ptr<WorldObject> obj);
 			
 		
-		BSONObj toBSON(){
-			BSONObjBuilder builder;
-			builder.appendElements(DBObject::toBSON());
-			return builder.obj();
-		}
-
-		void fromBSON(BSONObj obj) {
-			DBObject::fromBSON(obj);			
-		}
+		BSONObj toBSON();
+		void fromBSON(BSONObj obj);
 
 		shared_ptr<SurfaceBlock> getSurfaceBlock();
+		void setSurfaceBlock(shared_ptr<SurfaceBlock> _sb);
 
-		void addAction(shared_ptr<ObjectAction> _action);
-		void removeAction(shared_ptr<ObjectAction> _action);
 		
 		
+#ifdef CLIENT_APP
+		virtual void draw(UIRect rect){
+			color(ColorA(1, 1, 1));		
+			Utils::LOG(rect.toString());
+			gl::draw(sharedTextures.find(getClassName())->second, Rectf(rect.x, rect.y, rect.xEnd, rect.yEnd));
+		}
+#endif
 
 
 };

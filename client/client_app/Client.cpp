@@ -4,6 +4,7 @@
 #include <boost/thread/thread.hpp>
 
 #include "ClientActions.h"
+#include "GameActions.h"
 #include "NetworkController.h"
 #include "JSONMessage.h"
 #include "World.h"
@@ -18,6 +19,7 @@ Client::Client(ClientApp *_app) {
 	this->app = _app;
 	this->networkController = new NetworkController(this);
 	this->clientActions = new ClientActions(this);
+	this->gameActions = new GameActions(this);
 	this->ticks = 0;
 
 	this->last_frame_update = 0;
@@ -38,8 +40,7 @@ void Client::mainLoop(Client *client) {
 	while(true){
 		clock_t handle_start = clock();
 		client->clientActions->handleServerMessage();	
-		//Utils::LOG("HANDLE_MSG_TIME: "+to_string((clock() - handle_start)/(double) CLOCKS_PER_SEC));
-
+		//Utils::LOG("HANDLE_MSG_TIME: "+to_string((clock() - handle_start)/(double) CLOCKS_PER_SEC));		
 
 		static clock_t last_get_world = 0;
 

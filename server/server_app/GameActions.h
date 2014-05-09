@@ -17,10 +17,7 @@ public:
 	Server *server;
 
 	GameActions(Server *_server):server(_server){};	
-
-
-	void control(JSONMessage msg);
-	void GameActions::updateObjectActions();
+	void control(JSONMessage msg);	
 };
 
 

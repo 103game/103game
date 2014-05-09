@@ -19,7 +19,7 @@ public:
 
 	Serializable () {
 		setClassName("Serializable");
-		id = Utils::randomString(20); 
+		id = Utils::randomString(5); 
 	}
 
 	BSONObj toBSON() {

@@ -32,13 +32,10 @@ class World : Serializable
 
 		void insertSb(shared_ptr<SurfaceBlock> sb);
 
-		bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir);
+		bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir);	
+		shared_ptr<SurfaceBlock> getSbFrom(shared_ptr<WorldObject> wo, DIRECTION dir);
 
-		void moveRight(shared_ptr<WorldObject> obj);
-		void moveLeft(shared_ptr<WorldObject> obj);
-		void moveUp(shared_ptr<WorldObject> obj);
-		void moveDown(shared_ptr<WorldObject> obj);
-
+		bool World::move(shared_ptr<WorldObject> obj, DIRECTION to);
 		bool move(shared_ptr<WorldObject> obj, COORDS to);
 		bool move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);
 
@@ -73,8 +70,10 @@ class World : Serializable
 			Serializable::fromBSON(obj);		
 			
 			vector<BSONElement> arr = obj["blocks"].Array();
+			
 
 			sbMap.clear();
+			objects.clear();
 
 			//Utils::LOG("world serialized size: " + to_string(arr.size()));
 
@@ -82,13 +81,21 @@ class World : Serializable
 				BSONObj block = it->Obj();
 				shared_ptr<SurfaceBlock> sb = shared_ptr<SurfaceBlock>(new SurfaceBlock());
 				sb->fromBSON(block);
+
+				if(sb->getObject()){
+					sb->getObject()->setSurfaceBlock(sb);
+				}
+				
 				//Utils::LOG("unsrlzng: "+sb->toBSON().jsonString());
 				sbMap.insert(pair<COORDS, shared_ptr<SurfaceBlock>>(sb->getCoords(), sb));
+
+
+				if(sb->getObject()){
+					objects.push_back(sb->getObject());
+				}
 			}
 
 			//Utils::LOG("world unserializeD size: " + to_string(sbMap.size()));
-			
-
 		}
 };
 

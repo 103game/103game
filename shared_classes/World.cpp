@@ -2,51 +2,51 @@
 #include "World.h"
 #include "Creatures.h"
 
-#include "ObjectActionMove.h"
-
 #include <boost/thread.hpp>
+
+#ifdef SERVER_APP
+extern shared_ptr<World> sharedWorld;
+#endif
 
 
 #ifdef SERVER_APP
 
-bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir) {
-	shared_ptr<SurfaceBlock> sb;
-	COORDS crd = wo->getSurfaceBlock()->getCoords();
-
-	switch(dir){
-		case DIRECTION_UP:
-			sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y-1));			
-			break;
-		case DIRECTION_DOWN:
-			sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y+1));			
-			break;
-		case DIRECTION_LEFT:
-			sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x-1, crd.y));			
-			break;
-		case DIRECTION_RIGHT:
-			sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x+1, crd.y));			
-			break;
-	}
-
+bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir) {	
+	auto sb = getSbFrom(wo, dir);
 	return sb != NULL && sb->isEmpty();
 }
 
-
-void World::moveRight(shared_ptr<WorldObject> obj){	
-	obj->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(obj, 1, DIRECTION_RIGHT)));
+shared_ptr<SurfaceBlock> World::getSbFrom(shared_ptr<WorldObject> wo, DIRECTION dir){
+	shared_ptr<SurfaceBlock> sb;
+	COORDS crd = wo->getSurfaceBlock()->getCoords();
+	switch(dir){
+	case DIRECTION_UP:
+		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y-1));			
+		break;
+	case DIRECTION_DOWN:
+		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y+1));			
+		break;
+	case DIRECTION_LEFT:
+		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x-1, crd.y));			
+		break;
+	case DIRECTION_RIGHT:
+		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x+1, crd.y));			
+		break;
+	}
+	return sb;
 }
 
-void World::moveLeft(shared_ptr<WorldObject> obj){
-	obj->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(obj, 1, DIRECTION_LEFT)));
+
+bool World::move(shared_ptr<WorldObject> obj, DIRECTION to) {	
+	if(canGo(obj, to)){
+		auto sb = getSbFrom(obj, to);		
+		move(obj, sb);
+		return true;		
+	}
+	
+	return false;
 }
 
-void World::moveUp(shared_ptr<WorldObject> obj){
-	obj->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(obj, 1, DIRECTION_UP)));
-}
-
-void World::moveDown(shared_ptr<WorldObject> obj){
-	obj->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(obj, 1, DIRECTION_DOWN)));
-}
 
 bool World::move(shared_ptr<WorldObject> obj, COORDS to) {	
 	shared_ptr<SurfaceBlock> sb = getSurfaceBlockByCoords(to);

@@ -6,25 +6,6 @@
 #include "JSONMessage.h"
 #include "Creatures.h"
 
-#include "ObjectAction.h"
-#include "ObjectActionMove.h"
-
-void GameActions::updateObjectActions() {
-	shared_ptr<World> world = server->world;
-
-	for(vector<shared_ptr<WorldObject>>::iterator it = world->objects.begin(); it != world->objects.end(); it++){
-		shared_ptr<WorldObject> wo = (*it);
-		for(vector<shared_ptr<ObjectAction>>::iterator jt = wo->actions.begin(); jt != wo->actions.end(); jt++){
-			if((*jt)->isFinished()){
-				wo->actions.erase(jt);
-				break;
-			}				
-			(*jt)->update();
-		}
-	}
-
-}
-
 
 void GameActions::control(JSONMessage msg) {
 	string ctrl = msg.getParams().getStringField("control");
@@ -36,18 +17,19 @@ void GameActions::control(JSONMessage msg) {
 	if(creature == NULL || !world->isOnMap(creature)){
 		return;
 	}
+		
 
 	Utils::LOG(creature->toBSON().jsonString());
 	Utils::LOG(creature->getSurfaceBlock()->toBSON().jsonString());
 
 	if(ctrl == "go_up"){
-		creature->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(creature, 1, DIRECTION_UP)));
+		world->move(creature, DIRECTION_UP);
 	}else if(ctrl == "go_down"){
-		creature->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(creature, 1, DIRECTION_DOWN)));
+		world->move(creature, DIRECTION_DOWN);
 	}else if(ctrl == "go_right"){
-		creature->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(creature, 1,DIRECTION_RIGHT)));
+		world->move(creature, DIRECTION_RIGHT);
 	}else if(ctrl == "go_left"){
-		creature->addAction(shared_ptr<ObjectActionMove>(new ObjectActionMove(creature, 1, DIRECTION_LEFT)));
+		world->move(creature, DIRECTION_LEFT);
 	}
 
 }

@@ -82,7 +82,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 			if(jsonStr.length()){						
 				clock_t json_parse_start = clock();
 				JSONMessage msg(jsonStr);								
-
+				//msg.parse();
 				//Utils::LOG("Received "+msg.toString());
 				ntw->messageReceiver(msg);
 				Utils::LOG("QUEUE_RCV_SIZE: "+to_string(ntw->receivedMessages.size()));

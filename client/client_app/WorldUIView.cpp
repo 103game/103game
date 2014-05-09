@@ -8,6 +8,8 @@
 
 extern boost::mutex worldMutex;
 
+map<string, Texture> sharedTextures;
+
 WorldUIView::WorldUIView(UIRect _rect, Client *_client) {
 	rect = _rect;
 	client = _client;
@@ -124,70 +126,28 @@ void WorldUIView::drawParams(){
 
 void WorldUIView::preloadTextures(){
 	Utils::LOG("Preloading textures");
-	textures.insert(pair<string,Texture>("grass", loadImage(loadResource(RES_TX_GRASS))));
-	textures.insert(pair<string,Texture>("sand", loadImage(loadResource(RES_TX_SAND))));
-	textures.insert(pair<string,Texture>("snow", loadImage(loadResource(RES_TX_SNOW))));
-	textures.insert(pair<string,Texture>("lava", loadImage(loadResource(RES_TX_LAVA))));
-
-	textures.insert(pair<string,Texture>("zombie", loadImage(loadResource(RES_TX_ZOMBIE))));
+	sharedTextures.insert(pair<string,Texture>("grass", loadImage(loadResource(RES_TX_GRASS))));
+	sharedTextures.insert(pair<string,Texture>("sand", loadImage(loadResource(RES_TX_SAND))));
+	sharedTextures.insert(pair<string,Texture>("snow", loadImage(loadResource(RES_TX_SNOW))));
+	sharedTextures.insert(pair<string,Texture>("lava", loadImage(loadResource(RES_TX_LAVA))));
+	sharedTextures.insert(pair<string,Texture>("Zombie", loadImage(loadResource(RES_TX_ZOMBIE))));
+	sharedTextures.insert(pair<string,Texture>("Survivor", loadImage(loadResource(RES_TX_ZOMBIE))));
 }
 
 
-void WorldUIView::drawSurfaceBlock(shared_ptr<SurfaceBlock> sb, UIRect sbRect) {
-	Texture tx;
-
-	switch(sb->getSurfaceType()){
-	case SURFACE_GRASS:
-		tx = textures.find("grass")->second;
-		break;
-	case SURFACE_SAND:
-		tx = textures.find("sand")->second;
-		break;
-	case SURFACE_SNOW:
-		tx = textures.find("snow")->second;
-		break;
-	case SURFACE_LAVA:
-		tx = textures.find("lava")->second;
-		break;
-	default:
-		tx = textures.find("grass")->second;
-	}
-
-	
-
-	// draw texture
-	color(ColorA(1, 1, 1));
-	gl::draw(tx, Rectf(sbRect.x, sbRect.y, sbRect.xEnd, sbRect.yEnd));
-
-	// draw label
-	if(zoom > 1.5){
-		color(Color(1, 1, 1));
-		string label = sb->getCoords().toString();		
-		textDrawer->drawString(
-			label, 
-			Vec2f(sbRect.x+sbRect.width/2, sbRect.y+sbRect.width/2)
+void WorldUIView::drawObjects(){	
+	shared_ptr<World> world = client->world;
+	for(vector<shared_ptr<WorldObject>>::iterator it = world->objects.begin(); it != world->objects.end(); it++){
+		shared_ptr<WorldObject> wo = *it;
+		COORDS crd = wo->getSurfaceBlock()->getCoords();
+		UIRect woRect = UIRect(
+			rect.x + rect.width/2 + crd.x*sbSize - sbSize/2 - xOffset,
+			rect.y + rect.height/2 + crd.y*sbSize - sbSize/2 - yOffset,
+			sbSize,
+			sbSize
 			);
-	}	
-
-	// draw object
-	if(sb->getObject() != NULL){
-		drawObject(sb->getObject(), sbRect);
+		wo->draw(woRect);
 	}
-	
-}
-
-void WorldUIView::drawObject(shared_ptr<WorldObject> wo, UIRect woRect){
-	Texture tx;
-
-	if(wo->getClassName() == "Zombie"){
-		tx = textures.find("zombie")->second;
-	}else{
-		tx = textures.find("zombie")->second;
-	}
-
-	// draw texture
-	color(ColorA(1, 1, 1));
-	gl::draw(tx, Rectf(woRect.x, woRect.y, woRect.xEnd, woRect.yEnd));
 }
 
 void WorldUIView::drawSurface(){	
@@ -217,7 +177,7 @@ void WorldUIView::drawSurface(){
 					sbSize
 					);
 
-				drawSurfaceBlock(sb, sbRect);
+				sb->draw(sbRect);				
 			}
 		}
 	}
@@ -235,6 +195,7 @@ void WorldUIView::draw() {
 	if(isVisible()){	
 		drawBg();
 		drawSurface();
+		drawObjects();
 		drawBorder();
 		drawParams();
 	}		

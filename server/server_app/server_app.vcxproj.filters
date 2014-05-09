@@ -106,11 +106,5 @@
     <ClInclude Include="GameActions.h">
       <Filter>Заголовочные файлы</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\shared_classes\ObjectAction.h">
-      <Filter>shared_classes</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\shared_classes\ObjectActionMove.h">
-      <Filter>shared_classes</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

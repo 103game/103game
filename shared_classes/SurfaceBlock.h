@@ -1,9 +1,19 @@
 #ifndef SURFACEBLOCK_CLASS_DEF
 #define SURFACEBLOCK_CLASS_DEF
+#include "CompilerOptions.h"
 
 #include <vector>
 #include "BSON.h"
 #include "Serializable.h"
+
+
+#ifdef CLIENT_APP
+#include <cinder/app/AppBasic.h>
+#include <cinder/gl/gl.h>
+#include "Resources.h"
+#include "UIView.h"
+using namespace ci::gl;
+#endif
 
 class WorldObject;
 
@@ -100,6 +110,12 @@ public:
 		coords = _coords;		
 		setSurfaceType(_surfaceType);
 	}	
+
+
+#ifdef CLIENT_APP
+	void draw(UIRect sbRect);
+#endif
+
 	
 
 	BSONObj toBSON();

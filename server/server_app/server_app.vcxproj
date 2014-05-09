@@ -173,8 +173,6 @@
     <ClInclude Include="..\..\shared_classes\Creatures.h" />
     <ClInclude Include="..\..\shared_classes\DBObject.h" />
     <ClInclude Include="..\..\shared_classes\md5.h" />
-    <ClInclude Include="..\..\shared_classes\ObjectAction.h" />
-    <ClInclude Include="..\..\shared_classes\ObjectActionMove.h" />
     <ClInclude Include="..\..\shared_classes\Serializable.h" />
     <ClInclude Include="..\..\shared_classes\SurfaceBlock.h" />
     <ClInclude Include="..\..\shared_classes\User.h" />

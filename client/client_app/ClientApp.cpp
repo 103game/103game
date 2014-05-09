@@ -5,6 +5,7 @@
 
 #include "Client.h"
 #include "ClientActions.h"
+#include "GameActions.h"
 
 
 
@@ -57,15 +58,13 @@ void ClientApp::update()
 	windW = getWindowWidth();
 	windH = getWindowHeight();
 	
-	
-
 	this->mainView->update();
 }
 
 void ClientApp::draw()
 {
 	gl::clear( Color( 1.0, 1.0, 1.0) ); 
-
+		
 	this->mainView->draw();
 	
 	this->client->fps = (clock() - this->client->last_frame_update)/(double) CLOCKS_PER_SEC;

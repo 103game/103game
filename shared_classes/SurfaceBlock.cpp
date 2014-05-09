@@ -4,10 +4,45 @@
 #include "BSON.h"
 
 #include "WorldObject.h"
+#include "Creatures.h"
 
+#ifdef CLIENT_APP
+	extern map<string, Texture> sharedTextures;
+#endif
 
 using namespace std;
 
+#ifdef CLIENT_APP
+void SurfaceBlock::draw(UIRect sbRect){
+	Texture tx;
+
+	switch(getSurfaceType()){
+	case SURFACE_GRASS:
+		tx = sharedTextures.find("grass")->second;
+		break;
+	case SURFACE_SAND:
+		tx = sharedTextures.find("sand")->second;
+		break;
+	case SURFACE_SNOW:
+		tx = sharedTextures.find("snow")->second;
+		break;
+	case SURFACE_LAVA:
+		tx = sharedTextures.find("lava")->second;
+		break;
+	default:
+		tx = sharedTextures.find("grass")->second;
+	}
+
+	// draw texture
+	color(ColorA(1, 1, 1));
+	gl::draw(tx, Rectf(sbRect.x, sbRect.y, sbRect.xEnd, sbRect.yEnd));
+
+	// draw object
+	if(object != NULL){
+		object->draw(sbRect);
+	}
+}
+#endif
 
 
 BSONObj SurfaceBlock::toBSON() {
@@ -33,7 +68,19 @@ void SurfaceBlock::fromBSON(BSONObj obj) {
 	setSurfaceType((SURFACE)obj.getIntField("surfaceType"));
 
 	if(obj.hasField("object")){
-		shared_ptr<WorldObject> wo = make_shared<WorldObject>();
+		BSONObj worldObjBSON = obj.getField("object").Obj();
+		string cn = worldObjBSON.getStringField("class");
+
+		shared_ptr<WorldObject> wo;
+
+		if(cn == "Zombie"){
+			wo = shared_ptr<Zombie>(new Zombie());
+		}else if(cn == "Survivor"){
+			wo = shared_ptr<Survivor>(new Survivor());
+		}else{
+			Utils::ERR("UNEXPECTED CLASS - "+cn);
+		}
+
 		wo->fromBSON(obj.getField("object").Obj());
 		setObject(wo);
 	}else{

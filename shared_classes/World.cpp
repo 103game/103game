@@ -17,16 +17,16 @@ bool World::moveLeft(shared_ptr<WorldObject> obj){
 
 bool World::moveUp(shared_ptr<WorldObject> obj){
 	COORDS crd = obj->getSurfaceBlock()->getCoords();	
-	return move(obj, COORDS(crd.x+1, crd.y));
+	return move(obj, COORDS(crd.x, crd.y-1));
 }
 
 bool World::moveDown(shared_ptr<WorldObject> obj){
 	COORDS crd = obj->getSurfaceBlock()->getCoords();	
-	return move(obj, COORDS(crd.x+1, crd.y));
+	return move(obj, COORDS(crd.x, crd.y+1));
 }
 
 bool World::move(shared_ptr<WorldObject> obj, COORDS to) {	
-	auto sb = getSurfaceBlockByCoords(to);
+	shared_ptr<SurfaceBlock> sb = getSurfaceBlockByCoords(to);
 	if(sb != NULL){
 		move(obj, sb);
 		return true;
@@ -43,12 +43,19 @@ bool World::move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to) {
 	if(to == NULL || !to->isEmpty())
 		return false;
 
+	if(obj->getSurfaceBlock() != NULL)
+		Utils::LOG("move from "+obj->getSurfaceBlock()->getCoords().toString()+" to "+to->getCoords().toString());
+
 	if(obj->surfaceBlock != NULL){
 		obj->surfaceBlock->clear();
 	}
 
-	to->setObject(obj);
+	
+	
+
 	obj->surfaceBlock = to;
+	to->setObject(obj);
+	
 
 	return true;
 }
@@ -67,6 +74,31 @@ void World::remove(shared_ptr<WorldObject> wo) {
 	}
 
 }
+
+shared_ptr<WorldObject> World::getWorldObjectById(string id) {
+	for(vector<shared_ptr<WorldObject>>::iterator it = objects.begin(); it != objects.end(); it++){
+		if(id == (*it)->getId()){
+			return *it;			
+		}
+	}
+
+	return NULL;
+}
+
+void World::respawnObject(shared_ptr<WorldObject> wo){
+
+	if(isOnMap(wo))
+		return;
+
+	for(unordered_map<COORDS, shared_ptr<SurfaceBlock>, COORDSHasher>::iterator it = sbMap.begin(); it != sbMap.end(); it++){
+		shared_ptr<SurfaceBlock> sb = it->second;
+		if(sb->getObject() == NULL){
+			move(wo, sb);
+			break;
+		}
+	}
+}
+
 
 bool World::isOnMap(shared_ptr<WorldObject> wo) {
 	for(vector<shared_ptr<WorldObject>>::iterator it = objects.begin(); it != objects.end(); it++){

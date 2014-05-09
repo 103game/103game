@@ -1,5 +1,6 @@
 #include "WorldUIView.h"
 #include "Resources.h"
+#include "ClientActions.h"
 
 #include <map>
 
@@ -19,6 +20,8 @@ WorldUIView::WorldUIView(UIRect _rect, Client *_client) {
 		
 
 	preloadTextures();
+
+	enableKeyEventCallbacks();
 }
 
 void WorldUIView::mouseDown(MouseEvent &event){
@@ -43,8 +46,6 @@ void WorldUIView::mouseDrag(MouseEvent &event){
 	}
 }
 
-
-
 void WorldUIView::mouseUpGlobal(MouseEvent &event){
 	Utils::LOG("mouse_up");
 	dragging = false;		
@@ -66,6 +67,33 @@ void WorldUIView::mouseWheel(MouseEvent &event){
 
 	setZoom(_zoom);
 }
+
+void WorldUIView::keyDown( KeyEvent &event ){
+
+	static clock_t last_pressed;
+	if((clock() - last_pressed)/(double) CLOCKS_PER_SEC < .5)
+		return;
+
+
+	switch(event.getCode()){
+	case KeyEvent::KEY_w:
+		client->clientActions->sendControl("go_up");
+		break;
+	case KeyEvent::KEY_a:
+		client->clientActions->sendControl("go_left");
+		break;
+	case KeyEvent::KEY_s:
+		client->clientActions->sendControl("go_down");
+		break;
+	case KeyEvent::KEY_d:
+		client->clientActions->sendControl("go_right");
+		break;
+	}
+
+	last_pressed = clock();
+}
+
+
 
 void WorldUIView::setZoom(float _zoom) {
 	zoom = _zoom;

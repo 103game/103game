@@ -47,6 +47,9 @@
     <ClCompile Include="User.cpp">
       <Filter>shared_classes</Filter>
     </ClCompile>
+    <ClCompile Include="SurfaceBlock.cpp">
+      <Filter>shared_classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Server.h">

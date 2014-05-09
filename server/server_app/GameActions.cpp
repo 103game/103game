@@ -3,18 +3,33 @@
 #include "Server.h"
 #include "World.h"
 
-void GameActions::respawnObject(shared_ptr<WorldObject> wo){
+#include "JSONMessage.h"
+#include "Creatures.h"
 
-	if(server->world->isOnMap(wo))
+
+void GameActions::control(JSONMessage msg) {
+	string ctrl = msg.getParams().getStringField("control");
+
+	shared_ptr<World> world = server->world;
+	auto user = msg.getUser();
+	shared_ptr<WorldObject> creature = world->getWorldObjectById(user->getCreatureId());	
+
+	if(creature == NULL || !server->world->isOnMap(creature)){
 		return;
-
-	auto map = this->server->world->sbMap;
-
-	for(unordered_map<COORDS, shared_ptr<SurfaceBlock>, COORDSHasher>::iterator it = map.begin(); it != map.end(); it++){
-		shared_ptr<SurfaceBlock> sb = it->second;
-		if(sb->getObject() == NULL){
-			server->world->move(wo, sb);
-			break;
-		}
 	}
+
+	Utils::LOG(creature->toBSON().jsonString());
+	Utils::LOG(creature->getSurfaceBlock()->toBSON().jsonString());
+
+	if(ctrl == "go_up"){
+		world->moveUp(creature);
+	}else if(ctrl == "go_down"){
+		world->moveDown(creature);
+	}else if(ctrl == "go_right"){
+		world->moveRight(creature);
+	}else if(ctrl == "go_left"){
+		world->moveLeft(creature);
+	}
+
 }
+

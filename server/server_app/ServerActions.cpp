@@ -54,10 +54,14 @@ void ServerActions::messageForwarder(JSONMessage msg){
 		this->signIn(msg);
 	}else if(msg.getAction() == "getWorld"){
 		this->getWorld(msg);
+	}else if(msg.getAction() == "control"){
+		this->server->gameActions->control(msg);
 	}else{
 		Utils::LOG("unknown requested action: "+msg.getAction());
 	}
 }
+
+
 
 
 void ServerActions::getWorld(JSONMessage msg){
@@ -125,7 +129,9 @@ void ServerActions::signIn(JSONMessage msg) {
 			return;
 		}
 		
-		server->gameActions->respawnObject(userCreature);
+		server->world->respawnObject(userCreature);
+
+		Utils::LOG("Creature respawned at "+userCreature->getSurfaceBlock()->getCoords().toString());
 		
 
 		BSONObj params = BSON("session_id" << session_id);

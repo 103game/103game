@@ -2,9 +2,10 @@
 #define SURFACEBLOCK_CLASS_DEF
 
 #include <vector>
-#include "WorldObject.h"
-
 #include "BSON.h"
+#include "Serializable.h"
+
+class WorldObject;
 
 using namespace std;
 
@@ -101,47 +102,11 @@ public:
 	}	
 	
 
-	BSONObj toBSON() {
-		BSONObjBuilder builder;
-		builder.appendElements(Serializable::toBSON())
-			.append("coords", coords.toBSON())
-			.append("surfaceType", surfaceType);
+	BSONObj toBSON();
+	void fromBSON(BSONObj obj);
+	bool isEmpty();
+	void clear();
 
-		if(object!=NULL){
-			builder.append("object", WorldObject::objectToBSON(object));
-		}
-			
-		return builder.obj();
-	}
-
-	void fromBSON(BSONObj obj) {
-		Serializable::fromBSON(obj);
-
-		COORDS coords;
-		coords.fromBSON(obj.getField("coords").Obj());
-		setCoords(coords);
-
-		setSurfaceType((SURFACE)obj.getIntField("surfaceType"));
-				
-		if(obj.hasField("object")){
-			shared_ptr<WorldObject> wo = make_shared<WorldObject>();
-			wo->fromBSON(obj.getField("object").Obj());
-			setObject(wo);
-		}else{
-			setObject(NULL);
-		}
-		
-	}
-
-
-	bool isEmpty(){
-		return object==NULL;
-	}
-
-	void clear(){
-		object->surfaceBlock = NULL;
-		setObject(NULL);
-	}
 
 	shared_ptr<WorldObject> getObject(){return object;}
 	void setObject(shared_ptr<WorldObject> _obj){object = _obj;}

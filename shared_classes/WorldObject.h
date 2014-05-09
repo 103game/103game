@@ -6,21 +6,20 @@
 #include "BSON.h"
 #include "Utils.h"
 
+#include "SurfaceBlock.h"
 
-class SurfaceBlock;
+
 class COORDS;
 
 class WorldObject: public DBObject {
 
 	public:	
 
-		shared_ptr<SurfaceBlock> surfaceBlock;
-		string id;
+		shared_ptr<SurfaceBlock> surfaceBlock;		
 
 		WorldObject() {
 			setClassName("WorldObject");
-			setDbCollection("server.worldobjects");
-			id = Utils::randomString(16);
+			setDbCollection("server.worldobjects");			
 
 			surfaceBlock = NULL;
 		}
@@ -38,8 +37,8 @@ class WorldObject: public DBObject {
 			DBObject::fromBSON(obj);			
 		}
 
-
-		shared_ptr<SurfaceBlock> getSurfaceBlock(){return surfaceBlock;}
+		shared_ptr<SurfaceBlock> getSurfaceBlock();
+		
 
 
 };

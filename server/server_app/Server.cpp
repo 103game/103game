@@ -66,7 +66,8 @@ Server::Server()
 
 	sharedDb = this->dbController = new DBController(this);
 	if(!this->dbController->connect()){
-		cout << "Can't connect to db" << endl;
+		Utils::LOG("Can't connect to db");
+		cin.get();
 		return;
 	}
 

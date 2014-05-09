@@ -8,6 +8,7 @@
 
 
 
+
 BSONObj WorldObject::objectToBSON(shared_ptr<WorldObject> obj) {
 	if(obj->getClassName() == "Zombie"){
 		return static_pointer_cast<Zombie>(obj)->toBSON();
@@ -17,5 +18,7 @@ BSONObj WorldObject::objectToBSON(shared_ptr<WorldObject> obj) {
 	return obj->toBSON();
 }
 
-
+shared_ptr<SurfaceBlock> WorldObject::getSurfaceBlock(){
+	return surfaceBlock;
+}
 

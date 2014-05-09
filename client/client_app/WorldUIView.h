@@ -41,8 +41,9 @@ public:
 	void mouseDown(MouseEvent &event);
 	void mouseDrag(MouseEvent &event);
 	void mouseUpGlobal(MouseEvent &event);
-
 	void mouseWheel(MouseEvent &event);
+
+	void keyDown( KeyEvent &event );
 
 
 	void setZoom(float _zoom);

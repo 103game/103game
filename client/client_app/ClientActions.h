@@ -20,8 +20,13 @@ class ClientActions {
 
 		void messageForwarder(JSONMessage msg);
 
+
+		void sendControl(string control);
+
 		void getWorld();
 		void getWorldCallback(JSONMessage msg);
+
+		void signOut();
 
 		void signIn(string email, string password);
 		void signUp(string email, string name, string password, string password_repeat);

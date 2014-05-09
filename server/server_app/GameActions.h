@@ -6,6 +6,7 @@
 
 class Server;
 class WorldObject;
+class JSONMessage;
 
 using namespace std;
 
@@ -17,7 +18,8 @@ public:
 
 	GameActions(Server *_server):server(_server){};	
 
-	void respawnObject(shared_ptr<WorldObject> wo);
+
+	void control(JSONMessage msg);
 
 };
 

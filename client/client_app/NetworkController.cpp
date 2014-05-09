@@ -84,6 +84,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 				JSONMessage msg(jsonStr);				
 				Utils::LOG("Received "+msg.toString());
 				ntw->messageReceiver(msg);
+				ntw->last_server_response = clock();
 			}		
 
 		}else if (ntw->networkLoopState == NTWK_LOOP_STATE_SEND) {			
@@ -93,7 +94,8 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 				JSONMessage msg = ntw->messagesToSend.front();
 				Utils::LOG("Sending "+msg.toString());
 				s_send(requester, msg.toString());
-				ntw->messagesToSend.pop();				
+				ntw->messagesToSend.pop();			
+				ntw->last_client_request = clock();
 			}
 		}
 
@@ -113,8 +115,10 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 NetworkController::NetworkController(Client  *_client)
 {
 	this->client = _client;
-	this->ticks = 0;
-	this->subscribed = false;
+	this->ticks = 0;	
+
+	last_server_response = last_client_request = 0;
+
 
 	// this->messagesToPublish.push(PublisherMessage("hello", "to_sub_101"));
 

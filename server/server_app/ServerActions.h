@@ -20,7 +20,7 @@ class ServerActions {
 
 		void answerRequests();
 		void messageForwarder(JSONMessage msg);
-
+		
 		void signIn(JSONMessage msg);
 		void signUp(JSONMessage msg);
 		void signOut(JSONMessage msg);

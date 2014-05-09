@@ -8,6 +8,7 @@
 #include "JSONMessage.h"
 #include "World.h"
 
+#include "ClientApp.h"
 
 extern boost::mutex receivedMessagesMutex, messagesToSendMutex;
 
@@ -32,7 +33,6 @@ Client::Client(ClientApp *_app) {
 }
 
 void Client::mainLoop(Client *client) {	
-
 
 	client->clientActions->handleServerMessage();	
 

@@ -41,6 +41,9 @@ class World : Serializable
 		bool World::isOnMap(shared_ptr<WorldObject> wo);
 		void World::remove(shared_ptr<WorldObject> wo);
 
+		shared_ptr<WorldObject> World::getWorldObjectById(string id);
+		void World::respawnObject(shared_ptr<WorldObject> wo);
+
 
 		shared_ptr<SurfaceBlock> getSurfaceBlockByCoords(COORDS coords);
 

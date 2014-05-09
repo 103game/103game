@@ -40,6 +40,14 @@ void ClientActions::messageForwarder(JSONMessage msg){
 }
 
 
+void ClientActions::sendControl(string control){
+	BSONObj bson = BSON("action" << "control" << "params" << BSON("control" << control));
+	JSONMessage msg(bson, client->session_id);
+	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
+	this->client->networkController->messagesToSend.push(msg);	
+}
+
+
 void ClientActions::getWorld() {
 	BSONObj bson = BSON(
 		"action" << "getWorld"
@@ -47,6 +55,15 @@ void ClientActions::getWorld() {
 		);
 
 	JSONMessage msg(bson, client->session_id);
+
+
+	if((clock() - client->last_world_update)/(double) CLOCKS_PER_SEC > 10){
+		// timeout reached
+		signOut();
+		client->app->alertView->setAlert("Connection timed out", "Server is unreachable");
+		return;
+	}
+
 
 	boost::lock_guard<boost::mutex> lock(messagesToSendMutex);
 	this->client->networkController->messagesToSend.push(msg);	
@@ -77,6 +94,12 @@ void ClientActions::getWorldCallback(JSONMessage msg) {
 
 	this->client->wps = (clock() - this->client->last_world_update)/(double) CLOCKS_PER_SEC;
 	this->client->last_world_update = clock();
+}
+
+void ClientActions::signOut() {
+	client->is_authorized = false;
+	client->session_id = "";
+	client->app->setUIState(UI_STATE_SIGNIN);
 }
 
 
@@ -156,6 +179,7 @@ void ClientActions::signInCallback(JSONMessage msg) {
 
 	Utils::LOG(string("Session id waas set to "+session_id).c_str());
 	this->client->app->setUIState(UI_STATE_GAME);		
+	client->last_world_update = clock();
 	//this->client->app->setUIState(UI_STATE_SIGNUP);
 }
 

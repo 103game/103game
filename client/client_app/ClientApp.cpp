@@ -98,6 +98,7 @@ void ClientApp::setUIState(UI_STATE newState) {
 	this->signInView->setVisible(false);
 	this->signUpView->setVisible(false);
 	this->wv->setVisible(false);
+	this->wv->disableKeyEventCallbacks();
 
 	switch(newState){
 		case UI_STATE_SIGNIN:
@@ -108,6 +109,7 @@ void ClientApp::setUIState(UI_STATE newState) {
 			break;
 		case UI_STATE_GAME:
 			this->wv->setVisible(true);
+			this->wv->enableKeyEventCallbacks();
 			break;
 	}
 }

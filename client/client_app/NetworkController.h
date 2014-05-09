@@ -21,8 +21,11 @@ class NetworkController
 	Client *client;
 	long long ticks;
 	NTWK_LOOP_STATE networkLoopState;
-	bool subscribed;
-	string session_id;
+	
+
+	clock_t last_client_request;
+	clock_t last_server_response;
+
 
 	queue<JSONMessage> receivedMessages; 
 	queue<JSONMessage> messagesToSend; 

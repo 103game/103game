@@ -48,13 +48,13 @@ public:
 		
 
 		ciUILabel *ttl = new ciUILabel(0, 0, "", CI_UI_FONT_LARGE);				
-		ttl->setRect(rect.width/2, rect.height/2-100, rect.width/3, 40);
+		ttl->setRect(100, rect.height/2-100, rect.width/3, 40);
 		gui->addWidget(ttl);
 		ttl->setLabel(title);
 		
 
 		ciUILabel *txt = new ciUILabel(0, 0, "", CI_UI_FONT_MEDIUM);		
-		txt->setRect(rect.width/2, rect.height/2, rect.width/3, 200);
+		txt->setRect(150, rect.height/2, rect.width/3, 200);
 		gui->addWidget(txt);
 		txt->setLabel(text);
 

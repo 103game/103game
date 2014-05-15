@@ -14,7 +14,7 @@
  * It is the first Russian serious project that can 
  * can get at the global industrial gaming market, 
  * just because our primary responsibility is 
- * safity of all your data. We are convinced that
+ * safety of all your data. We are convinced that
  * it is a main problem of our days.
  * 
  * @authors: George Fedoseev, Andrew Penkrat, 
@@ -22,7 +22,7 @@
  * Darya Legankova
  * Saint-Petersburg, Russia
  * Saint Petersburg State University
- * PM-PU Departmen
+ * PM-PU Department
  * 2014(c)
  */
 boost::mutex receivedMessagesMutex, messagesToSendMutex;

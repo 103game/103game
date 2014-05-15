@@ -1,3 +1,16 @@
+/*
+
+
+This .h file, which contains information 
+about all the characters of the game, 
+here are presented the possibility of inheritance 
+by which facilitated the task of creating 
+a hierarchy of beings. 
+Also presented basic methods 
+for these classes here.
+
+
+*/
 #ifndef CREATURES_DEF
 #define CREATURES_DEF
 
@@ -18,7 +31,7 @@
 	extern shared_ptr<World> sharedWorld;
 #endif
 
-class Creature: public WorldObject {
+class Creature: public WorldObject { 
 
 private:
 	int life;
@@ -74,6 +87,7 @@ public:
 	void setUserId(string _userId){userId = _userId;}
 
 #ifdef CLIENT_APP
+	// function of drawing
 	void draw(UIRect rect){
 		WorldObject::draw(rect);		
 	}
@@ -134,7 +148,7 @@ public:
 #endif
 
 #ifdef SERVER_APP
-	void update(){
+	void update(){ //updating Server-Client
 		COORDS crd = getSurfaceBlock()->getCoords();
 		shared_ptr<SurfaceBlock> sb;		
 		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_LEFT)){

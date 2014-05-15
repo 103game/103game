@@ -1,3 +1,9 @@
+/* This .h file include
+different usable utils which
+are making the programm
+simplier */
+
+
 #ifndef UTILS_CLASS_DEF
 #define UTILS_CLASS_DEF
 
@@ -53,17 +59,19 @@ public:
 		cout << s << endl;
 #endif
 	}
-
+	//Log
 	static void LOG(string s){
 		//logged.push_back(s);
 		STR_OUT(s);
 	}
 
-
+	//Error
 	static void ERR(string s){
 		LOG("Error: "+s);
 	}
-
+	/*function creates a random string 
+	of a certain length, 
+	introduced by smb */
 	static std::string randomString( size_t length )
 	{
 		static unsigned int i = 0;
@@ -82,7 +90,7 @@ public:
 		std::generate_n( str.begin(), length, randchar );
 		return str;
 	}
-
+	// using md5
 	static std::string md5(std::string str) {
 		return md5_lib(str);
 	}
@@ -104,13 +112,25 @@ public:
 		return ltrim(rtrim(s));
 	}
 
+	/*function proves is a symbol,
+	which got from user, character 
+	or not */
+
 	static bool isCharacter(const char Character){
 		return ( (Character >= 'a' && Character <= 'z') || (Character >= 'A' && Character <= 'Z'));
 	}
 
+	/*function proves is a symbol,
+	which got from user, number 
+	or not */
+
 	static bool isNumber(const char Character){
 		return ( Character >= '0' && Character <= '9');
 	}
+
+	/*function proves is an addres,
+	which got from user, valid email 
+	or not*/
 
 	static bool isValidEmailAddress(string email)
 	{
@@ -143,14 +163,15 @@ public:
 	and converts it to a C-string containing a human-readable version of the corresponding 
 	date and time.
 	*/
+
 	char* asctime(const struct tm *timeptr)
 	{
-		static const char wday_name[][4] = {
+		static const char wday_name[][4] = { // days of a week
 		"Sun", "Mon", "Tue", 
 		"Wed", "Thu", "Fri", 
 		"Sat"
 	};
-	static const char mon_name[][4] = {
+	static const char mon_name[][4] = { // months of a year
 		"Jan", "Feb", "Mar", 
 		"Apr", "May", "Jun",
 		"Jul", "Aug", "Sep", 

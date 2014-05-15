@@ -187,6 +187,45 @@ public:
 		return result;
 	}
 
+		
+	
+	inline char swapbits(char ch) { //coding and decoding information
+		#define SWAP_BITS(X, THAT, TO) do {\
+			unsigned tmp=X.bits.b##THAT;\
+			X.bits.b##THAT = X.bits.b##TO;\
+			X.bits.b##TO   = tmp;\
+		}while(0);
+			union{
+				struct{
+					unsigned b0:1;
+					unsigned b1:1;
+					unsigned b2:1;
+					unsigned b3:1;
+					unsigned b4:1;
+					unsigned b5:1;
+					unsigned b6:1;
+					unsigned b7:1;
+				}bits;
+				char value;
+			} result;
+			result.value = ch;
+			SWAP_BITS(result, 0, 2);
+			SWAP_BITS(result, 1, 3);
+			SWAP_BITS(result, 4, 6);
+			SWAP_BITS(result, 5, 7);
+			return result.value;
+		#undef SWAP_BITS
+		}
+ 
+		
+	
+	void encoder(char* str) {
+			while(*str) {
+				if(*str!='\n')
+					*str = swapbits(*str);
+				++str;
+			}
+		}
 };
 
 

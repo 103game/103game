@@ -13,6 +13,9 @@ simplier */
 #include <sstream>
 #include <algorithm>
 #include <time.h>
+#include <boost/thread/thread.hpp>
+#include <boost/shared_ptr.hpp>
+
 
 #ifdef CLIENT_APP
 #ifdef WIN32
@@ -228,5 +231,45 @@ public:
 		}
 };
 
+	namespace MyTimer {
 
+	class  Timer {
+	private:
+		boost::shared_ptr<boost::thread> thr;
+
+		template <typename Callable> class _func {
+			unsigned int dur;   
+			Callable& cb;
+
+			public:     
+			_func (long long _dur, const Callable& _cb): dur (_dur), cb((Callable&)  _cb) {}
+			void operator() () {    
+				boost::this_thread::sleep(boost::posix_time::milliseconds(dur));            
+				cb();           
+			}           
+		};
+
+	public:
+		template <typename Callable> Timer (long long _dur, const  Callable& _cb)  {
+			_func<Callable> ff (_dur, _cb);
+			thr.reset (new boost::thread(ff));  
+		}
+
+		~Timer() {}
+
+		 Timer (const Timer& tm) {
+			this->thr = tm.thr;
+		}
+
+		Timer operator= (const Timer& tm) {
+			if (this != &tm) this->thr = tm.thr;
+			return *this;
+		}
+
+		void interrupt () {
+			thr->interrupt();
+		}
+	};
+
+}
 #endif

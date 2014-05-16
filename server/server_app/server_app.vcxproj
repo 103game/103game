@@ -85,7 +85,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;$(SolutionDir)\..\shared_classes;$(SolutionDir)\server_app;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -96,7 +96,7 @@
       </HeapReserveSize>
       <HeapCommitSize>
       </HeapCommitSize>
-      <AdditionalDependencies>libzmq.lib;libzmq_d.lib;ws2_32.lib;mongoclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libzmq_d.lib;ws2_32.lib;DbgHelp.lib;libmongoclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -106,7 +106,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\..\server\server_app;$(SolutionDir)\..\shared_classes;$(SolutionDir)\..\libs\json\include;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\server\server_app;$(SolutionDir)\..\shared_classes;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -117,8 +117,9 @@
       </HeapReserveSize>
       <HeapCommitSize>
       </HeapCommitSize>
-      <AdditionalDependencies>libzmq.lib;libzmq_d.lib;json_vc110_libmtd.lib;ws2_32.lib;DbgHelp.lib;libmongoclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalIncludeDirectories>$(SolutionDir)\..\server\server_app;$(SolutionDir)\..\shared_classes;$(SolutionDir)\..\libs\zeromq\include;$(SolutionDir)\..\libs\mongodb\boost\include\boost-1_55;$(SolutionDir)\..\libs\mongodb\mongo\include;$(SolutionDir)\..\libs\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/LTCG </AdditionalOptions>
+      <AdditionalDependencies>libzmq_d.lib;ws2_32.lib;DbgHelp.lib;libmongoclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -136,6 +137,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>libzmq.lib;ws2_32.lib;mongoclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

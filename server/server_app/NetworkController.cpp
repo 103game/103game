@@ -110,7 +110,7 @@ void NetworkController::networkMainLoop(NetworkController *ntw)
 				JSONMessage rep = ntw->messagesToSend.front();
 				cout << "Sending message " /*<< rep.getString()*/ << endl;
 				Utils::LOG("SND_COPYMSG__TIME: "+to_string((clock() - start_snd)/(double) CLOCKS_PER_SEC));
-				s_sendmoref (responder, rep.getClientId(), ZMQ_NOBLOCK);				
+				s_sendmore (responder, rep.getClientId());				
 				s_sendf (responder, rep.toString(), ZMQ_NOBLOCK);
 
 				

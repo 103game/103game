@@ -31,6 +31,11 @@ for these classes here.
 	extern shared_ptr<World> sharedWorld;
 #endif
 
+/* class with:
+* 3 private fields
+* 11 public functions
+*/
+
 class Creature: public WorldObject { 
 
 private:
@@ -75,15 +80,18 @@ public:
 		}
 	}
 
-	int getLife(){return life;}
-	void setLife(int _life){life = _life;}
+	int getLife(){return life;} // getlife
+	void setLife(int _life){life = _life;} //setlife
 
 	void decrLife(int decr){life-=decr; life = life>=0?life:0;}
+	/* function isBot
+	* returns 1, if it is a bot
+	* and returns 0, if it isn't a bot
+	*/
+	bool isBot(){return bot;} 
+	void setBot(bool _bot){bot = _bot;} //setbot
 
-	bool isBot(){return bot;}
-	void setBot(bool _bot){bot = _bot;}
-
-	string getUserId(){return userId;}
+	string getUserId(){return userId;} //get user id and return it
 	void setUserId(string _userId){userId = _userId;}
 
 #ifdef CLIENT_APP
@@ -113,6 +121,14 @@ public:
 
 
 
+
+
+/* Creature --- Survivor
+* class with:
+* 0 private fields
+* 5 public functions
+*/
+
 class Survivor: public Creature {
 	
 public:
@@ -122,13 +138,13 @@ public:
 	}
 
 #ifdef CLIENT_APP
-	void draw(UIRect rect){
+	void draw(UIRect rect){ //drawing
 		Creature::draw(rect);		
 	}
 #endif
 
 #ifdef SERVER_APP
-	void update(){
+	void update(){ //updating
 
 	}		
 #endif
@@ -147,6 +163,13 @@ public:
 	}
 };
 
+
+/* Creature --- Zombie
+* class with:
+* 1 private fields
+* 6 public functions
+*/
+
 class Zombie: public Creature {
 
 private:
@@ -159,13 +182,13 @@ public:
 	}
 
 #ifdef CLIENT_APP	
-	void draw(UIRect rect){
+	void draw(UIRect rect){ //drawing
 		Creature::draw(rect);		
 	}
 #endif
 
 #ifdef SERVER_APP
-	void update(){ //updating Server-Client
+	void update(){ //updating between Server-Client
 		COORDS crd = getSurfaceBlock()->getCoords();
 		shared_ptr<SurfaceBlock> sb;		
 		
@@ -204,8 +227,8 @@ public:
 		setZombieType(obj.getStringField("zombieType"));			
 	}
 
-	string getZombieType(){return zombieType;}
-	void setZombieType(string _zombieType){zombieType = _zombieType;}
+	string getZombieType(){return zombieType;} //getting the type of Zombie
+	void setZombieType(string _zombieType){zombieType = _zombieType;} // setting the type of Zombie
 };
 
 

@@ -36,6 +36,8 @@ class World : Serializable
 		shared_ptr<SurfaceBlock> getSbFrom(shared_ptr<WorldObject> wo, DIRECTION dir);
 		shared_ptr<SurfaceBlock> getSbFrom(COORDS crd, DIRECTION dir);
 
+		vector<shared_ptr<WorldObject>> World::getWorldObjectsAround(shared_ptr<WorldObject> wo);
+
 		bool World::move(shared_ptr<WorldObject> obj, DIRECTION to);
 		bool move(shared_ptr<WorldObject> obj, COORDS to);
 		bool move(shared_ptr<WorldObject> obj, shared_ptr<SurfaceBlock> to);

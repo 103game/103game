@@ -31,12 +31,12 @@ public:
 		this->gui->setFontSize(CI_UI_FONT_LARGE, 100);
 		this->gui->setFontSize(CI_UI_FONT_MEDIUM, 24);
 
-		mImage = loadImage(loadResource(RES_TX_SURVIVOR));
+		mImage = loadImage(loadResource(RES_TX_ZOMBIE));
 		ciUIImage *image = new ciUIImage(600, 200, 300, 300, &mImage, "");
 
 		this->gui->addWidget(image);
 
-		ciUILabel *signInTitle = new ciUILabel(100, 100, "signInTitle", "LOGIN", CI_UI_FONT_LARGE);
+		ciUILabel *signInTitle = new ciUILabel(100, 100, "signInTitle", "SIGN IN", CI_UI_FONT_LARGE);
 		signInTitle->setColorFill(ColorA(0, 0, 0, .7));
 		this->gui->addWidget(signInTitle);
 

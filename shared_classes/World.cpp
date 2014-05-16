@@ -35,6 +35,24 @@ shared_ptr<SurfaceBlock> World::getSbFrom(COORDS crd, DIRECTION dir){
 	return sb;
 }
 
+vector<shared_ptr<WorldObject>> World::getWorldObjectsAround(shared_ptr<WorldObject> wo) {
+	vector<shared_ptr<WorldObject>> woVec;
+
+	if(wo){
+		shared_ptr<SurfaceBlock> sb;
+		for(int i = DIRECTION_UP; i <= DIRECTION_LEFT; i++){
+			if(sb = getSbFrom(wo, (DIRECTION)i)){
+				shared_ptr<WorldObject> sbWo = sb->getObject();
+				if(sbWo){
+					woVec.push_back(sbWo);
+				}
+			}
+		}	
+	}
+		
+	return woVec;
+}
+
 shared_ptr<SurfaceBlock> World::getSbFrom(shared_ptr<WorldObject> wo, DIRECTION dir){	
 	COORDS crd = wo->getSurfaceBlock()->getCoords();
 	return getSbFrom(crd, dir);

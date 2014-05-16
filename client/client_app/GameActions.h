@@ -14,7 +14,9 @@ class GameActions {
 public:
 
 	Client *client;
-	GameActions(Client *_client):client(_client){};		
+	GameActions(Client *_client):client(_client){};	
+
+	void updateLogic();
 };
 
 

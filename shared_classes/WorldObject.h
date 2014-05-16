@@ -49,6 +49,14 @@ class WorldObject: public DBObject {
 
 		}
 
+		shared_ptr<WorldObject> getThisFromSb(){
+			if(surfaceBlock){
+				return this->surfaceBlock->getObject();
+			}
+
+			return NULL;
+		}
+
 		static BSONObj objectToBSON(shared_ptr<WorldObject> obj);
 			
 		

@@ -16,6 +16,11 @@ class AlertUIView: public UIView {
 private:
 	Client *client;
 	ciUICanvas *gui;
+	ciUILabel *ttl;
+	ciUILabel *txt;
+
+	ciUIButton *okButton;
+	ciUIButton *cancelButton;
 
 	function<void(void)> okCallback;
 	function<void(void)> cancelCallback;
@@ -41,32 +46,34 @@ public:
 
 		gui->setFontSize(CI_UI_FONT_LARGE, 60);
 		gui->setFontSize(CI_UI_FONT_MEDIUM, 25);
-		
-	}
 
-	void setAlert(string title, string text, function<void(void)>_okCallback = nullptr, function<void(void)>_cancelCallback = nullptr) {
-		
-
-		ciUILabel *ttl = new ciUILabel(0, 0, "", CI_UI_FONT_LARGE);				
+		ttl = new ciUILabel(0, 0, "TITLE", "", CI_UI_FONT_LARGE);				
 		ttl->setRect(100, rect.height/2-100, rect.width/3, 40);
 		gui->addWidget(ttl);
-		ttl->setLabel(title);
 		
 
-		ciUILabel *txt = new ciUILabel(0, 0, "", CI_UI_FONT_MEDIUM);		
+
+		txt = new ciUILabel(0, 0, "DESC", "", CI_UI_FONT_MEDIUM);		
 		txt->setRect(150, rect.height/2, rect.width/3, 200);
 		gui->addWidget(txt);
-		txt->setLabel(text);
+		
 
-		ciUIButton *okButton = new ciUIButton(200, rect.height/2+100, 100, 80, false, "Ok", CI_UI_FONT_LARGE);		
+		okButton = new ciUIButton(200, rect.height/2+100, 100, 80, false, "Ok", CI_UI_FONT_LARGE);		
 		okButton->setColorBack(Color(0, 0, 0));
 		gui->addWidget(okButton);				
 
-		ciUIButton *cancelButton = new ciUIButton(300, rect.height/2+100, 100, 80, false,  "Cancel", CI_UI_FONT_LARGE);
+		cancelButton = new ciUIButton(300, rect.height/2+100, 100, 80, false,  "Cancel", CI_UI_FONT_LARGE);
 		cancelButton->setColorBack(Color(0, 0, 0));
 		gui->addWidget(cancelButton);			
 
 		gui->registerUIEvents(this, &AlertUIView::guiEvent);
+		
+	}
+
+	void setAlert(string title, string text, function<void(void)>_okCallback = nullptr, function<void(void)>_cancelCallback = nullptr) {
+
+		ttl->setLabel(title);
+		txt->setLabel(text);
 
 		this->setVisible(true);
 		

@@ -51,6 +51,8 @@ void Client::mainLoop(Client *client) {
 			}
 		}
 
+		client->gameActions->updateLogic();
+
 		//Utils::LOG("TICK_TIME: "+to_string((clock() - handle_start)/(double) CLOCKS_PER_SEC));
 
 		client->ticks++;

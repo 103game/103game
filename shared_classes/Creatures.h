@@ -89,12 +89,29 @@ public:
 #ifdef CLIENT_APP
 	// function of drawing
 	void draw(UIRect rect){
-		WorldObject::draw(rect);		
+		WorldObject::draw(rect);	
+		// draw lifebar
+
+		int life = getLife();
+
+		Utils::LOG("DRAW LIFE "+to_string(life));
+
+		UIRect lbRect = UIRect(rect.x+rect.width*.1, rect.y, (life/100.0)*rect.width*.8, 5);	
+		if(life > 30){
+			color(Color(0, 1, 0));
+		}else{
+			color(Color(1, 0, 0));
+		}
+
+		drawSolidRect(Rectf(lbRect.x, lbRect.y, lbRect.xEnd, lbRect.yEnd));
 	}
 #endif
 	
 	
-};
+}; // Creature
+
+
+
 
 class Survivor: public Creature {
 	
@@ -151,49 +168,25 @@ public:
 	void update(){ //updating Server-Client
 		COORDS crd = getSurfaceBlock()->getCoords();
 		shared_ptr<SurfaceBlock> sb;		
-		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_LEFT)){
-			shared_ptr<WorldObject> wo = sb->getObject();
-			if(wo){
-				if(wo->getClassName() == "Survivor"){					
+		
+		vector<shared_ptr<WorldObject>> objectsAround = sharedWorld->getWorldObjectsAround(this->getThisFromSb());
+
+		for(int i = 0; i < objectsAround.size(); i++){
+			shared_ptr<WorldObject> wo = objectsAround[i];
+			if(wo->getClassName() == "Survivor"){
+				static clock_t lastHit = 0;
+				if((clock() - lastHit)/(double) CLOCKS_PER_SEC > 1){
 					shared_ptr<Survivor> srv = static_pointer_cast<Survivor>(wo);
-					srv->decrLife(10);
-					srv->setLife(10);
+					srv->decrLife(5);		
+					Utils::LOG("Eat srv!");
+					Utils::LOG(srv->toBSON().jsonString());
+					sharedDb->saveObject(srv);
+					wo->surfaceBlock->setObject(srv);
+					lastHit = clock();
 				}
 			}
 		}
 
-		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_RIGHT)){
-			shared_ptr<WorldObject> wo = sb->getObject();
-			if(wo){
-				if(wo->getClassName() == "Survivor"){					
-					shared_ptr<Survivor> srv = static_pointer_cast<Survivor>(wo);
-					srv->decrLife(10);
-					srv->setLife(10);
-				}
-			}
-		}
-
-		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_UP)){
-			shared_ptr<WorldObject> wo = sb->getObject();
-			if(wo){
-				if(wo->getClassName() == "Survivor"){					
-					shared_ptr<Survivor> srv = static_pointer_cast<Survivor>(wo);
-					srv->decrLife(10);
-					srv->setLife(10);
-				}
-			}
-		}
-
-		if(sb = sharedWorld->getSbFrom(crd, DIRECTION_DOWN)){
-			shared_ptr<WorldObject> wo = sb->getObject();
-			if(wo){
-				if(wo->getClassName() == "Survivor"){					
-					shared_ptr<Survivor> srv = static_pointer_cast<Survivor>(wo);
-					srv->decrLife(10);
-					srv->setLife(10);
-				}
-			}
-		}
 	}		
 #endif
 

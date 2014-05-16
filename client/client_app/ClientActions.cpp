@@ -107,7 +107,8 @@ void ClientActions::getWorldCallback(JSONMessage msg) {
 void ClientActions::signOut() {
 	client->is_authorized = false;
 	client->session_id = "";
-	client->app->setUIState(UI_STATE_SIGNIN);
+	client->userCreature = NULL;
+	client->app->setUIState(UI_STATE_SIGNIN);	
 }
 
 

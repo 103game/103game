@@ -145,6 +145,12 @@ void ServerActions::signIn(JSONMessage msg) {
 			return;
 		}
 
+		// refill life if dead
+		if(userCreature->getLife() == 0){
+			userCreature->setLife(100);
+			sharedDb->saveObject(userCreature);
+		}
+
 
 		Utils::LOG("Creature respawned at "+userCreature->getSurfaceBlock()->getCoords().toString());
 		

@@ -6,7 +6,7 @@
 /*
  * This application is a MMORPG app which is suitable
  * for all people, who prefer really excellent and
- * exciting games for your PC. The main feature of
+ * exciting games for PC. The main feature of
  * our application is your opportunity to be a part
  * of a huge world and take part in its evolution
  * during your all "virtual" life.

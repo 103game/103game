@@ -52,7 +52,7 @@ void ClientApp::setup()
 	
 	boost::thread mainLoopThread(Client::mainLoop, client);
 
-	this->setUIState(UI_STATE_SIGNUP);	
+	this->setUIState(UI_STATE_SIGNIN);	
 
 }
 
@@ -88,6 +88,13 @@ void ClientApp::keyDown( KeyEvent event )
 				this->debugConsoleView->hide();
 			else
 				this->debugConsoleView->show();
+			break;
+		case KeyEvent::KEY_TAB:
+			if(this->UIState == UI_STATE_SIGNIN){
+				setUIState(UI_STATE_SIGNUP);
+			}else if(this->UIState == UI_STATE_SIGNUP){
+				setUIState(UI_STATE_SIGNIN);
+			}
 			break;
 	}
 }

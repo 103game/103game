@@ -74,14 +74,17 @@ void SurfaceBlock::fromBSON(BSONObj obj) {
 		shared_ptr<WorldObject> wo;
 
 		if(cn == "Zombie"){
-			wo = shared_ptr<Zombie>(new Zombie());
+			shared_ptr<Zombie> zmb = shared_ptr<Zombie>(new Zombie());
+			zmb->fromBSON(worldObjBSON);			
+			wo = zmb;
 		}else if(cn == "Survivor"){
-			wo = shared_ptr<Survivor>(new Survivor());
+			shared_ptr<Survivor> srv = shared_ptr<Survivor>(new Survivor());
+			srv->fromBSON(worldObjBSON);
+			wo = srv;
 		}else{
 			Utils::ERR("UNEXPECTED CLASS - "+cn);
 		}
-
-		wo->fromBSON(obj.getField("object").Obj());
+		
 		setObject(wo);
 	}else{
 		setObject(NULL);

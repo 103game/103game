@@ -11,7 +11,12 @@ extern shared_ptr<World> sharedWorld;
 
 #ifdef SERVER_APP
 
-bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir) {	
+/* function canGo
+	* returns 1, if the necessary square of the field is empty
+	* returns 0, if it is not empty
+*/
+
+bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir) {	 
 	auto sb = getSbFrom(wo, dir);
 	return sb != NULL && sb->isEmpty();
 }
@@ -19,16 +24,16 @@ bool World::canGo(shared_ptr<WorldObject> wo, DIRECTION dir) {
 shared_ptr<SurfaceBlock> World::getSbFrom(COORDS crd, DIRECTION dir){	
 	shared_ptr<SurfaceBlock> sb;
 	switch(dir){
-	case DIRECTION_UP:
+	case DIRECTION_UP: // go up
 		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y-1));			
 		break;
-	case DIRECTION_DOWN:
+	case DIRECTION_DOWN: // go down
 		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x, crd.y+1));			
 		break;
-	case DIRECTION_LEFT:
+	case DIRECTION_LEFT: // go left
 		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x-1, crd.y));			
 		break;
-	case DIRECTION_RIGHT:
+	case DIRECTION_RIGHT: // go right
 		sb = sharedWorld->getSurfaceBlockByCoords(COORDS(crd.x+1, crd.y));			
 		break;
 	}
@@ -149,6 +154,10 @@ shared_ptr<WorldObject> World::respawnObject(shared_ptr<WorldObject> wo){
 
 #endif
 
+/* function isOnMap
+	* returns 1, if the user is on map
+	* returns 0, if it is not on map
+*/
 
 bool World::isOnMap(shared_ptr<WorldObject> wo) {
 	for(vector<shared_ptr<WorldObject>>::iterator it = objects.begin(); it != objects.end(); it++){

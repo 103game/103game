@@ -3,7 +3,7 @@
 
 #ifdef SERVER_APP
 
-shared_ptr<Creature> User::getCreature(){
+shared_ptr<Creature> User::getCreature(){ //getting personal Creature for user
 	if(creatureId != NO_CREATURE){
 		BSONObj obj = sharedDb->getObjectById("server.worldobjects", creatureId);
 		if(!obj.isEmpty()){

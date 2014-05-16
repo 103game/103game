@@ -16,21 +16,21 @@ using namespace std;
 void SurfaceBlock::draw(UIRect sbRect){
 	Texture tx;
 
-	switch(getSurfaceType()){
-	case SURFACE_GRASS:
-		tx = sharedTextures.find("grass")->second;
+	switch(getSurfaceType()){ //getting type of Surface and decide what to do
+	case SURFACE_GRASS: //if the grass
+		tx = sharedTextures.find("grass")->second; // install the grass
 		break;
-	case SURFACE_SAND:
-		tx = sharedTextures.find("sand")->second;
+	case SURFACE_SAND: // //if the sand
+		tx = sharedTextures.find("sand")->second; // install the sand
 		break;
-	case SURFACE_SNOW:
-		tx = sharedTextures.find("snow")->second;
+	case SURFACE_SNOW: //if the snow
+		tx = sharedTextures.find("snow")->second; //install the snow
 		break;
-	case SURFACE_LAVA:
-		tx = sharedTextures.find("lava")->second;
+	case SURFACE_LAVA: //if the lava
+		tx = sharedTextures.find("lava")->second; // install the lava
 		break;
-	default:
-		tx = sharedTextures.find("grass")->second;
+	default: //in not special cases
+		tx = sharedTextures.find("grass")->second; // install the grass
 	}
 
 	// draw texture
@@ -92,6 +92,9 @@ void SurfaceBlock::fromBSON(BSONObj obj) {
 
 }
 
+/* function isEmpty
+	* returns 0, if it is empty
+*/
 
 bool SurfaceBlock::isEmpty(){
 	return object==NULL;

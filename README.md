@@ -1,4 +1,4 @@
-Презентация: http://bit.ly/1oytpPv Основной туториал: http://bit.ly/1jRsY0c
+Презентация: http://bit.ly/1oytpPv Основной туториал: http://bit.ly/1jRsY0c Бинарники: http://yadi.sk/d/m7gBRiqtQSjET
 
 Состав команды: George, Andrew, Vitaly, Anna, Ulyana, Darya
 

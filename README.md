@@ -9,7 +9,7 @@
 <i>
 Saint-Petersburg State University, Russia<br>
 PM-PU Department<br>
-2014<br>
+Spring 2014<br>
 </i>
 
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/lifeDecr.png)

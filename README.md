@@ -1,8 +1,8 @@
-Презентация: http://bit.ly/1oytpPv<br>
-Основной туториал: http://bit.ly/1jRsY0c<br>
-Бинарники: http://yadi.sk/d/m7gBRiqtQSjET
+Презентация / Presentation: http://bit.ly/1oytpPv<br>
+Основной туториал / Tutorial on libs: http://bit.ly/1jRsY0c<br>
+Бинарники / Binaries: http://yadi.sk/d/m7gBRiqtQSjET
 
-Состав команды: George, Andrew, Vitaly, Anna, Ulyana, Darya
+Состав команды / Team: George, Andrew, Vitaly, Anna, Ulyana, Darya
 
 
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/lifeDecr.png)

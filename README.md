@@ -18,5 +18,5 @@ Spring 2014<br>
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/zomb2.png)
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/map.png)
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/scr2.png)
-<p align="center"><img width="300" src = "https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/output_mkkZ9s.gif" /><img width="300" src = "https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/output_2Jz4Cx.gif" /></p>
+<p align="center"><img width="100" src = "https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/output_mkkZ9s.gif" /><img width="100" src = "https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/output_2Jz4Cx.gif" /></p>
 

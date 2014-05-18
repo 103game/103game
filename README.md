@@ -5,8 +5,12 @@
 Туториал по библиоткам / <b>Tutorial on libs</b>: http://bit.ly/1jRsY0c<br>
 
 
-Состав команды / <b>Team</b>: George Fedoseev, Andrew Penkrat, Vitaly Mozin, Anna Fatkina, Ulyana Minaeva, Darya Legankova
-
+Состав команды / <b>Team</b>: George Fedoseev, Andrew Penkrat, Vitaly Mozin, Anna Fatkina, Ulyana Minaeva, Darya Legankova <br>
+<i>
+Saint-Petersburg State University, Russia<br>
+PM-PU Department<br>
+2014<br>
+</i>
 
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/lifeDecr.png)
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/signin.png)

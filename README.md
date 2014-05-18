@@ -2,7 +2,7 @@
 
 Состав команды: George, Andrew, Vitaly, Anna, Ulyana, Darya
 
-<p align="center"><img src = "https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/output_mkkZ9s.gif" /></p?
+<p align="center"><img width="100" src = "https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/output_mkkZ9s.gif" /></p>
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/lifeDecr.png)
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/signin.png)
 ![alt tag](https://raw.githubusercontent.com/103game/103game/master/examples/screenshots/signup_valid.png)

@@ -1,6 +1,6 @@
 <h1>103game</h1>
 <p>Zombie apocalypse 2D MMORPG</p>
-Бинарники / <b>Binaries</b>: http://yadi.sk/d/m7gBRiqtQSjET (needs mongodb server installed and run for server)<br>
+Бинарники / <b>Binaries</b>: http://yadi.sk/d/m7gBRiqtQSjET (needs mongodb server installed and run for server_app)<br>
 Презентация / <b>Presentation</b>: http://bit.ly/1oytpPv<br>
 Туториал по библиоткам / <b>Tutorial on libs</b>: http://bit.ly/1jRsY0c<br>
 

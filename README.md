@@ -1,6 +1,7 @@
+Бинарники / Binaries: http://yadi.sk/d/m7gBRiqtQSjET (needs mongodb server installed and run for server)
 Презентация / Presentation: http://bit.ly/1oytpPv<br>
-Основной туториал / Tutorial on libs: http://bit.ly/1jRsY0c<br>
-Бинарники / Binaries: http://yadi.sk/d/m7gBRiqtQSjET
+Туториал по библиоткам / Tutorial on libs: http://bit.ly/1jRsY0c<br>
+
 
 Состав команды / Team: George, Andrew, Vitaly, Anna, Ulyana, Darya
 
